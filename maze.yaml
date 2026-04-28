@@ -18,11 +18,10 @@
 #
 #  TIPS
 #  ────
-#  • Indentation is everything — 2 spaces per level.
+#  • Indentation is very important — 2 spaces per level.
 #  • A node with no left/right and no dead/win will show disabled buttons.
-#  • Images go in the media/ folder. Reference them as: media/filename.jpg
+#  • Images go in the media/ folder. Reference them as: media/filename.jpg.
 #  • To disable one button, simply omit that branch entirely.
-#  • Run editor.html in your browser to preview & export this file.
 #
 # ─────────────────────────────────────────────────────────────────────────────
 
