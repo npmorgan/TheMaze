@@ -265,132 +265,94 @@
       drop your images in there, then reference them as shown above.
     ═══════════════════════════════════════════════════════════════
     */
-
-    const tree = {
-      icon: '',
-      img:      "",   /* ← scene image */
-      leftImg:  "",   /* ← left button image */
-      rightImg: "",   /* ← right button image */
-      text: "Welcome to Ethos Studio!",
+const tree = {
+  icon: '', img: '', leftImg: '', rightImg: '',
+  text: "welcome to ethos studio",
+  left: {
+    icon: '', img: '', leftImg: '', rightImg: '',
+    text: "You sit on the couch - and it's too comfy! You lose track of time, and you miss your color session.",
+    dead: true,
+    deathText: "You sit on the couch - and it's too comfy! You lose track of time, and you miss your color session."
+  },
+  right: {
+    icon: '', img: '', leftImg: '', rightImg: '',
+    text: "You sign in with Bones and put in your coffee order. Just in time for your session with KB!",
+    left: {
+      icon: '', img: '', leftImg: '', rightImg: '',
+      text: "This is the Bathroom",
       left: {
-        icon: '', img: "", leftImg: "", rightImg: "",
-        text: "Nice couch",
-        left: {
-          icon: '', img: "",
-          text: "You sit on the couch.",
-          dead: true, deathText: "Unfortunately, the couch is too comfy and you miss your color session."
-        },
-        right: {
-          icon: '', img: "", leftImg: "", rightImg: "",
-          text: "The hallway",
-          left: {
-            icon: '', img: "",
-            text: "You went into the bathrooms.",
-            dead: true, deathText: "Someone turned the sonos in here to full volume by accident and the acoustic vibrations knocked you out and you missed your color session."
-          },
-          right: {
-            icon: '', img: "", leftImg: "", rightImg: "",
-            text: "You went into Dante's suite",
-            left: {
-              icon: '', img: "",
-              text: "Look, a dog!",
-              dead: true, deathText: "You decided to stay until you could win Lucy's affection and she never paid you even a little attention. You missed your color session."
-            },
-            right: {
-              icon: '🏆', img: "",
-              text: "This door says KB on it!",
-              win: true, winText: "OMG you made your color session! Here's a latte. Now sit down, we have a lot of work to do."
-            }
-          }
-        }
+        icon: '', img: '', leftImg: '', rightImg: '',
+        text: "You decide to stay a while, but someone suddenly turns on the Sonos speaker full volume and the vibrations knock you out. You miss your color session.",
+        dead: true,
+        deathText: "You decide to stay a while, but someone suddenly turns on the Sonos speaker full volume and the vibrations knock you out. You miss your color session."
       },
       right: {
-        icon: '🌫️', img: "", leftImg: "", rightImg: "",
-        text: "A foggy passage. The mist swirls mysteriously. Something moves in the shadows. It's probably fine. It's definitely not fine.",
+        icon: '', img: '', leftImg: '', rightImg: '',
+        text: "You're in the hallway - where now?",
         left: {
-          icon: '🧙', img: "", leftImg: "", rightImg: "",
-          text: "A wizard sits cross-legged, levitating two inches off the ground. 'Ah,' he says, 'a traveler. I can offer you wisdom... or a sandwich.' He holds up one sandwich.",
+          icon: '', img: '', leftImg: '', rightImg: '',
+          text: "You're in Sam's suite - but he has clients in session right now. You're kind of interrupting.",
           left: {
-            icon: '📜', img: "", leftImg: "", rightImg: "",
-            text: "You ask for wisdom. He hands you a scroll. It says 'LEFT IS RIGHT AND RIGHT IS LEFT' in very dramatic font.",
-            left: {
-              icon: '🪞', img: "",
-              text: "You go right (which the scroll said was left). You find a mirror. The mirror-you looks way more confident.",
-              dead: true, deathText: "Mirror-you winks, steps out of the mirror, and continues the maze without you. Your journey ends here, replaced."
-            },
-            right: {
-              icon: '🎪', img: "",
-              text: "A carnival! Rides! Games! A sign says 'NO EXITS.' This is technically a trap but it's a very fun trap.",
-              dead: true, deathText: "You spend three weeks on the Ferris wheel. Eventually you become the new carnival barker. This is your life now."
-            }
+            icon: '', img: '', leftImg: '', rightImg: '',
+            text: "Okay... I guess you can stay, but you've missed your color session with KB.",
+            dead: true,
+            deathText: "Okay... I guess you can stay, but you've missed your color session with KB."
           },
           right: {
-            icon: '🥪', img: "", leftImg: "", rightImg: "",
-            text: "You take the sandwich. It is an incredible sandwich. You feel powerful. You feel ready. You feel slightly full.",
+            icon: '', img: '', leftImg: '', rightImg: '',
+            text: "You're back in the hallway",
             left: {
-              icon: '🕷️', img: "",
-              text: "A corridor full of webs. A very large spider sits in the center. She has a name tag that says 'KAREN.'",
-              dead: true, deathText: "Karen asks to speak to the manager of this maze. There is no manager. This upsets Karen enormously. You are caught in the middle. Literally."
-            },
-            right: {
-              icon: '⚗️', img: "", leftImg: "", rightImg: "",
-              text: "A laboratory! A skeleton in a lab coat stands at a bubbling desk. A chalkboard reads: 'EXPERIMENT: Can adventurers resist pressing the big red button?' There is a big red button.",
+              icon: '', img: '', leftImg: '', rightImg: '',
+              text: "You're in Ryan's suite",
               left: {
-                icon: '🔴', img: "",
-                text: "You press it.",
-                dead: true, deathText: "Nothing dramatic happens. The button plays 'Jingle Bells.' You feel profound disappointment. In your distraction, a trapdoor opens. Classic."
+                icon: '', img: '', leftImg: '', rightImg: '',
+                text: "You guys start talking about espresso machines and suddenly it's 6:00 - you miss your session, but you now know how to make latte foam.",
+                dead: true,
+                deathText: "You guys start talking about espresso machines and suddenly it's 6:00 - you miss your session, but you now know how to make latte foam."
               },
               right: {
-                icon: '🧪', img: "", leftImg: "", rightImg: "",
-                text: "You ignore the button, which took incredible willpower, and examine the lab. A map on the wall shows the exit! It leads... left.",
+                icon: '', img: '', leftImg: '', rightImg: '',
+                text: "You're in the Hallway",
                 left: {
-                  icon: '🌅', img: "",
-                  text: "You emerge from the maze into sunlight! Birds sing! A mailbox at the exit reads 'CONGRATULATIONS, ADVENTURER.'",
-                  win: true, winText: "Inside the mailbox: a coupon for 15% off at a local deli, and a handwritten note saying 'We honestly didn't think anyone would make it this way. Impressive.' You have won."
-                },
-                right: {
-                  icon: '🕳️', img: "",
-                  text: "You go right anyway, because you don't follow maps.",
-                  dead: true, deathText: "There is a hole. It is a very simple hole. You fall in. The map weeps."
+                  icon: '', img: '', leftImg: '', rightImg: '',
+                  text: "You turn left into assist alley - they attack and consume your life force.",
+                  dead: true,
+                  deathText: "You turn left into assist alley - they attack and consume your life force."
                 }
               }
-            }
-          }
-        },
-        right: {
-          icon: '🐉', img: "", leftImg: "", rightImg: "",
-          text: "A dragon. An actual dragon. She is doing a crossword puzzle and does not look up.",
-          left: {
-            icon: '💬', img: "", leftImg: "", rightImg: "",
-            text: "You attempt conversation. 'Seven letters,' she says, 'means deeply regretting something.' You suggest 'remorse.' She looks up. She looks impressed.",
-            left: {
-              icon: '🤝', img: "", leftImg: "", rightImg: "",
-              text: "The dragon thanks you and offers to let you pass. Her name is Brenda. Brenda is going through some stuff.",
-              left: {
-                icon: '🌑', img: "",
-                text: "A pitch-black corridor. You can see absolutely nothing. You walk forward confidently.",
-                dead: true, deathText: "You walk into a wall. Not even a magic wall. Just a wall. A perfectly normal, unremarkable wall. The end."
-              },
-              right: {
-                icon: '⭐', img: "",
-                text: "A staircase leads UP. At the top: a door labeled 'OUT (FOR REAL THIS TIME).'",
-                win: true, winText: "You exit the maze into a parking lot. A shuttle bus is waiting. The driver nods knowingly. You have bested the maze. The driver gives you a commemorative foam finger."
-              }
             },
             right: {
-              icon: '😤', img: "",
-              text: "You try to correct Brenda's crossword. 'Actually I think that's wrong—' Brenda's eyes narrow.",
-              dead: true, deathText: "Brenda's crossword was correct. You have insulted her intelligence. She is a 400-year-old dragon. She has read every book. You have not."
+              icon: '', img: '', leftImg: '', rightImg: '',
+              text: "You made it to KB's suite! Time to color.",
+              win: true,
+              winText: "You made it to KB's suite! Time to color."
             }
-          },
-          right: {
-            icon: '🏃', img: "",
-            text: "You run. You run fast. You are very proud of how fast you run.",
-            dead: true, deathText: "You run directly into a dead end. You are now trapped in a corner, breathing heavily, having accomplished nothing at impressive speed."
           }
         }
       }
-    };
+    },
+    right: {  // Dante's suite
+      icon: '', img: '', leftImg: '', rightImg: '',
+      text: "You're in Dante's suite",
+      left: {
+        icon: '', img: '', leftImg: '', rightImg: '',
+        text: "You decide to stay until you can make Lucy acknowledge you. You never leave.",
+        dead: true,
+        deathText: "You decide to stay until you can make Lucy acknowledge you. You never leave."
+      },
+      right: {
+        icon: '', img: '', leftImg: '', rightImg: '',
+        text: "You're back in the hallway",
+        right: {
+          icon: '', img: '', leftImg: '', rightImg: '',
+          text: "You made it to KB's suite! Time to color.",
+          win: true,
+          winText: "You made it to KB's suite! Time to color."
+        }
+      }
+    }
+  }
+};
 
     let current = tree;
     let path = [];
