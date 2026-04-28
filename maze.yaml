@@ -1,0 +1,78 @@
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  MAZE DECISION TREE  ·  maze.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+#
+#  HOW TO WRITE YOUR MAZE
+#  ──────────────────────
+#  Every "node" (a scene in the game) can have these fields:
+#
+#    text:      What the player reads. (required)
+#    img:       Big image shown in the scene card.         (optional)
+#    leftImg:   Image shown on the LEFT choice button.     (optional)
+#    rightImg:  Image shown on the RIGHT choice button.    (optional)
+#    dead: true End the path with a failure.               (optional)
+#    win: true  End the path with a success.               (optional)
+#    left:      Indent a new node here to add a LEFT path. (optional)
+#    right:     Indent a new node here for a RIGHT path.   (optional)
+#
+#  TIPS
+#  ────
+#  • Indentation is everything — 2 spaces per level.
+#  • A node with no left/right and no dead/win will show disabled buttons.
+#  • Images go in the media/ folder. Reference them as: media/filename.jpg
+#  • To disable one button, simply omit that branch entirely.
+#  • Run editor.html in your browser to preview & export this file.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+
+text: Welcome to Ethos Studio
+img: media/entry.jpg
+leftImg: media/couch.jpg
+rightImg: media/entry.jpg
+
+left:
+  text: You sit on the couch — it's too comfy! You lose track of time and miss your color session.
+  dead: true
+
+right:
+  text: You sign in with Bones and put in your coffee order. Just in time for your session with KB!
+
+  left:
+    text: This is the Bathroom.
+    left:
+      text: You decide to stay a while, but someone cranks the Sonos full volume. The vibrations knock you out. You miss your color session.
+      dead: true
+    right:
+      text: You're in the hallway — where now?
+      left:
+        text: You're in Sam's suite, but he has clients in session right now. You're kind of interrupting.
+        left:
+          text: Okay... I guess you can stay, but you've missed your color session with KB.
+          dead: true
+        right:
+          text: You're back in the hallway.
+          left:
+            text: You're in Ryan's suite.
+            left:
+              text: You guys start talking about espresso machines and suddenly it's 6pm. You miss your session, but now you know how to make latte foam.
+              dead: true
+            right:
+              text: You're in the hallway.
+              left:
+                text: You turn left into assist alley — they attack and consume your life force.
+                dead: true
+          right:
+            text: You made it to KB's suite! Time to color.
+            win: true
+
+  right:
+    text: You're in Dante's suite.
+    left:
+      text: You decide to stay until you can make Lucy acknowledge you. You never leave.
+      dead: true
+    right:
+      text: You're back in the hallway.
+      right:
+        text: You made it to KB's suite! Time to color.
+        win: true
