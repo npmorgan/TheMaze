@@ -51,10 +51,7 @@
       padding: 2rem 1rem;
     }
 
-    .maze-wrap {
-      max-width: 620px;
-      width: 100%;
-    }
+    .maze-wrap { max-width: 620px; width: 100%; }
 
     .maze-header {
       font-family: 'VT323', monospace;
@@ -86,23 +83,17 @@
       min-height: 26px;
     }
 
-    .crumb {
-      background: var(--surface);
-      border: 0.5px solid var(--border);
-      border-radius: 4px;
-      padding: 2px 8px;
-    }
-
+    .crumb { background: var(--surface); border: 0.5px solid var(--border); border-radius: 4px; padding: 2px 8px; }
     .crumb.L { border-bottom: 2px solid var(--teal); color: #1D9E75; }
     .crumb.R { border-bottom: 2px solid var(--purple); color: #7F77DD; }
 
+    /* Scene card */
     .scene-box {
       background: var(--surface);
       border: 0.5px solid var(--border2);
       border-radius: var(--radius-lg);
-      padding: 1.75rem;
+      overflow: hidden;
       margin-bottom: 1rem;
-      min-height: 150px;
       position: relative;
     }
 
@@ -114,75 +105,77 @@
       top: 14px;
       right: 16px;
       letter-spacing: 1px;
+      z-index: 2;
+      background: var(--surface);
+      padding: 0 4px;
+      border-radius: 3px;
     }
 
-    .scene-icon {
-      font-size: 36px;
-      display: block;
-      margin-bottom: 10px;
+    /* Scene image */
+    .scene-img-wrap { width: 100%; height: 220px; overflow: hidden; }
+    .scene-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .scene-img-wrap .img-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+      border-bottom: 0.5px dashed var(--border2);
+      color: var(--text3);
+      font-family: 'VT323', monospace; font-size: 15px; letter-spacing: 1px;
     }
+    .scene-img-wrap .img-placeholder svg { opacity: 0.35; }
 
-    .scene-text {
-      font-size: 19px;
-      line-height: 1.65;
-      color: var(--text);
-    }
-
+    /* Scene body */
+    .scene-body { padding: 1.25rem 1.75rem 1.75rem; }
+    .scene-icon { font-size: 32px; display: block; margin-bottom: 8px; }
+    .scene-text { font-size: 19px; line-height: 1.65; color: var(--text); }
     .scene-text.dead { color: var(--danger); font-style: italic; }
     .scene-text.win  { color: var(--success); }
 
-    .btn-row {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 1rem;
-    }
+    /* Buttons */
+    .btn-row { display: flex; gap: 12px; margin-bottom: 1rem; }
 
     .dir-btn {
-      flex: 1;
-      padding: 16px;
-      font-family: 'VT323', monospace;
-      font-size: 24px;
-      letter-spacing: 2px;
+      flex: 1; padding: 0;
+      font-family: 'VT323', monospace; letter-spacing: 2px;
       border: 0.5px solid var(--border2);
       border-radius: var(--radius-md);
-      background: var(--bg);
-      color: var(--text);
+      background: var(--bg); color: var(--text);
       cursor: pointer;
       transition: background 0.15s, transform 0.1s;
+      overflow: hidden;
+      display: flex; flex-direction: column;
     }
-
     .dir-btn:hover  { background: var(--surface2); }
     .dir-btn:active { transform: scale(0.97); }
     .dir-btn.left-btn  { border-left: 3px solid var(--teal); }
     .dir-btn.right-btn { border-right: 3px solid var(--purple); }
     .dir-btn:disabled  { opacity: 0.35; cursor: not-allowed; }
 
-    .restart-btn {
-      width: 100%;
-      padding: 12px;
-      font-family: 'VT323', monospace;
-      font-size: 20px;
-      letter-spacing: 1px;
-      border: 0.5px solid var(--border);
-      border-radius: var(--radius-md);
-      background: transparent;
-      color: var(--text2);
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
+    /* Button image */
+    .btn-img-wrap { width: 100%; height: 110px; overflow: hidden; flex-shrink: 0; }
+    .btn-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .btn-img-wrap .img-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+      border-bottom: 0.5px dashed var(--border2);
+      color: var(--text3);
+      font-family: 'VT323', monospace; font-size: 13px; letter-spacing: 1px;
     }
+    .btn-img-wrap .img-placeholder svg { opacity: 0.3; }
 
+    .btn-label { font-size: 22px; padding: 14px 16px; display: block; text-align: center; }
+
+    .restart-btn {
+      width: 100%; padding: 12px;
+      font-family: 'VT323', monospace; font-size: 20px; letter-spacing: 1px;
+      border: 0.5px solid var(--border); border-radius: var(--radius-md);
+      background: transparent; color: var(--text2);
+      cursor: pointer; transition: background 0.15s, color 0.15s;
+    }
     .restart-btn:hover { background: var(--surface); color: var(--text); }
 
     .hidden { display: none !important; }
-
-    .fade-in {
-      animation: fi 0.3s ease;
-    }
-
-    @keyframes fi {
-      from { opacity: 0; transform: translateY(8px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    .fade-in { animation: fi 0.3s ease; }
+    @keyframes fi { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
@@ -192,83 +185,172 @@
 
     <div class="breadcrumb" id="breadcrumb"></div>
 
-    <div class="scene-box" id="scene-box">
+    <div class="scene-box fade-in" id="scene-box">
       <span class="scene-depth" id="depth-label">DEPTH 0</span>
-      <span class="scene-icon" id="scene-icon"></span>
-      <div class="scene-text" id="scene-text"></div>
+
+      <!-- SCENE IMAGE: set img: "your-file.jpg" on the node to fill this -->
+      <div class="scene-img-wrap" id="scene-img-wrap">
+        <div class="img-placeholder" id="scene-placeholder">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+          YOUR SCENE IMAGE
+        </div>
+        <img id="scene-img" src="" alt="scene" style="display:none;" />
+      </div>
+
+      <div class="scene-body">
+        <span class="scene-icon" id="scene-icon"></span>
+        <div class="scene-text" id="scene-text"></div>
+      </div>
     </div>
 
     <div class="btn-row" id="choice-row">
-      <button class="dir-btn left-btn"  id="btn-left"  onclick="go('left')">← LEFT</button>
-      <button class="dir-btn right-btn" id="btn-right" onclick="go('right')">RIGHT →</button>
+      <button class="dir-btn left-btn" id="btn-left" onclick="go('left')">
+        <!-- LEFT BUTTON IMAGE: set leftImg: "your-file.jpg" on the node to fill this -->
+        <div class="btn-img-wrap">
+          <div class="img-placeholder" id="left-placeholder">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            LEFT IMAGE
+          </div>
+          <img id="left-img" src="" alt="left path" style="display:none;" />
+        </div>
+        <span class="btn-label">← LEFT</span>
+      </button>
+
+      <button class="dir-btn right-btn" id="btn-right" onclick="go('right')">
+        <!-- RIGHT BUTTON IMAGE: set rightImg: "your-file.jpg" on the node to fill this -->
+        <div class="btn-img-wrap">
+          <div class="img-placeholder" id="right-placeholder">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+            RIGHT IMAGE
+          </div>
+          <img id="right-img" src="" alt="right path" style="display:none;" />
+        </div>
+        <span class="btn-label">RIGHT →</span>
+      </button>
     </div>
 
     <button class="restart-btn" onclick="restart()">↺ START OVER</button>
   </div>
 
   <script>
+    /*
+    ═══════════════════════════════════════════════════════════════
+      HOW TO ADD IMAGES
+    ═══════════════════════════════════════════════════════════════
+
+      Each node supports three optional image fields:
+
+        img      → big image shown in the scene card
+        leftImg  → image shown on the LEFT button
+        rightImg → image shown on the RIGHT button
+
+      Set any of them to a file path or URL, for example:
+        img:      "images/castle.jpg"
+        leftImg:  "images/torch-corridor.jpg"
+        rightImg: "images/foggy-path.jpg"
+
+      Leave a field out (or set it to "") to show the placeholder.
+      All image fields are optional — the game works fine without any.
+
+      Tip: create an "images/" folder next to this HTML file and
+      drop your images in there, then reference them as shown above.
+    ═══════════════════════════════════════════════════════════════
+    */
+
     const tree = {
-      icon: '🏰', text: "You stand at the entrance of the Great Maze of Moderately Questionable Decisions. Two corridors stretch before you, both equally dark, equally damp, and both smelling faintly of someone else's bad choices.",
+      icon: '🏰',
+      img:      "",   /* ← scene image */
+      leftImg:  "",   /* ← left button image */
+      rightImg: "",   /* ← right button image */
+      text: "You stand at the entrance of the Great Maze of Moderately Questionable Decisions. Two corridors stretch before you, both equally dark, equally damp, and both smelling faintly of someone else's bad choices.",
       left: {
-        icon: '🕯️', text: "A flickering torch reveals a stone corridor. Ancient carvings line the walls. Either this is a sacred temple... or someone with too much free time went WILD with a chisel.",
+        icon: '🕯️', img: "", leftImg: "", rightImg: "",
+        text: "A flickering torch reveals a stone corridor. Ancient carvings line the walls. Either this is a sacred temple... or someone with too much free time went WILD with a chisel.",
         left: {
-          icon: '🐀', text: "A small room full of rats. They stare at you. You stare at them. One rat is wearing a tiny hat. You feel judged.",
+          icon: '🐀', img: "",
+          text: "A small room full of rats. They stare at you. You stare at them. One rat is wearing a tiny hat. You feel judged.",
           dead: true, deathText: "The rats vote unanimously to evict you. You are escorted out by a rat in a tiny hard hat labeled 'SECURITY.'"
         },
         right: {
-          icon: '🧩', text: "A puzzle door! Four ancient symbols glow on the stone. A, B, C, and D. A sign reads: 'Press the correct symbol.' There is no other information whatsoever.",
+          icon: '🧩', img: "", leftImg: "", rightImg: "",
+          text: "A puzzle door! Four ancient symbols glow on the stone. A, B, C, and D. A sign reads: 'Press the correct symbol.' There is no other information whatsoever.",
           left: {
-            icon: '💥', text: "You chose A. The floor opens.",
+            icon: '💥', img: "",
+            text: "You chose A. The floor opens.",
             dead: true, deathText: "You fall into a ball pit. It is very fun, actually, but there is no way out. You live here now."
           },
           right: {
-            icon: '🔓', text: "You press C at random. The door opens. You're a genius.",
+            icon: '🔓', img: "", leftImg: "", rightImg: "",
+            text: "You press C at random. The door opens. You're a genius.",
             left: {
-              icon: '🌊', text: "A roaring underground river blocks your path. A troll sleeps on the only bridge, clutching a sign that reads 'TrOll HaVe UnLimiTed PtO.'",
+              icon: '🌊', img: "",
+              text: "A roaring underground river blocks your path. A troll sleeps on the only bridge, clutching a sign that reads 'TrOll HaVe UnLimiTed PtO.'",
               dead: true, deathText: "You try to wake the troll. He rolls over and mumbles 'send me a calendar invite.' You cannot schedule a meeting with a troll. Journey over."
             },
             right: {
-              icon: '🏆', text: "A glowing golden door! Inscribed above: 'WINNER'S EXIT.' You can hear faint applause from the other side.",
+              icon: '🏆', img: "",
+              text: "A glowing golden door! Inscribed above: 'WINNER'S EXIT.' You can hear faint applause from the other side.",
               win: true, winText: "You burst through and are immediately handed a certificate that reads 'COMPLETED THE MAZE (probably by accident).' A crowd of ghosts cheers. You are their champion."
             }
           }
         }
       },
       right: {
-        icon: '🌫️', text: "A foggy passage. The mist swirls mysteriously. Something moves in the shadows. It's probably fine. It's definitely not fine.",
+        icon: '🌫️', img: "", leftImg: "", rightImg: "",
+        text: "A foggy passage. The mist swirls mysteriously. Something moves in the shadows. It's probably fine. It's definitely not fine.",
         left: {
-          icon: '🧙', text: "A wizard sits cross-legged, levitating two inches off the ground. 'Ah,' he says, 'a traveler. I can offer you wisdom... or a sandwich.' He holds up one sandwich.",
+          icon: '🧙', img: "", leftImg: "", rightImg: "",
+          text: "A wizard sits cross-legged, levitating two inches off the ground. 'Ah,' he says, 'a traveler. I can offer you wisdom... or a sandwich.' He holds up one sandwich.",
           left: {
-            icon: '📜', text: "You ask for wisdom. He hands you a scroll. It says 'LEFT IS RIGHT AND RIGHT IS LEFT' in very dramatic font.",
+            icon: '📜', img: "", leftImg: "", rightImg: "",
+            text: "You ask for wisdom. He hands you a scroll. It says 'LEFT IS RIGHT AND RIGHT IS LEFT' in very dramatic font.",
             left: {
-              icon: '🪞', text: "You go right (which the scroll said was left). You find a mirror. The mirror-you looks way more confident.",
+              icon: '🪞', img: "",
+              text: "You go right (which the scroll said was left). You find a mirror. The mirror-you looks way more confident.",
               dead: true, deathText: "Mirror-you winks, steps out of the mirror, and continues the maze without you. Your journey ends here, replaced."
             },
             right: {
-              icon: '🎪', text: "A carnival! Rides! Games! A sign says 'NO EXITS.' This is technically a trap but it's a very fun trap.",
+              icon: '🎪', img: "",
+              text: "A carnival! Rides! Games! A sign says 'NO EXITS.' This is technically a trap but it's a very fun trap.",
               dead: true, deathText: "You spend three weeks on the Ferris wheel. Eventually you become the new carnival barker. This is your life now."
             }
           },
           right: {
-            icon: '🥪', text: "You take the sandwich. It is an incredible sandwich. You feel powerful. You feel ready. You feel slightly full.",
+            icon: '🥪', img: "", leftImg: "", rightImg: "",
+            text: "You take the sandwich. It is an incredible sandwich. You feel powerful. You feel ready. You feel slightly full.",
             left: {
-              icon: '🕷️', text: "A corridor full of webs. A very large spider sits in the center. She has a name tag that says 'KAREN.'",
+              icon: '🕷️', img: "",
+              text: "A corridor full of webs. A very large spider sits in the center. She has a name tag that says 'KAREN.'",
               dead: true, deathText: "Karen asks to speak to the manager of this maze. There is no manager. This upsets Karen enormously. You are caught in the middle. Literally."
             },
             right: {
-              icon: '⚗️', text: "A laboratory! A skeleton in a lab coat stands at a bubbling desk. A chalkboard reads: 'EXPERIMENT: Can adventurers resist pressing the big red button?' There is a big red button.",
+              icon: '⚗️', img: "", leftImg: "", rightImg: "",
+              text: "A laboratory! A skeleton in a lab coat stands at a bubbling desk. A chalkboard reads: 'EXPERIMENT: Can adventurers resist pressing the big red button?' There is a big red button.",
               left: {
-                icon: '🔴', text: "You press it.",
+                icon: '🔴', img: "",
+                text: "You press it.",
                 dead: true, deathText: "Nothing dramatic happens. The button plays 'Jingle Bells.' You feel profound disappointment. In your distraction, a trapdoor opens. Classic."
               },
               right: {
-                icon: '🧪', text: "You ignore the button, which took incredible willpower, and examine the lab. A map on the wall shows the exit! It leads... left.",
+                icon: '🧪', img: "", leftImg: "", rightImg: "",
+                text: "You ignore the button, which took incredible willpower, and examine the lab. A map on the wall shows the exit! It leads... left.",
                 left: {
-                  icon: '🌅', text: "You emerge from the maze into sunlight! Birds sing! A mailbox at the exit reads 'CONGRATULATIONS, ADVENTURER.'",
+                  icon: '🌅', img: "",
+                  text: "You emerge from the maze into sunlight! Birds sing! A mailbox at the exit reads 'CONGRATULATIONS, ADVENTURER.'",
                   win: true, winText: "Inside the mailbox: a coupon for 15% off at a local deli, and a handwritten note saying 'We honestly didn't think anyone would make it this way. Impressive.' You have won."
                 },
                 right: {
-                  icon: '🕳️', text: "You go right anyway, because you don't follow maps.",
+                  icon: '🕳️', img: "",
+                  text: "You go right anyway, because you don't follow maps.",
                   dead: true, deathText: "There is a hole. It is a very simple hole. You fall in. The map weeps."
                 }
               }
@@ -276,27 +358,34 @@
           }
         },
         right: {
-          icon: '🐉', text: "A dragon. An actual dragon. She is doing a crossword puzzle and does not look up.",
+          icon: '🐉', img: "", leftImg: "", rightImg: "",
+          text: "A dragon. An actual dragon. She is doing a crossword puzzle and does not look up.",
           left: {
-            icon: '💬', text: "You attempt conversation. 'Seven letters,' she says, 'means deeply regretting something.' You suggest 'remorse.' She looks up. She looks impressed.",
+            icon: '💬', img: "", leftImg: "", rightImg: "",
+            text: "You attempt conversation. 'Seven letters,' she says, 'means deeply regretting something.' You suggest 'remorse.' She looks up. She looks impressed.",
             left: {
-              icon: '🤝', text: "The dragon thanks you and offers to let you pass. Her name is Brenda. Brenda is going through some stuff.",
+              icon: '🤝', img: "", leftImg: "", rightImg: "",
+              text: "The dragon thanks you and offers to let you pass. Her name is Brenda. Brenda is going through some stuff.",
               left: {
-                icon: '🌑', text: "A pitch-black corridor. You can see absolutely nothing. You walk forward confidently.",
+                icon: '🌑', img: "",
+                text: "A pitch-black corridor. You can see absolutely nothing. You walk forward confidently.",
                 dead: true, deathText: "You walk into a wall. Not even a magic wall. Just a wall. A perfectly normal, unremarkable wall. The end."
               },
               right: {
-                icon: '⭐', text: "A staircase leads UP. At the top: a door labeled 'OUT (FOR REAL THIS TIME).'",
+                icon: '⭐', img: "",
+                text: "A staircase leads UP. At the top: a door labeled 'OUT (FOR REAL THIS TIME).'",
                 win: true, winText: "You exit the maze into a parking lot. A shuttle bus is waiting. The driver nods knowingly. You have bested the maze. The driver gives you a commemorative foam finger."
               }
             },
             right: {
-              icon: '😤', text: "You try to correct Brenda's crossword. 'Actually I think that's wrong—' Brenda's eyes narrow.",
+              icon: '😤', img: "",
+              text: "You try to correct Brenda's crossword. 'Actually I think that's wrong—' Brenda's eyes narrow.",
               dead: true, deathText: "Brenda's crossword was correct. You have insulted her intelligence. She is a 400-year-old dragon. She has read every book. You have not."
             }
           },
           right: {
-            icon: '🏃', text: "You run. You run fast. You are very proud of how fast you run.",
+            icon: '🏃', img: "",
+            text: "You run. You run fast. You are very proud of how fast you run.",
             dead: true, deathText: "You run directly into a dead end. You are now trapped in a corner, breathing heavily, having accomplished nothing at impressive speed."
           }
         }
@@ -305,6 +394,18 @@
 
     let current = tree;
     let path = [];
+
+    function setImg(imgEl, placeholderEl, src) {
+      if (src) {
+        imgEl.src = src;
+        imgEl.style.display = 'block';
+        placeholderEl.style.display = 'none';
+      } else {
+        imgEl.src = '';
+        imgEl.style.display = 'none';
+        placeholderEl.style.display = 'flex';
+      }
+    }
 
     function render() {
       const box = document.getElementById('scene-box');
@@ -315,7 +416,13 @@
       document.getElementById('scene-icon').textContent = current.icon;
       document.getElementById('depth-label').textContent = 'DEPTH ' + path.length;
 
-      const st = document.getElementById('scene-text');
+      setImg(
+        document.getElementById('scene-img'),
+        document.getElementById('scene-placeholder'),
+        current.img || ""
+      );
+
+      const st  = document.getElementById('scene-text');
       const row = document.getElementById('choice-row');
 
       if (current.dead) {
@@ -332,6 +439,8 @@
         row.classList.remove('hidden');
         document.getElementById('btn-left').disabled  = !current.left;
         document.getElementById('btn-right').disabled = !current.right;
+        setImg(document.getElementById('left-img'),  document.getElementById('left-placeholder'),  current.leftImg  || "");
+        setImg(document.getElementById('right-img'), document.getElementById('right-placeholder'), current.rightImg || "");
       }
 
       const bc = document.getElementById('breadcrumb');
