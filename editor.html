@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maze Editor</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5f0;
+      --surface: #eeeae1;
+      --surface2: #e4dfd4;
+      --border: rgba(0,0,0,0.12);
+      --border2: rgba(0,0,0,0.22);
+      --text: #1a1814;
+      --text2: #5a5650;
+      --text3: #999490;
+      --danger: #a32d2d;
+      --danger-bg: #fcebeb;
+      --success: #0f6e56;
+      --success-bg: #e1f5ee;
+      --teal: #5DCAA5;
+      --purple: #AFA9EC;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --mono: 'Courier New', monospace;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1a1814;
+        --surface: #242018;
+        --surface2: #2e291f;
+        --border: rgba(255,255,255,0.1);
+        --border2: rgba(255,255,255,0.2);
+        --text: #f0ece3;
+        --text2: #a09a90;
+        --text3: #605a52;
+        --danger: #f09595;
+        --danger-bg: #2d1414;
+        --success: #5DCAA5;
+        --success-bg: #0a2e22;
+      }
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Crimson Pro', serif;
+      min-height: 100vh;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      border-bottom: 0.5px solid var(--border2);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .topbar-title {
+      font-family: 'VT323', monospace;
+      font-size: 26px;
+      letter-spacing: 2px;
+      color: var(--text);
+    }
+    .topbar-sub {
+      font-size: 13px;
+      color: var(--text2);
+      font-style: italic;
+      margin-right: auto;
+    }
+
+    .btn {
+      font-family: 'VT323', monospace;
+      font-size: 17px;
+      letter-spacing: 1px;
+      padding: 6px 16px;
+      border: 0.5px solid var(--border2);
+      border-radius: var(--radius-md);
+      background: var(--bg);
+      color: var(--text);
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      white-space: nowrap;
+    }
+    .btn:hover  { background: var(--surface2); }
+    .btn:active { transform: scale(0.97); }
+    .btn.primary {
+      background: var(--text);
+      color: var(--bg);
+      border-color: transparent;
+    }
+    .btn.primary:hover { opacity: 0.85; }
+
+    /* ── Main layout ── */
+    .main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: calc(100vh - 57px);
+    }
+
+    /* ── Left panel ── */
+    .left-panel {
+      display: flex;
+      flex-direction: column;
+      border-right: 0.5px solid var(--border2);
+    }
+
+    .panel-header {
+      font-family: 'VT323', monospace;
+      font-size: 14px;
+      letter-spacing: 1px;
+      color: var(--text3);
+      padding: 10px 16px 8px;
+      border-bottom: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .drop-zone {
+      margin: 12px 16px;
+      border: 1.5px dashed var(--border2);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text3);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: var(--teal);
+      background: var(--surface2);
+      color: var(--text2);
+    }
+    .drop-zone input { display: none; }
+
+    textarea {
+      flex: 1;
+      width: 100%;
+      border: none;
+      outline: none;
+      resize: none;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.65;
+      padding: 12px 16px;
+      background: var(--bg);
+      color: var(--text);
+      tab-size: 2;
+    }
+
+    .error-bar {
+      padding: 8px 16px;
+      font-size: 13px;
+      color: var(--danger);
+      background: var(--danger-bg);
+      border-top: 0.5px solid var(--border);
+      display: none;
+    }
+
+    /* ── Right panel ── */
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 0.5px solid var(--border2);
+      padding: 0 12px;
+    }
+
+    .tab {
+      font-family: 'VT323', monospace;
+      font-size: 16px;
+      letter-spacing: 1px;
+      padding: 10px 14px 8px;
+      color: var(--text3);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      transition: color 0.15s;
+    }
+    .tab:hover { color: var(--text2); }
+    .tab.active { color: var(--text); border-bottom-color: var(--teal); }
+
+    .tab-content {
+      flex: 1;
+      overflow: auto;
+      display: none;
+      position: relative;
+    }
+    .tab-content.active { display: flex; flex-direction: column; }
+
+    /* Tree preview */
+    #tree-canvas {
+      flex: 1;
+      overflow: auto;
+      padding: 20px;
+    }
+    .tree-legend {
+      display: flex;
+      gap: 16px;
+      padding: 10px 16px;
+      font-size: 12px;
+      color: var(--text2);
+      border-top: 0.5px solid var(--border);
+      font-family: 'VT323', monospace;
+      letter-spacing: 1px;
+    }
+    .legend-dot {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 2px;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+
+    /* Code output */
+    #code-out {
+      flex: 1;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.6;
+      padding: 16px;
+      overflow: auto;
+      white-space: pre;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    /* Cheatsheet */
+    #cheat-out {
+      flex: 1;
+      overflow: auto;
+      padding: 20px;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .cheat-block {
+      background: var(--surface);
+      border: 0.5px solid var(--border2);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin-bottom: 14px;
+    }
+    .cheat-block h3 {
+      font-family: 'VT323', monospace;
+      font-size: 18px;
+      letter-spacing: 1px;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .cheat-block p { color: var(--text2); font-size: 14px; margin-bottom: 8px; }
+    .cheat-block pre {
+      font-family: var(--mono);
+      font-size: 12px;
+      background: var(--bg);
+      border-radius: 4px;
+      padding: 10px 12px;
+      overflow-x: auto;
+      color: var(--text);
+      border: 0.5px solid var(--border);
+      white-space: pre;
+    }
+    .pill {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: var(--surface2);
+      border: 0.5px solid var(--border2);
+      color: var(--text2);
+    }
+
+    .stats-bar {
+      display: flex;
+      gap: 20px;
+      padding: 8px 16px;
+      font-family: 'VT323', monospace;
+      font-size: 15px;
+      letter-spacing: 1px;
+      color: var(--text3);
+      border-bottom: 0.5px solid var(--border);
+    }
+    .stat-val { color: var(--text); font-size: 17px; }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <span class="topbar-title">MAZE EDITOR</span>
+    <span class="topbar-sub">Edit maze.yaml → export maze.js → commit both</span>
+    <button class="btn" onclick="loadExample()">Load example</button>
+    <button class="btn" onclick="runUpdate()">Preview ↻</button>
+    <button class="btn primary" onclick="downloadJS()">Download maze.js ↓</button>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Left: YAML editor -->
+    <div class="left-panel">
+      <div class="panel-header">
+        MAZE.YAML — your maze definition
+        <span style="margin-left:auto; font-size:12px;" id="char-count"></span>
+      </div>
+
+      <!-- Drag & drop loader -->
+      <div class="drop-zone" id="drop-zone"
+        ondragover="event.preventDefault(); this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="handleDrop(event)"
+        onclick="document.getElementById('file-pick').click()">
+        <input type="file" id="file-pick" accept=".yaml,.yml,.txt" onchange="handleFilePick(event)" />
+        Drag & drop <strong>maze.yaml</strong> here, or click to load a file
+      </div>
+
+      <textarea id="yaml-in" spellcheck="false" placeholder="# Write your maze here in YAML format&#10;# See the Cheat Sheet tab for help&#10;&#10;text: Your opening scene..." oninput="onYamlInput()"></textarea>
+      <div class="error-bar" id="error-bar"></div>
+    </div>
+
+    <!-- Right: tabs -->
+    <div class="right-panel">
+      <div class="tabs">
+        <button class="tab active" id="tab-tree"  onclick="switchTab('tree')">Tree Map</button>
+        <button class="tab"        id="tab-code"  onclick="switchTab('code')">JS Code</button>
+        <button class="tab"        id="tab-cheat" onclick="switchTab('cheat')">Cheat Sheet</button>
+      </div>
+
+      <!-- Stats bar -->
+      <div class="stats-bar" id="stats-bar">
+        <span>Nodes: <span class="stat-val" id="stat-nodes">—</span></span>
+        <span>Dead ends: <span class="stat-val" id="stat-dead">—</span></span>
+        <span>Wins: <span class="stat-val" id="stat-wins">—</span></span>
+        <span>Max depth: <span class="stat-val" id="stat-depth">—</span></span>
+      </div>
+
+      <!-- Tree tab -->
+      <div class="tab-content active" id="pane-tree">
+        <div id="tree-canvas"><p style="color:var(--text3);font-size:14px;padding:20px;">Start typing in the editor to see your tree map here.</p></div>
+        <div class="tree-legend">
+          <span><span class="legend-dot" style="background:#e1f5ee;border:1px solid #5DCAA5"></span>WIN</span>
+          <span><span class="legend-dot" style="background:#fcebeb;border:1px solid #e24b4a"></span>DEAD END</span>
+          <span><span class="legend-dot" style="background:var(--surface);border:1px solid var(--border2)"></span>SCENE</span>
+        </div>
+      </div>
+
+      <!-- Code tab -->
+      <div class="tab-content" id="pane-code">
+        <div id="code-out">// Update the YAML on the left to generate code.</div>
+      </div>
+
+      <!-- Cheat sheet tab -->
+      <div class="tab-content" id="pane-cheat">
+        <div id="cheat-out">
+
+          <div class="cheat-block">
+            <h3>Basic scene</h3>
+            <p>Every scene needs a <span class="pill">text:</span> field. Add <span class="pill">left:</span> and/or <span class="pill">right:</span> to branch.</p>
+            <pre>text: You enter the hallway.
+
+left:
+  text: You go left into the kitchen.
+
+right:
+  text: You go right into the lounge.</pre>
+          </div>
+
+          <div class="cheat-block">
+            <h3>Dead end</h3>
+            <p>Add <span class="pill">dead: true</span> — no branches allowed. The <span class="pill">text:</span> becomes the failure message.</p>
+            <pre>left:
+  text: You fall into a trap. Game over.
+  dead: true</pre>
+          </div>
+
+          <div class="cheat-block">
+            <h3>Win condition</h3>
+            <p>Add <span class="pill">win: true</span> — no branches allowed. The <span class="pill">text:</span> becomes the success message.</p>
+            <pre>right:
+  text: You made it! Congratulations.
+  win: true</pre>
+          </div>
+
+          <div class="cheat-block">
+            <h3>Images</h3>
+            <p>Drop images in the <span class="pill">media/</span> folder. Reference them by filename.</p>
+            <pre>text: You enter the studio.
+img: media/studio.jpg
+leftImg: media/couch.jpg
+rightImg: media/hallway.jpg</pre>
+          </div>
+
+          <div class="cheat-block">
+            <h3>Disable one button</h3>
+            <p>Simply omit that branch — the button will appear greyed out.</p>
+            <pre>text: Dead end corridor — only one way out.
+right:
+  text: You escape through the window.</pre>
+          </div>
+
+          <div class="cheat-block">
+            <h3>The workflow</h3>
+            <p>1. Edit <span class="pill">maze.yaml</span> (here or in any text editor)<br>
+            2. Click <strong>Download maze.js</strong> in the top bar<br>
+            3. Drop the downloaded file into your project folder<br>
+            4. Commit both <span class="pill">maze.yaml</span> and <span class="pill">maze.js</span> to GitHub<br>
+            5. Open <span class="pill">game.html</span> to play!</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<script>
+  // ── Try to auto-load maze.yaml if running on a server ──────────────────────
+  (async () => {
+    try {
+      const r = await fetch('maze.yaml');
+      if (r.ok) {
+        const text = await r.text();
+        document.getElementById('yaml-in').value = text;
+        runUpdate();
+      }
+    } catch(e) { /* running locally — that's fine */ }
+  })();
+
+  // ── File loading ────────────────────────────────────────────────────────────
+  function handleDrop(e) {
+    e.preventDefault();
+    document.getElementById('drop-zone').classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (file) readFile(file);
+  }
+  function handleFilePick(e) {
+    const file = e.target.files[0];
+    if (file) readFile(file);
+  }
+  function readFile(file) {
+    const r = new FileReader();
+    r.onload = ev => {
+      document.getElementById('yaml-in').value = ev.target.result;
+      runUpdate();
+    };
+    r.readAsText(file);
+  }
+  function loadExample() {
+    document.getElementById('yaml-in').value = EXAMPLE;
+    runUpdate();
+  }
+
+  // ── YAML → tree ─────────────────────────────────────────────────────────────
+  function yamlToTree(node) {
+    if (!node || typeof node !== 'object') return null;
+    const out = {
+      icon: node.icon || '',
+      img: node.img || '',
+      leftImg: node.leftImg || '',
+      rightImg: node.rightImg || '',
+      text: node.text || ''
+    };
+    if (node.dead) { out.dead = true; out.deathText = node.text || ''; }
+    if (node.win)  { out.win  = true; out.winText   = node.text || ''; }
+    if (node.left)  out.left  = yamlToTree(node.left);
+    if (node.right) out.right = yamlToTree(node.right);
+    return out;
+  }
+
+  function treeToJS(node, indent) {
+    const pad   = '  '.repeat(indent);
+    const inner = '  '.repeat(indent + 1);
+    const lines = ['{'];
+    lines.push(`${inner}icon: ${JSON.stringify(node.icon||'')}, img: ${JSON.stringify(node.img||'')}, leftImg: ${JSON.stringify(node.leftImg||'')}, rightImg: ${JSON.stringify(node.rightImg||'')},`);
+    lines.push(`${inner}text: ${JSON.stringify(node.text||'')},`);
+    if (node.dead) lines.push(`${inner}dead: true, deathText: ${JSON.stringify(node.deathText||'')},`);
+    if (node.win)  lines.push(`${inner}win: true, winText: ${JSON.stringify(node.winText||'')},`);
+    if (node.left)  lines.push(`${inner}left: ${treeToJS(node.left,  indent+1)},`);
+    if (node.right) lines.push(`${inner}right: ${treeToJS(node.right, indent+1)},`);
+    lines.push(`${pad}}`);
+    return lines.join('\n');
+  }
+
+  // ── Stats ───────────────────────────────────────────────────────────────────
+  function walkStats(n, depth) {
+    if (!n) return { nodes:0, dead:0, wins:0, maxDepth: depth };
+    const l = walkStats(n.left,  depth+1);
+    const r = walkStats(n.right, depth+1);
+    return {
+      nodes:    1 + l.nodes + r.nodes,
+      dead:     (n.dead?1:0) + l.dead + r.dead,
+      wins:     (n.win?1:0)  + l.wins + r.wins,
+      maxDepth: Math.max(depth, l.maxDepth, r.maxDepth)
+    };
+  }
+
+  // ── SVG tree ─────────────────────────────────────────────────────────────────
+  function buildSVG(node) {
+    const NW=140, NH=40, HG=18, VG=60;
+    let counter = 0;
+
+    function assignX(n, depth) {
+      if (!n) return null;
+      const left  = assignX(n.left,  depth+1);
+      const right = assignX(n.right, depth+1);
+      let x;
+      if (!left && !right) { x = counter * (NW + HG); counter++; }
+      else if (!left)  x = right.x;
+      else if (!right) x = left.x;
+      else x = (left.x + right.x) / 2;
+      return { node: n, x, y: depth * (NH + VG), left, right };
+    }
+
+    const laid = assignX(node, 0);
+    function allN(n) { return n ? [n, ...allN(n.left), ...allN(n.right)] : []; }
+    const nodes = allN(laid);
+    const minX  = Math.min(...nodes.map(n=>n.x));
+    const maxX  = Math.max(...nodes.map(n=>n.x));
+    const maxY  = Math.max(...nodes.map(n=>n.y));
+    const svgW  = maxX - minX + NW + 30;
+    const svgH  = maxY + NH + 30;
+    const ox    = -minX + 15;
+
+    const parts = [];
+
+    function drawEdges(n) {
+      if (!n) return;
+      const px = n.x + ox + NW/2, py = n.y + NH;
+      if (n.left) {
+        const cx = n.left.x + ox + NW/2, cy = n.left.y;
+        parts.push(`<line x1="${px}" y1="${py}" x2="${cx}" y2="${cy}" stroke="#aaa" stroke-width="1.2"/>`);
+        const mx=(px+cx)/2, my=(py+cy)/2;
+        parts.push(`<text x="${mx-8}" y="${my+4}" font-size="10" fill="#aaa" font-family="monospace">L</text>`);
+        drawEdges(n.left);
+      }
+      if (n.right) {
+        const cx = n.right.x + ox + NW/2, cy = n.right.y;
+        parts.push(`<line x1="${px}" y1="${py}" x2="${cx}" y2="${cy}" stroke="#aaa" stroke-width="1.2"/>`);
+        const mx=(px+cx)/2, my=(py+cy)/2;
+        parts.push(`<text x="${mx+4}" y="${my+4}" font-size="10" fill="#aaa" font-family="monospace">R</text>`);
+        drawEdges(n.right);
+      }
+    }
+
+    function drawNodes(n) {
+      if (!n) return;
+      const x = n.x + ox, y = n.y;
+      let fill, stroke, tFill;
+      if (n.node.dead)      { fill='#fcebeb'; stroke='#e24b4a'; tFill='#a32d2d'; }
+      else if (n.node.win)  { fill='#e1f5ee'; stroke='#5DCAA5'; tFill='#0f6e56'; }
+      else                   { fill='var(--surface,#eeeae1)'; stroke='rgba(0,0,0,0.22)'; tFill='var(--text,#1a1814)'; }
+      const raw   = n.node.text || '(start)';
+      const label = raw.length > 20 ? raw.slice(0, 18) + '…' : raw;
+      parts.push(`<rect x="${x}" y="${y}" width="${NW}" height="${NH}" rx="6" fill="${fill}" stroke="${stroke}" stroke-width="0.8"/>`);
+      parts.push(`<text x="${x+NW/2}" y="${y+NH/2+4}" text-anchor="middle" font-size="10.5" fill="${tFill}" font-family="'Crimson Pro',serif">${label.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</text>`);
+      drawNodes(n.left);
+      drawNodes(n.right);
+    }
+
+    drawEdges(laid);
+    drawNodes(laid);
+
+    return `<svg viewBox="0 0 ${svgW} ${svgH}" width="${svgW}" height="${svgH}" style="max-width:100%;display:block">${parts.join('')}</svg>`;
+  }
+
+  // ── Main update ──────────────────────────────────────────────────────────────
+  let lastJS = '';
+
+  function runUpdate() {
+    const raw = document.getElementById('yaml-in').value.trim();
+    const errBar = document.getElementById('error-bar');
+    errBar.style.display = 'none';
+    document.getElementById('char-count').textContent = raw.length + ' chars';
+
+    if (!raw) return;
+
+    let parsed, tree;
+    try {
+      parsed = jsyaml.load(raw);
+      tree   = yamlToTree(parsed);
+    } catch(e) {
+      errBar.style.display = 'block';
+      errBar.textContent   = '⚠ ' + e.message;
+      return;
+    }
+
+    // Stats
+    const s = walkStats(tree, 0);
+    document.getElementById('stat-nodes').textContent = s.nodes;
+    document.getElementById('stat-dead').textContent  = s.dead;
+    document.getElementById('stat-wins').textContent  = s.wins;
+    document.getElementById('stat-depth').textContent = s.maxDepth;
+
+    // Tree
+    document.getElementById('tree-canvas').innerHTML = buildSVG(tree);
+
+    // Code
+    const header = `// AUTO-GENERATED by editor.html — do not edit by hand\n// Edit maze.yaml instead, then re-export.\n\n`;
+    lastJS = header + `const tree = ${treeToJS(tree, 0)};`;
+    document.getElementById('code-out').textContent = lastJS;
+  }
+
+  function onYamlInput() {
+    clearTimeout(onYamlInput._t);
+    onYamlInput._t = setTimeout(runUpdate, 600);
+    document.getElementById('char-count').textContent = document.getElementById('yaml-in').value.length + ' chars';
+  }
+
+  // ── Download ─────────────────────────────────────────────────────────────────
+  function downloadJS() {
+    if (!lastJS) { runUpdate(); }
+    if (!lastJS) return;
+    const blob = new Blob([lastJS], { type: 'application/javascript' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'maze.js';
+    a.click();
+  }
+
+  // ── Tabs ─────────────────────────────────────────────────────────────────────
+  function switchTab(t) {
+    ['tree','code','cheat'].forEach(id => {
+      document.getElementById('tab-'+id).className  = 'tab' + (id===t?' active':'');
+      document.getElementById('pane-'+id).className = 'tab-content' + (id===t?' active':'');
+    });
+  }
+
+  // ── Example ──────────────────────────────────────────────────────────────────
+  const EXAMPLE = `text: Welcome to Ethos Studio
+img: media/entry.jpg
+leftImg: media/couch.jpg
+rightImg: media/entry.jpg
+
+left:
+  text: You sit on the couch — it's too comfy! You miss your color session.
+  dead: true
+
+right:
+  text: You sign in with Bones and put in your coffee order. Just in time for KB!
+
+  left:
+    text: This is the Bathroom.
+    left:
+      text: You stay too long. Someone cranks the Sonos full volume. You're knocked out.
+      dead: true
+    right:
+      text: You're in the hallway — where now?
+      left:
+        text: You're in Sam's suite — he has clients in session right now.
+        left:
+          text: Okay, you can stay — but you've missed your color session with KB.
+          dead: true
+        right:
+          text: You're back in the hallway.
+          left:
+            text: You're in Ryan's suite.
+            left:
+              text: You talk espresso machines until 6pm. No session, but great foam technique.
+              dead: true
+            right:
+              text: You're in the hallway.
+              left:
+                text: You turn into assist alley. They consume your life force.
+                dead: true
+          right:
+            text: You made it to KB's suite! Time to color.
+            win: true
+
+  right:
+    text: You're in Dante's suite.
+    left:
+      text: You try to make Lucy acknowledge you. You never leave.
+      dead: true
+    right:
+      text: You're back in the hallway.
+      right:
+        text: You made it to KB's suite! Time to color.
+        win: true`;
+</script>
+</body>
+</html>
