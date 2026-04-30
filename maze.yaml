@@ -1,77 +1,158 @@
-
 # ─────────────────────────────────────────────────────────────────────────────
 #  MAZE DECISION TREE  ·  maze.yaml
 # ─────────────────────────────────────────────────────────────────────────────
 #
 #  HOW TO WRITE YOUR MAZE
 #  ──────────────────────
-#  Every "node" (a scene in the game) can have these fields:
+#  Every scene can have these fields:
 #
-#    text:      What the player reads. (required)
-#    img:       Big image shown in the scene card.         (optional)
-#    leftImg:   Image shown on the LEFT choice button.     (optional)
-#    rightImg:  Image shown on the RIGHT choice button.    (optional)
-#    dead: true End the path with a failure.               (optional)
-#    win: true  End the path with a success.               (optional)
-#    left:      Indent a new node here to add a LEFT path. (optional)
-#    right:     Indent a new node here for a RIGHT path.   (optional)
+#    text:      What the player reads at this scene.         (required)
+#    img:       Image shown for this scene.                  (optional)
+#    dead: true Ends the path as a failure.                  (optional)
+#    win: true  Ends the path as a success.                  (optional)
+#    hotspots:  List of clickable areas on the image.        (optional)
+#
+#  Each hotspot has:
+#    label:     Text shown when the player hovers.           (required)
+#    region:    [x, y, width, height] as % of image size.   (required)
+#    next:      An entire new scene indented underneath.     (required)
 #
 #  TIPS
 #  ────
-#  • Indentation is very important — 2 spaces per level.
-#  • A node with no left/right and no dead/win will show disabled buttons.
-#  • Images go in the media/ folder. Reference them as: media/filename.jpg.
-#  • To disable one button, simply omit that branch entirely.
+#  • Use editor.html to draw hotspot regions visually on your images.
+#  • Region values are percentages: [5, 10, 40, 60] means
+#    x=5%, y=10%, width=40%, height=60% of the image.
+#  • Images go in the media/ folder → reference as: media/filename.jpg
+#  • A dead/win scene needs no hotspots.
 #
 # ─────────────────────────────────────────────────────────────────────────────
 
-text: Welcome to Ethos Studio
+text: Welcome to Ethos Studio. The lobby stretches out in front of you.
 img: media/entry.jpg
-leftImg: media/couch.jpg
-rightImg: media/entry.jpg
 
-left:
-  text: You sit on the couch — it's too comfy! You lose track of time and miss your color session.
-  dead: true
-
-right:
-  text: You sign in with Bones and put in your coffee order. Just in time for your session with KB!
-
-  left:
-    text: This is the Bathroom.
-    left:
-      text: You decide to stay a while, but someone cranks the Sonos full volume. The vibrations knock you out. You miss your color session.
+hotspots:
+  - label: Sit on the couch
+    region: [4, 52, 38, 40]
+    next:
+      text: It's way too comfortable. You lose track of time entirely. Your session starts without you.
+      img: media/couch.jpg
       dead: true
-    right:
-      text: You're in the hallway — where now?
-      left:
-        text: You're in Sam's suite, but he has clients in session right now. You're kind of interrupting.
-        left:
-          text: Okay... I guess you can stay, but you've missed your color session with KB.
-          dead: true
-        right:
-          text: You're back in the hallway.
-          left:
-            text: You're in Ryan's suite.
-            left:
-              text: You guys start talking about espresso machines and suddenly it's 6pm. You miss your session, but now you know how to make latte foam.
-              dead: true
-            right:
-              text: You're in the hallway.
-              left:
-                text: You turn left into assist alley — they attack and consume your life force.
-                dead: true
-          right:
-            text: You made it to KB's suite! Time to color.
-            win: true
 
-  right:
-    text: You're in Dante's suite.
-    left:
-      text: You decide to stay until you can make Lucy acknowledge you. You never leave.
-      dead: true
-    right:
-      text: You're back in the hallway.
-      right:
-        text: You made it to KB's suite! Time to color.
-        win: true
+  - label: Sign in at the desk
+    region: [58, 28, 36, 44]
+    next:
+      text: You sign in with Bones and order a coffee. KB is ready for you — now which way?
+      img: media/desk.jpg
+
+      hotspots:
+        - label: Take the left hallway
+          region: [2, 20, 22, 70]
+          next:
+            text: You step into the bathroom. Quiet in here.
+            img: media/bathroom.jpg
+
+            hotspots:
+              - label: Linger a while
+                region: [10, 30, 35, 50]
+                next:
+                  text: Someone outside cranks the Sonos to full volume. The vibrations knock you out cold. You miss everything.
+                  img: media/sonos.jpg
+                  dead: true
+
+              - label: Head back to the hallway
+                region: [55, 35, 35, 50]
+                next:
+                  text: You're back in the main hallway. Three doors ahead of you.
+                  img: media/hallway.jpg
+
+                  hotspots:
+                    - label: Sam's suite
+                      region: [5, 20, 25, 60]
+                      next:
+                        text: Sam's mid-session. He gives you a look.
+                        img: media/sam.jpg
+
+                        hotspots:
+                          - label: Stay and watch
+                            region: [10, 25, 35, 50]
+                            next:
+                              text: You miss your own session hanging out in Sam's suite.
+                              img: media/sam.jpg
+                              dead: true
+
+                          - label: Slip back out
+                            region: [60, 30, 30, 45]
+                            next:
+                              text: Back in the hallway. Keep moving.
+                              img: media/hallway.jpg
+
+                              hotspots:
+                                - label: Ryan's suite
+                                  region: [5, 20, 25, 60]
+                                  next:
+                                    text: Ryan's in here. He's very enthusiastic about espresso.
+                                    img: media/ryan.jpg
+
+                                    hotspots:
+                                      - label: Talk espresso machines
+                                        region: [20, 30, 60, 50]
+                                        next:
+                                          text: Suddenly it's 6pm. You missed your session but you now know how to make perfect latte foam.
+                                          img: media/espresso.jpg
+                                          dead: true
+
+                                      - label: Excuse yourself
+                                        region: [5, 60, 25, 30]
+                                        next:
+                                          text: You're back in the hallway. KB's suite is just ahead.
+                                          img: media/hallway.jpg
+
+                                          hotspots:
+                                            - label: KB's suite
+                                              region: [38, 20, 28, 60]
+                                              next:
+                                                text: You made it to KB's suite! Time to color.
+                                                img: media/kb.jpg
+                                                win: true
+
+                                - label: KB's suite
+                                  region: [62, 20, 32, 60]
+                                  next:
+                                    text: You made it to KB's suite! Time to color.
+                                    img: media/kb.jpg
+                                    win: true
+
+                    - label: KB's suite
+                      region: [38, 20, 28, 60]
+                      next:
+                        text: You made it to KB's suite! Time to color.
+                        img: media/kb.jpg
+                        win: true
+
+        - label: Dante's suite
+          region: [74, 28, 22, 50]
+          next:
+            text: You're in Dante's suite. Lucy the cat sits on the mixing board and ignores you completely.
+            img: media/dante.jpg
+
+            hotspots:
+              - label: Try to get Lucy's attention
+                region: [30, 55, 40, 35]
+                next:
+                  text: You wait and wait for Lucy to acknowledge you. She never does. You never leave.
+                  img: media/dante.jpg
+                  dead: true
+
+              - label: Head back out
+                region: [5, 30, 18, 50]
+                next:
+                  text: Back in the hallway. KB's suite is just ahead.
+                  img: media/hallway.jpg
+
+                  hotspots:
+                    - label: KB's suite
+                      region: [38, 20, 28, 60]
+                      next:
+                        text: You made it to KB's suite! Time to color.
+                        img: media/kb.jpg
+                        win: true

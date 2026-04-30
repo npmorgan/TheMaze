@@ -21,681 +21,992 @@
       --danger: #a32d2d;
       --danger-bg: #fcebeb;
       --success: #0f6e56;
-      --success-bg: #e1f5ee;
       --teal: #5DCAA5;
       --purple: #AFA9EC;
       --radius-md: 8px;
-      --radius-lg: 12px;
       --mono: 'Courier New', monospace;
+      --teal-r: 93; --teal-g: 202; --teal-b: 165;
+      --purp-r: 175; --purp-g: 169; --purp-b: 236;
     }
 
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #1a1814;
-        --surface: #242018;
-        --surface2: #2e291f;
-        --border: rgba(255,255,255,0.1);
-        --border2: rgba(255,255,255,0.2);
-        --text: #f0ece3;
-        --text2: #a09a90;
-        --text3: #605a52;
-        --danger: #f09595;
-        --danger-bg: #2d1414;
-        --success: #5DCAA5;
-        --success-bg: #0a2e22;
+        --bg: #1a1814; --surface: #242018; --surface2: #2e291f;
+        --border: rgba(255,255,255,0.10); --border2: rgba(255,255,255,0.20);
+        --text: #f0ece3; --text2: #a09a90; --text3: #605a52;
+        --danger: #f09595; --danger-bg: #2d1414; --success: #5DCAA5;
       }
     }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Crimson Pro', serif;
-      min-height: 100vh;
-      padding: 0;
-      margin: 0;
-    }
+    body { background: var(--bg); color: var(--text); font-family: 'Crimson Pro', serif; min-height: 100vh; }
 
     /* ── Top bar ── */
     .topbar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 20px;
-      border-bottom: 0.5px solid var(--border2);
-      background: var(--surface);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      display: flex; align-items: center; gap: 10px; padding: 10px 18px;
+      border-bottom: 0.5px solid var(--border2); background: var(--surface);
+      position: sticky; top: 0; z-index: 20; flex-wrap: wrap;
     }
-    .topbar-title {
-      font-family: 'VT323', monospace;
-      font-size: 26px;
-      letter-spacing: 2px;
-      color: var(--text);
-    }
-    .topbar-sub {
-      font-size: 13px;
-      color: var(--text2);
-      font-style: italic;
-      margin-right: auto;
-    }
+    .topbar-title { font-family: 'VT323', monospace; font-size: 24px; letter-spacing: 2px; }
+    .topbar-sep   { color: var(--border2); }
+    .topbar-sub   { font-size: 13px; color: var(--text2); font-style: italic; flex: 1; }
 
     .btn {
-      font-family: 'VT323', monospace;
-      font-size: 17px;
-      letter-spacing: 1px;
-      padding: 6px 16px;
-      border: 0.5px solid var(--border2);
-      border-radius: var(--radius-md);
-      background: var(--bg);
-      color: var(--text);
-      cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
-      white-space: nowrap;
+      font-family: 'VT323', monospace; font-size: 16px; letter-spacing: 1px;
+      padding: 5px 14px; border: 0.5px solid var(--border2); border-radius: var(--radius-md);
+      background: var(--bg); color: var(--text); cursor: pointer;
+      transition: background 0.15s, transform 0.1s; white-space: nowrap;
     }
     .btn:hover  { background: var(--surface2); }
     .btn:active { transform: scale(0.97); }
-    .btn.primary {
-      background: var(--text);
-      color: var(--bg);
-      border-color: transparent;
-    }
+    .btn.primary { background: var(--text); color: var(--bg); border-color: transparent; }
     .btn.primary:hover { opacity: 0.85; }
+    .btn.danger { background: var(--danger-bg); color: var(--danger); border-color: var(--danger); }
 
-    /* ── Main layout ── */
+    /* ── Three-column layout ── */
     .main {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      height: calc(100vh - 57px);
+      grid-template-columns: 1fr 1fr 1fr;
+      height: calc(100vh - 53px);
     }
 
-    /* ── Left panel ── */
-    .left-panel {
-      display: flex;
-      flex-direction: column;
+    .col {
+      display: flex; flex-direction: column;
       border-right: 0.5px solid var(--border2);
+      overflow: hidden;
+    }
+    .col:last-child { border-right: none; }
+
+    .col-header {
+      font-family: 'VT323', monospace; font-size: 13px; letter-spacing: 1px; color: var(--text3);
+      padding: 8px 14px; border-bottom: 0.5px solid var(--border);
+      display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+    }
+    .col-header span { margin-left: auto; font-size: 11px; }
+
+    /* ── Col 1: YAML editor ── */
+    .editor-wrap { flex: 1; position: relative; overflow: hidden; }
+
+    .hl-layer {
+      position: absolute; inset: 0;
+      font-family: var(--mono); font-size: 12px; line-height: 1.65;
+      padding: 10px 12px; white-space: pre; overflow: auto;
+      pointer-events: none; color: transparent;
+      border: none; outline: none;
     }
 
-    .panel-header {
-      font-family: 'VT323', monospace;
-      font-size: 14px;
-      letter-spacing: 1px;
-      color: var(--text3);
-      padding: 10px 16px 8px;
-      border-bottom: 0.5px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .drop-zone {
-      margin: 12px 16px;
-      border: 1.5px dashed var(--border2);
-      border-radius: var(--radius-md);
-      padding: 12px 16px;
-      text-align: center;
-      font-size: 13px;
-      color: var(--text3);
-      cursor: pointer;
-      transition: border-color 0.15s, background 0.15s;
-    }
-    .drop-zone:hover, .drop-zone.drag-over {
-      border-color: var(--teal);
-      background: var(--surface2);
-      color: var(--text2);
-    }
-    .drop-zone input { display: none; }
-
-    textarea {
-      flex: 1;
-      width: 100%;
-      border: none;
-      outline: none;
-      resize: none;
-      font-family: var(--mono);
-      font-size: 12.5px;
-      line-height: 1.65;
-      padding: 12px 16px;
-      background: var(--bg);
-      color: var(--text);
-      tab-size: 2;
+    #yaml-in {
+      position: absolute; inset: 0;
+      font-family: var(--mono); font-size: 12px; line-height: 1.65;
+      padding: 10px 12px;
+      background: transparent; color: var(--text); caret-color: var(--text);
+      border: none; outline: none; resize: none; z-index: 1;
+      tab-size: 2; white-space: pre; overflow: auto;
     }
 
     .error-bar {
-      padding: 8px 16px;
-      font-size: 13px;
-      color: var(--danger);
-      background: var(--danger-bg);
+      padding: 6px 14px; font-size: 12px; color: var(--danger);
+      background: var(--danger-bg); border-top: 0.5px solid var(--border); display: none; flex-shrink: 0;
+    }
+
+    .editor-legend {
+      display: flex; flex-shrink: 0;
       border-top: 0.5px solid var(--border);
-      display: none;
+      font-size: 11px; color: var(--text2);
+    }
+    .legend-swatch {
+      flex: 1; padding: 4px 8px; text-align: center;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+    }
+    .swatch-box { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+    /* Drop zone */
+    .drop-zone {
+      margin: 8px 12px; border: 1.5px dashed var(--border2); border-radius: var(--radius-md);
+      padding: 8px 12px; text-align: center; font-size: 12px; color: var(--text3);
+      cursor: pointer; transition: border-color 0.15s, background 0.15s; flex-shrink: 0;
+    }
+    .drop-zone:hover, .drop-zone.drag-over { border-color: var(--teal); background: var(--surface2); color: var(--text2); }
+    .drop-zone input { display: none; }
+
+    /* ── Col 2: Hotspot drawer ── */
+    .hs-toolbar {
+      display: flex; gap: 6px; padding: 8px 12px; flex-shrink: 0;
+      border-bottom: 0.5px solid var(--border); flex-wrap: wrap; align-items: center;
+    }
+    .hs-toolbar label { font-size: 12px; color: var(--text2); }
+    .hs-toolbar input[type=text] {
+      font-family: var(--mono); font-size: 12px; padding: 3px 8px;
+      border: 0.5px solid var(--border2); border-radius: 4px;
+      background: var(--bg); color: var(--text); flex: 1; min-width: 80px;
+    }
+    .hs-toolbar input[type=text]:focus { outline: none; border-color: var(--teal); }
+
+    .draw-area {
+      flex: 1; position: relative; overflow: hidden;
+      background: #111; display: flex; align-items: center; justify-content: center;
+      cursor: crosshair;
     }
 
-    /* ── Right panel ── */
-    .right-panel {
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
+    #draw-img {
+      max-width: 100%; max-height: 100%;
+      display: block; object-fit: contain;
+      pointer-events: none; user-select: none;
     }
 
-    .tabs {
-      display: flex;
-      border-bottom: 0.5px solid var(--border2);
-      padding: 0 12px;
+    #draw-img-placeholder {
+      color: rgba(255,255,255,0.2); text-align: center;
+      font-family: 'VT323', monospace; font-size: 15px; letter-spacing: 1px;
     }
 
+    /* SVG overlay for drawn hotspots */
+    #draw-svg {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+    }
+
+    .hs-list {
+      flex-shrink: 0; max-height: 160px; overflow-y: auto;
+      border-top: 0.5px solid var(--border); font-size: 12px;
+    }
+
+    .hs-item {
+      display: flex; align-items: center; gap: 6px;
+      padding: 5px 12px; border-bottom: 0.5px solid var(--border);
+      font-family: var(--mono); font-size: 11px; color: var(--text2);
+    }
+    .hs-item:hover { background: var(--surface); }
+    .hs-item .hs-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .hs-item .hs-coords { color: var(--text3); font-size: 10px; }
+    .hs-item .hs-del { cursor: pointer; color: var(--danger); padding: 0 4px; flex-shrink: 0; }
+    .hs-item .hs-del:hover { opacity: 0.7; }
+
+    .hs-empty { padding: 12px; color: var(--text3); font-size: 12px; font-style: italic; text-align: center; }
+
+    .copy-snippet-bar {
+      padding: 6px 12px; border-top: 0.5px solid var(--border); flex-shrink: 0;
+      display: flex; gap: 8px; align-items: center;
+    }
+    .snippet-out {
+      flex: 1; font-family: var(--mono); font-size: 10px; color: var(--text3);
+      background: var(--surface); border-radius: 4px; padding: 4px 8px;
+      overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+      border: 0.5px solid var(--border);
+    }
+
+    /* ── Col 3: Preview + code ── */
+    .tabs { display: flex; border-bottom: 0.5px solid var(--border2); padding: 0 10px; flex-shrink: 0; }
     .tab {
-      font-family: 'VT323', monospace;
-      font-size: 16px;
-      letter-spacing: 1px;
-      padding: 10px 14px 8px;
-      color: var(--text3);
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      background: none;
-      border-top: none;
-      border-left: none;
-      border-right: none;
-      transition: color 0.15s;
+      font-family: 'VT323', monospace; font-size: 15px; letter-spacing: 1px;
+      padding: 8px 12px 7px; color: var(--text3); cursor: pointer;
+      border-bottom: 2px solid transparent; background: none;
+      border-top: none; border-left: none; border-right: none;
     }
     .tab:hover { color: var(--text2); }
     .tab.active { color: var(--text); border-bottom-color: var(--teal); }
 
-    .tab-content {
-      flex: 1;
-      overflow: auto;
-      display: none;
-      position: relative;
-    }
-    .tab-content.active { display: flex; flex-direction: column; }
+    .tab-content { flex: 1; overflow: auto; display: none; flex-direction: column; }
+    .tab-content.active { display: flex; }
 
-    /* Tree preview */
-    #tree-canvas {
-      flex: 1;
-      overflow: auto;
-      padding: 20px;
-    }
+    #tree-canvas { flex: 1; overflow: auto; padding: 16px; }
+
     .tree-legend {
-      display: flex;
-      gap: 16px;
-      padding: 10px 16px;
-      font-size: 12px;
-      color: var(--text2);
+      display: flex; gap: 12px; padding: 8px 14px; flex-shrink: 0;
+      font-family: 'VT323', monospace; font-size: 12px; letter-spacing: 1px; color: var(--text3);
       border-top: 0.5px solid var(--border);
-      font-family: 'VT323', monospace;
-      letter-spacing: 1px;
     }
-    .legend-dot {
-      display: inline-block;
-      width: 10px; height: 10px;
-      border-radius: 2px;
-      margin-right: 4px;
-      vertical-align: middle;
-    }
+    .legend-dot { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 3px; vertical-align: middle; }
 
-    /* Code output */
     #code-out {
-      flex: 1;
-      font-family: var(--mono);
-      font-size: 12px;
-      line-height: 1.6;
-      padding: 16px;
-      overflow: auto;
-      white-space: pre;
-      color: var(--text);
-      background: var(--bg);
+      flex: 1; font-family: var(--mono); font-size: 11px; line-height: 1.6;
+      padding: 14px; overflow: auto; white-space: pre; color: var(--text); background: var(--bg);
     }
 
-    /* Cheatsheet */
-    #cheat-out {
-      flex: 1;
-      overflow: auto;
-      padding: 20px;
-      font-size: 15px;
-      line-height: 1.7;
-    }
-    .cheat-block {
-      background: var(--surface);
-      border: 0.5px solid var(--border2);
-      border-radius: var(--radius-md);
-      padding: 14px 18px;
-      margin-bottom: 14px;
-    }
-    .cheat-block h3 {
-      font-family: 'VT323', monospace;
-      font-size: 18px;
-      letter-spacing: 1px;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-    .cheat-block p { color: var(--text2); font-size: 14px; margin-bottom: 8px; }
-    .cheat-block pre {
-      font-family: var(--mono);
-      font-size: 12px;
-      background: var(--bg);
-      border-radius: 4px;
-      padding: 10px 12px;
-      overflow-x: auto;
-      color: var(--text);
-      border: 0.5px solid var(--border);
-      white-space: pre;
-    }
-    .pill {
-      display: inline-block;
-      font-family: var(--mono);
-      font-size: 11px;
-      padding: 2px 7px;
-      border-radius: 4px;
-      background: var(--surface2);
-      border: 0.5px solid var(--border2);
-      color: var(--text2);
-    }
+    #cheat-out { flex: 1; overflow: auto; padding: 16px; font-size: 14px; line-height: 1.7; }
+    .cheat-block { background: var(--surface); border: 0.5px solid var(--border2); border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 12px; }
+    .cheat-block h3 { font-family: 'VT323', monospace; font-size: 17px; letter-spacing: 1px; margin-bottom: 5px; }
+    .cheat-block p  { color: var(--text2); font-size: 13px; margin-bottom: 7px; }
+    .cheat-block pre { font-family: var(--mono); font-size: 11px; background: var(--bg); border-radius: 4px; padding: 9px 11px; overflow-x: auto; color: var(--text); border: 0.5px solid var(--border); white-space: pre; }
+    .pill { display: inline-block; font-family: var(--mono); font-size: 10px; padding: 1px 6px; border-radius: 4px; background: var(--surface2); border: 0.5px solid var(--border2); color: var(--text2); }
 
     .stats-bar {
-      display: flex;
-      gap: 20px;
-      padding: 8px 16px;
-      font-family: 'VT323', monospace;
-      font-size: 15px;
-      letter-spacing: 1px;
-      color: var(--text3);
+      display: flex; gap: 16px; padding: 6px 14px; flex-shrink: 0;
+      font-family: 'VT323', monospace; font-size: 14px; letter-spacing: 1px; color: var(--text3);
       border-bottom: 0.5px solid var(--border);
     }
-    .stat-val { color: var(--text); font-size: 17px; }
+    .stat-val { color: var(--text); font-size: 16px; }
   </style>
 </head>
 <body>
 
-  <!-- Top bar -->
-  <div class="topbar">
-    <span class="topbar-title">MAZE EDITOR</span>
-    <span class="topbar-sub">Edit maze.yaml → export maze.js → commit both</span>
-    <button class="btn" onclick="loadExample()">Load example</button>
-    <button class="btn" onclick="runUpdate()">Preview ↻</button>
-    <button class="btn primary" onclick="downloadJS()">Download maze.js ↓</button>
-  </div>
+<div class="topbar">
+  <span class="topbar-title">MAZE EDITOR</span>
+  <span class="topbar-sep">·</span>
+  <span class="topbar-sub">Edit YAML → draw hotspots → download maze.js</span>
+  <button class="btn" onclick="loadExample()">Load example</button>
+  <button class="btn primary" onclick="downloadJS()">Download maze.js ↓</button>
+</div>
 
-  <!-- Main -->
-  <div class="main">
+<div class="main">
 
-    <!-- Left: YAML editor -->
-    <div class="left-panel">
-      <div class="panel-header">
-        MAZE.YAML — your maze definition
-        <span style="margin-left:auto; font-size:12px;" id="char-count"></span>
-      </div>
-
-      <!-- Drag & drop loader -->
-      <div class="drop-zone" id="drop-zone"
-        ondragover="event.preventDefault(); this.classList.add('drag-over')"
-        ondragleave="this.classList.remove('drag-over')"
-        ondrop="handleDrop(event)"
-        onclick="document.getElementById('file-pick').click()">
-        <input type="file" id="file-pick" accept=".yaml,.yml,.txt" onchange="handleFilePick(event)" />
-        Drag & drop <strong>maze.yaml</strong> here, or click to load a file
-      </div>
-
-      <textarea id="yaml-in" spellcheck="false" placeholder="# Write your maze here in YAML format&#10;# See the Cheat Sheet tab for help&#10;&#10;text: Your opening scene..." oninput="onYamlInput()"></textarea>
-      <div class="error-bar" id="error-bar"></div>
+  <!-- ══════════════════════════════════
+       COL 1 · YAML Editor
+  ══════════════════════════════════ -->
+  <div class="col">
+    <div class="col-header">
+      1 · MAZE.YAML — write your scenes &amp; hotspots
+      <span id="char-count"></span>
     </div>
 
-    <!-- Right: tabs -->
-    <div class="right-panel">
-      <div class="tabs">
-        <button class="tab active" id="tab-tree"  onclick="switchTab('tree')">Tree Map</button>
-        <button class="tab"        id="tab-code"  onclick="switchTab('code')">JS Code</button>
-        <button class="tab"        id="tab-cheat" onclick="switchTab('cheat')">Cheat Sheet</button>
-      </div>
+    <div class="drop-zone" id="drop-zone"
+      ondragover="event.preventDefault();this.classList.add('drag-over')"
+      ondragleave="this.classList.remove('drag-over')"
+      ondrop="handleDrop(event)"
+      onclick="document.getElementById('file-pick').click()">
+      <input type="file" id="file-pick" accept=".yaml,.yml,.txt" onchange="handleFilePick(event)" />
+      Drag &amp; drop <strong>maze.yaml</strong> here, or click to load
+    </div>
 
-      <!-- Stats bar -->
-      <div class="stats-bar" id="stats-bar">
-        <span>Nodes: <span class="stat-val" id="stat-nodes">—</span></span>
-        <span>Dead ends: <span class="stat-val" id="stat-dead">—</span></span>
-        <span>Wins: <span class="stat-val" id="stat-wins">—</span></span>
-        <span>Max depth: <span class="stat-val" id="stat-depth">—</span></span>
-      </div>
+    <div class="editor-wrap">
+      <pre class="hl-layer" id="hl-layer" aria-hidden="true"></pre>
+      <textarea id="yaml-in" spellcheck="false"
+        placeholder="# Write your maze here&#10;# See the Cheat Sheet tab →&#10;&#10;text: Your opening scene..."
+        oninput="onYamlInput()"
+        onscroll="syncScroll()"
+        onkeydown="handleTabKey(event)"></textarea>
+    </div>
 
-      <!-- Tree tab -->
-      <div class="tab-content active" id="pane-tree">
-        <div id="tree-canvas"><p style="color:var(--text3);font-size:14px;padding:20px;">Start typing in the editor to see your tree map here.</p></div>
-        <div class="tree-legend">
-          <span><span class="legend-dot" style="background:#e1f5ee;border:1px solid #5DCAA5"></span>WIN</span>
-          <span><span class="legend-dot" style="background:#fcebeb;border:1px solid #e24b4a"></span>DEAD END</span>
-          <span><span class="legend-dot" style="background:var(--surface);border:1px solid var(--border2)"></span>SCENE</span>
+    <div class="error-bar" id="error-bar"></div>
+
+    <div class="editor-legend">
+      <div class="legend-swatch">
+        <div class="swatch-box" style="background:rgba(93,202,165,0.28)"></div>
+        hotspot block (teal, fades deeper)
+      </div>
+      <div class="legend-swatch">
+        <div class="swatch-box" style="background:rgba(175,169,236,0.28)"></div>
+        nested scene (purple)
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       COL 2 · Hotspot Drawer
+  ══════════════════════════════════ -->
+  <div class="col">
+    <div class="col-header">2 · HOTSPOT DRAWER — draw regions on your image</div>
+
+    <div class="hs-toolbar">
+      <label>Label:</label>
+      <input type="text" id="hs-label-input" placeholder="e.g. Sign in at the desk" />
+      <button class="btn" onclick="clearDrawnHotspots()">Clear all</button>
+    </div>
+
+    <!-- Image drop area + drawing canvas -->
+    <div class="draw-area" id="draw-area"
+      ondragover="event.preventDefault();document.getElementById('draw-area').style.outline='2px dashed #5DCAA5'"
+      ondragleave="document.getElementById('draw-area').style.outline=''"
+      ondrop="handleImgDrop(event)">
+
+      <div id="draw-img-placeholder">
+        Drop an image here to draw hotspots on it<br>
+        <span style="font-size:12px;opacity:0.5">any jpg / png / webp</span>
+      </div>
+      <img id="draw-img" src="" alt="" style="display:none" draggable="false" />
+      <svg id="draw-svg"></svg>
+    </div>
+
+    <!-- List of drawn hotspots -->
+    <div class="hs-list" id="hs-list">
+      <div class="hs-empty" id="hs-empty">Draw rectangles on the image above — each one becomes a hotspot.</div>
+    </div>
+
+    <!-- Snippet to copy into YAML -->
+    <div class="copy-snippet-bar">
+      <div class="snippet-out" id="snippet-out">— draw hotspots to generate YAML snippet —</div>
+      <button class="btn" onclick="copySnippet()">Copy YAML ↗</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       COL 3 · Preview / Code / Cheat
+  ══════════════════════════════════ -->
+  <div class="col">
+    <div class="tabs">
+      <button class="tab active" id="tab-tree"  onclick="switchTab('tree')">Tree Map</button>
+      <button class="tab"        id="tab-code"  onclick="switchTab('code')">JS Code</button>
+      <button class="tab"        id="tab-cheat" onclick="switchTab('cheat')">Cheat Sheet</button>
+    </div>
+
+    <div class="stats-bar">
+      <span>Nodes: <span class="stat-val" id="stat-nodes">—</span></span>
+      <span>Dead: <span class="stat-val" id="stat-dead">—</span></span>
+      <span>Wins: <span class="stat-val" id="stat-wins">—</span></span>
+      <span>Depth: <span class="stat-val" id="stat-depth">—</span></span>
+    </div>
+
+    <div class="tab-content active" id="pane-tree">
+      <div id="tree-canvas"><p style="color:var(--text3);font-size:13px;padding:16px;">Type in the YAML editor to see your tree here.</p></div>
+      <div class="tree-legend">
+        <span><span class="legend-dot" style="background:#e1f5ee;border:1px solid #5DCAA5"></span>WIN</span>
+        <span><span class="legend-dot" style="background:#fcebeb;border:1px solid #e24b4a"></span>DEAD</span>
+        <span><span class="legend-dot" style="background:var(--surface);border:1px solid var(--border2)"></span>SCENE</span>
+      </div>
+    </div>
+
+    <div class="tab-content" id="pane-code">
+      <div id="code-out">// Paste or type YAML on the left to generate code.</div>
+    </div>
+
+    <div class="tab-content" id="pane-cheat">
+      <div id="cheat-out">
+
+        <div class="cheat-block">
+          <h3>Basic scene with hotspots</h3>
+          <p>Every scene needs <span class="pill">text:</span>. Add <span class="pill">hotspots:</span> with a list of clickable areas.</p>
+          <pre>text: You enter the hallway.
+img: media/hallway.jpg
+
+hotspots:
+  - label: Open the red door
+    region: [12, 20, 25, 60]
+    next:
+      text: Behind the red door is a kitchen.
+      img: media/kitchen.jpg
+      hotspots:
+        - label: Open the fridge
+          region: [60, 15, 25, 70]
+          next:
+            text: Empty. You starve. Game over.
+            dead: true</pre>
         </div>
-      </div>
 
-      <!-- Code tab -->
-      <div class="tab-content" id="pane-code">
-        <div id="code-out">// Update the YAML on the left to generate code.</div>
-      </div>
+        <div class="cheat-block">
+          <h3>Region format</h3>
+          <p><span class="pill">region: [x, y, width, height]</span> — all values are <strong>percentages</strong> of the image size. Use the Hotspot Drawer in column 2 to generate these automatically.</p>
+          <pre>region: [10, 25, 40, 50]
+# x=10%  y=25%  w=40%  h=50%</pre>
+        </div>
 
-      <!-- Cheat sheet tab -->
-      <div class="tab-content" id="pane-cheat">
-        <div id="cheat-out">
+        <div class="cheat-block">
+          <h3>Dead end &amp; win</h3>
+          <p>Add <span class="pill">dead: true</span> or <span class="pill">win: true</span> to a scene — no hotspots needed. The <span class="pill">text:</span> becomes the outcome message.</p>
+          <pre>next:
+  text: You escape through the skylight!
+  win: true
 
-          <div class="cheat-block">
-            <h3>Basic scene</h3>
-            <p>Every scene needs a <span class="pill">text:</span> field. Add <span class="pill">left:</span> and/or <span class="pill">right:</span> to branch.</p>
-            <pre>text: You enter the hallway.
-
-left:
-  text: You go left into the kitchen.
-
-right:
-  text: You go right into the lounge.</pre>
-          </div>
-
-          <div class="cheat-block">
-            <h3>Dead end</h3>
-            <p>Add <span class="pill">dead: true</span> — no branches allowed. The <span class="pill">text:</span> becomes the failure message.</p>
-            <pre>left:
-  text: You fall into a trap. Game over.
+next:
+  text: The door was locked. Game over.
   dead: true</pre>
-          </div>
-
-          <div class="cheat-block">
-            <h3>Win condition</h3>
-            <p>Add <span class="pill">win: true</span> — no branches allowed. The <span class="pill">text:</span> becomes the success message.</p>
-            <pre>right:
-  text: You made it! Congratulations.
-  win: true</pre>
-          </div>
-
-          <div class="cheat-block">
-            <h3>Images</h3>
-            <p>Drop images in the <span class="pill">media/</span> folder. Reference them by filename.</p>
-            <pre>text: You enter the studio.
-img: media/studio.jpg
-leftImg: media/couch.jpg
-rightImg: media/hallway.jpg</pre>
-          </div>
-
-          <div class="cheat-block">
-            <h3>Disable one button</h3>
-            <p>Simply omit that branch — the button will appear greyed out.</p>
-            <pre>text: Dead end corridor — only one way out.
-right:
-  text: You escape through the window.</pre>
-          </div>
-
-          <div class="cheat-block">
-            <h3>The workflow</h3>
-            <p>1. Edit <span class="pill">maze.yaml</span> (here or in any text editor)<br>
-            2. Click <strong>Download maze.js</strong> in the top bar<br>
-            3. Drop the downloaded file into your project folder<br>
-            4. Commit both <span class="pill">maze.yaml</span> and <span class="pill">maze.js</span> to GitHub<br>
-            5. Open <span class="pill">game.html</span> to play!</p>
-          </div>
-
         </div>
-      </div>
 
+        <div class="cheat-block">
+          <h3>Hotspot Drawer workflow</h3>
+          <p>
+            1. Drop your image into the <strong>middle column</strong><br>
+            2. Type a label in the label box<br>
+            3. Click &amp; drag to draw a rectangle on the image<br>
+            4. Repeat for each hotspot<br>
+            5. Click <strong>Copy YAML</strong> to copy the hotspot block<br>
+            6. Paste it into the correct scene in the YAML editor
+          </p>
+        </div>
+
+        <div class="cheat-block">
+          <h3>Full workflow</h3>
+          <p>
+            1. Edit <span class="pill">maze.yaml</span> (here or in any text editor)<br>
+            2. Click <strong>Download maze.js</strong> in the top bar<br>
+            3. Replace <span class="pill">maze.js</span> in your project folder<br>
+            4. Commit both files to GitHub<br>
+            5. Open <span class="pill">game.html</span> to play!
+          </p>
+        </div>
+
+      </div>
     </div>
   </div>
+
+</div><!-- .main -->
 
 <script>
-  // ── Try to auto-load maze.yaml if running on a server ──────────────────────
-  (async () => {
-    try {
-      const r = await fetch('maze.yaml');
-      if (r.ok) {
-        const text = await r.text();
-        document.getElementById('yaml-in').value = text;
-        runUpdate();
-      }
-    } catch(e) { /* running locally — that's fine */ }
-  })();
+// ════════════════════════════════════════════════════════════
+//  AUTO-LOAD maze.yaml (works when served via http/github pages)
+// ════════════════════════════════════════════════════════════
+(async () => {
+  try {
+    const r = await fetch('maze.yaml');
+    if (r.ok) { document.getElementById('yaml-in').value = await r.text(); runUpdate(); }
+  } catch(e) {}
+})();
 
-  // ── File loading ────────────────────────────────────────────────────────────
-  function handleDrop(e) {
-    e.preventDefault();
-    document.getElementById('drop-zone').classList.remove('drag-over');
-    const file = e.dataTransfer.files[0];
-    if (file) readFile(file);
-  }
-  function handleFilePick(e) {
-    const file = e.target.files[0];
-    if (file) readFile(file);
-  }
-  function readFile(file) {
-    const r = new FileReader();
-    r.onload = ev => {
-      document.getElementById('yaml-in').value = ev.target.result;
-      runUpdate();
-    };
-    r.readAsText(file);
-  }
-  function loadExample() {
-    document.getElementById('yaml-in').value = EXAMPLE;
-    runUpdate();
-  }
+// ════════════════════════════════════════════════════════════
+//  FILE LOADING (YAML)
+// ════════════════════════════════════════════════════════════
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('drag-over');
+  readYAMLFile(e.dataTransfer.files[0]);
+}
+function handleFilePick(e) { readYAMLFile(e.target.files[0]); }
+function readYAMLFile(file) {
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => { document.getElementById('yaml-in').value = ev.target.result; runUpdate(); };
+  r.readAsText(file);
+}
+function loadExample() { document.getElementById('yaml-in').value = EXAMPLE; runUpdate(); }
 
-  // ── YAML → tree ─────────────────────────────────────────────────────────────
-  function yamlToTree(node) {
-    if (!node || typeof node !== 'object') return null;
-    const out = {
-      icon: node.icon || '',
-      img: node.img || '',
-      leftImg: node.leftImg || '',
-      rightImg: node.rightImg || '',
-      text: node.text || ''
-    };
-    if (node.dead) { out.dead = true; out.deathText = node.text || ''; }
-    if (node.win)  { out.win  = true; out.winText   = node.text || ''; }
-    if (node.left)  out.left  = yamlToTree(node.left);
-    if (node.right) out.right = yamlToTree(node.right);
-    return out;
-  }
+// ════════════════════════════════════════════════════════════
+//  TAB KEY → 2 SPACES
+// ════════════════════════════════════════════════════════════
+function handleTabKey(e) {
+  if (e.key !== 'Tab') return;
+  e.preventDefault();
+  const ta = e.target, s = ta.selectionStart, end = ta.selectionEnd;
+  ta.value = ta.value.slice(0, s) + '  ' + ta.value.slice(end);
+  ta.selectionStart = ta.selectionEnd = s + 2;
+  onYamlInput();
+}
 
-  function treeToJS(node, indent) {
-    const pad   = '  '.repeat(indent);
-    const inner = '  '.repeat(indent + 1);
-    const lines = ['{'];
-    lines.push(`${inner}icon: ${JSON.stringify(node.icon||'')}, img: ${JSON.stringify(node.img||'')}, leftImg: ${JSON.stringify(node.leftImg||'')}, rightImg: ${JSON.stringify(node.rightImg||'')},`);
-    lines.push(`${inner}text: ${JSON.stringify(node.text||'')},`);
-    if (node.dead) lines.push(`${inner}dead: true, deathText: ${JSON.stringify(node.deathText||'')},`);
-    if (node.win)  lines.push(`${inner}win: true, winText: ${JSON.stringify(node.winText||'')},`);
-    if (node.left)  lines.push(`${inner}left: ${treeToJS(node.left,  indent+1)},`);
-    if (node.right) lines.push(`${inner}right: ${treeToJS(node.right, indent+1)},`);
-    lines.push(`${pad}}`);
-    return lines.join('\n');
-  }
+// ════════════════════════════════════════════════════════════
+//  SCROLL SYNC
+// ════════════════════════════════════════════════════════════
+function syncScroll() {
+  const ta = document.getElementById('yaml-in');
+  const hl = document.getElementById('hl-layer');
+  hl.scrollTop = ta.scrollTop; hl.scrollLeft = ta.scrollLeft;
+}
 
-  // ── Stats ───────────────────────────────────────────────────────────────────
-  function walkStats(n, depth) {
-    if (!n) return { nodes:0, dead:0, wins:0, maxDepth: depth };
-    const l = walkStats(n.left,  depth+1);
-    const r = walkStats(n.right, depth+1);
-    return {
-      nodes:    1 + l.nodes + r.nodes,
-      dead:     (n.dead?1:0) + l.dead + r.dead,
-      wins:     (n.win?1:0)  + l.wins + r.wins,
-      maxDepth: Math.max(depth, l.maxDepth, r.maxDepth)
-    };
-  }
+// ════════════════════════════════════════════════════════════
+//  SYNTAX HIGHLIGHTING
+//  Colors by YAML keyword context:
+//    hotspots:  block → teal
+//    label:     → warm orange
+//    region:    → blue-ish
+//    next:      block → purple
+//    dead/win   → red/green
+//    text/img   → subtle
+// ════════════════════════════════════════════════════════════
+function buildHighlight(text) {
+  const lines = text.split('\n');
+  const stack = []; // { indent, hue }
+  const TEAL   = '93,202,165';
+  const PURPLE = '175,169,236';
+  const RED    = '163,45,45';
+  const GREEN  = '15,110,86';
+  const parts  = [];
 
-  // ── SVG tree ─────────────────────────────────────────────────────────────────
-  function buildSVG(node) {
-    const NW=140, NH=40, HG=18, VG=60;
-    let counter = 0;
+  lines.forEach(line => {
+    const trimmed = line.trimStart();
+    const indent  = line.length - trimmed.length;
 
-    function assignX(n, depth) {
-      if (!n) return null;
-      const left  = assignX(n.left,  depth+1);
-      const right = assignX(n.right, depth+1);
-      let x;
-      if (!left && !right) { x = counter * (NW + HG); counter++; }
-      else if (!left)  x = right.x;
-      else if (!right) x = left.x;
-      else x = (left.x + right.x) / 2;
-      return { node: n, x, y: depth * (NH + VG), left, right };
+    // Pop stack entries shallower or equal
+    while (stack.length && stack[stack.length-1].indent >= indent) stack.pop();
+
+    const branch = stack.length ? stack[stack.length-1] : null;
+
+    // Push new branch contexts
+    if (/^hotspots\s*:/.test(trimmed))  stack.push({ indent, hue: 'teal' });
+    else if (/^next\s*:/.test(trimmed)) stack.push({ indent, hue: 'purple' });
+
+    let bg = 'transparent';
+
+    if (!trimmed || /^\s*#/.test(line)) {
+      bg = 'transparent';
+    } else if (/dead\s*:\s*true/.test(trimmed)) {
+      bg = `rgba(${RED},0.13)`;
+    } else if (/win\s*:\s*true/.test(trimmed)) {
+      bg = `rgba(${GREEN},0.10)`;
+    } else if (/^-\s+label\s*:/.test(trimmed) || /^label\s*:/.test(trimmed)) {
+      bg = 'rgba(220,170,80,0.10)';
+    } else if (/^region\s*:/.test(trimmed)) {
+      bg = 'rgba(100,160,230,0.10)';
+    } else if (branch) {
+      const localDepth = (indent - branch.indent) / 2;
+      const opacity    = Math.max(0.26 - localDepth * 0.035, 0.04);
+      const rgb        = branch.hue === 'teal' ? TEAL : PURPLE;
+      bg = `rgba(${rgb},${opacity.toFixed(2)})`;
     }
 
-    const laid = assignX(node, 0);
-    function allN(n) { return n ? [n, ...allN(n.left), ...allN(n.right)] : []; }
-    const nodes = allN(laid);
-    const minX  = Math.min(...nodes.map(n=>n.x));
-    const maxX  = Math.max(...nodes.map(n=>n.x));
-    const maxY  = Math.max(...nodes.map(n=>n.y));
-    const svgW  = maxX - minX + NW + 30;
-    const svgH  = maxY + NH + 30;
-    const ox    = -minX + 15;
+    let border = 'transparent';
+    if (branch && bg !== 'transparent') {
+      const rgb = branch.hue === 'teal' ? TEAL : PURPLE;
+      border = `rgba(${rgb},0.45)`;
+    }
 
-    const parts = [];
+    const safe  = (line || ' ').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const style = `display:block;background:${bg};border-left:3px solid ${border};padding-left:${border==='transparent'?'3':'0'}px`;
+    parts.push(`<span style="${style}">${safe}</span>`);
+  });
 
-    function drawEdges(n) {
-      if (!n) return;
-      const px = n.x + ox + NW/2, py = n.y + NH;
-      if (n.left) {
-        const cx = n.left.x + ox + NW/2, cy = n.left.y;
-        parts.push(`<line x1="${px}" y1="${py}" x2="${cx}" y2="${cy}" stroke="#aaa" stroke-width="1.2"/>`);
+  return parts.join('');
+}
+
+function applyHighlight() {
+  const text = document.getElementById('yaml-in').value;
+  document.getElementById('hl-layer').innerHTML = buildHighlight(text);
+  syncScroll();
+  document.getElementById('char-count').textContent = text.length + ' chars';
+}
+
+// ════════════════════════════════════════════════════════════
+//  YAML → TREE
+// ════════════════════════════════════════════════════════════
+function yamlToTree(node) {
+  if (!node || typeof node !== 'object') return null;
+  const out = { text: node.text || '', img: node.img || '' };
+  if (node.dead) { out.dead = true; out.deathText = node.text || ''; }
+  if (node.win)  { out.win  = true; out.winText   = node.text || ''; }
+  if (Array.isArray(node.hotspots)) {
+    out.hotspots = node.hotspots.map(hs => ({
+      label:  hs.label  || '',
+      region: hs.region || [0,0,10,10],
+      next:   yamlToTree(hs.next)
+    })).filter(hs => hs.next);
+  }
+  return out;
+}
+
+function treeToJS(node, indent) {
+  const p  = '  '.repeat(indent);
+  const pi = '  '.repeat(indent+1);
+  const lines = ['{'];
+  lines.push(`${pi}text: ${JSON.stringify(node.text||'')},`);
+  if (node.img) lines.push(`${pi}img: ${JSON.stringify(node.img)},`);
+  if (node.dead) lines.push(`${pi}dead: true, deathText: ${JSON.stringify(node.deathText||'')},`);
+  if (node.win)  lines.push(`${pi}win: true, winText: ${JSON.stringify(node.winText||'')},`);
+  if (node.hotspots && node.hotspots.length) {
+    lines.push(`${pi}hotspots: [`);
+    node.hotspots.forEach(hs => {
+      const hpi = '  '.repeat(indent+2);
+      lines.push(`${hpi}{`);
+      lines.push(`${'  '.repeat(indent+3)}label: ${JSON.stringify(hs.label)},`);
+      lines.push(`${'  '.repeat(indent+3)}region: [${hs.region.join(', ')}],`);
+      lines.push(`${'  '.repeat(indent+3)}next: ${treeToJS(hs.next, indent+3)},`);
+      lines.push(`${hpi}},`);
+    });
+    lines.push(`${pi}],`);
+  }
+  lines.push(`${p}}`);
+  return lines.join('\n');
+}
+
+// ════════════════════════════════════════════════════════════
+//  STATS
+// ════════════════════════════════════════════════════════════
+function walkStats(n, d) {
+  if (!n) return { nodes:0, dead:0, wins:0, maxDepth:d };
+  const sub = (n.hotspots||[]).map(hs => walkStats(hs.next, d+1));
+  return {
+    nodes:    1 + sub.reduce((a,s)=>a+s.nodes,0),
+    dead:     (n.dead?1:0) + sub.reduce((a,s)=>a+s.dead,0),
+    wins:     (n.win?1:0)  + sub.reduce((a,s)=>a+s.wins,0),
+    maxDepth: sub.reduce((a,s)=>Math.max(a,s.maxDepth), d)
+  };
+}
+
+// ════════════════════════════════════════════════════════════
+//  SVG TREE MAP
+// ════════════════════════════════════════════════════════════
+function buildSVG(node) {
+  const NW=130, NH=38, HG=14, VG=56;
+  let counter = 0;
+
+  function assignX(n, depth) {
+    if (!n) return null;
+    const children = (n.hotspots||[]).map(hs => assignX(hs.next, depth+1)).filter(Boolean);
+    let x;
+    if (!children.length) { x = counter*(NW+HG); counter++; }
+    else x = (children[0].x + children[children.length-1].x) / 2;
+    return { node: n, x, y: depth*(NH+VG), children };
+  }
+
+  const laid = assignX(node, 0);
+  function allN(n) { return n ? [n, ...n.children.flatMap(c=>allN(c))] : []; }
+  const nodes = allN(laid);
+  if (!nodes.length) return '<p style="color:var(--text3);font-size:13px;">Nothing to show yet.</p>';
+  const minX = Math.min(...nodes.map(n=>n.x));
+  const maxX = Math.max(...nodes.map(n=>n.x));
+  const maxY = Math.max(...nodes.map(n=>n.y));
+  const svgW = maxX-minX+NW+28;
+  const svgH = maxY+NH+22;
+  const ox   = -minX+14;
+  const parts = [];
+
+  function drawEdges(n) {
+    const px=n.x+ox+NW/2, py=n.y+NH;
+    n.children.forEach((c,i) => {
+      const cx=c.x+ox+NW/2, cy=c.y;
+      const hs = n.node.hotspots?.[i];
+      parts.push(`<line x1="${px}" y1="${py}" x2="${cx}" y2="${cy}" stroke="rgba(93,202,165,0.4)" stroke-width="1.2"/>`);
+      if (hs) {
+        const lbl = (hs.label||'').slice(0,14);
         const mx=(px+cx)/2, my=(py+cy)/2;
-        parts.push(`<text x="${mx-8}" y="${my+4}" font-size="10" fill="#aaa" font-family="monospace">L</text>`);
-        drawEdges(n.left);
+        parts.push(`<text x="${mx}" y="${my}" text-anchor="middle" font-size="9" fill="rgba(93,202,165,0.8)" font-family="monospace">${lbl.replace(/&/g,'&amp;')}</text>`);
       }
-      if (n.right) {
-        const cx = n.right.x + ox + NW/2, cy = n.right.y;
-        parts.push(`<line x1="${px}" y1="${py}" x2="${cx}" y2="${cy}" stroke="#aaa" stroke-width="1.2"/>`);
-        const mx=(px+cx)/2, my=(py+cy)/2;
-        parts.push(`<text x="${mx+4}" y="${my+4}" font-size="10" fill="#aaa" font-family="monospace">R</text>`);
-        drawEdges(n.right);
-      }
-    }
-
-    function drawNodes(n) {
-      if (!n) return;
-      const x = n.x + ox, y = n.y;
-      let fill, stroke, tFill;
-      if (n.node.dead)      { fill='#fcebeb'; stroke='#e24b4a'; tFill='#a32d2d'; }
-      else if (n.node.win)  { fill='#e1f5ee'; stroke='#5DCAA5'; tFill='#0f6e56'; }
-      else                   { fill='var(--surface,#eeeae1)'; stroke='rgba(0,0,0,0.22)'; tFill='var(--text,#1a1814)'; }
-      const raw   = n.node.text || '(start)';
-      const label = raw.length > 20 ? raw.slice(0, 18) + '…' : raw;
-      parts.push(`<rect x="${x}" y="${y}" width="${NW}" height="${NH}" rx="6" fill="${fill}" stroke="${stroke}" stroke-width="0.8"/>`);
-      parts.push(`<text x="${x+NW/2}" y="${y+NH/2+4}" text-anchor="middle" font-size="10.5" fill="${tFill}" font-family="'Crimson Pro',serif">${label.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</text>`);
-      drawNodes(n.left);
-      drawNodes(n.right);
-    }
-
-    drawEdges(laid);
-    drawNodes(laid);
-
-    return `<svg viewBox="0 0 ${svgW} ${svgH}" width="${svgW}" height="${svgH}" style="max-width:100%;display:block">${parts.join('')}</svg>`;
-  }
-
-  // ── Main update ──────────────────────────────────────────────────────────────
-  let lastJS = '';
-
-  function runUpdate() {
-    const raw = document.getElementById('yaml-in').value.trim();
-    const errBar = document.getElementById('error-bar');
-    errBar.style.display = 'none';
-    document.getElementById('char-count').textContent = raw.length + ' chars';
-
-    if (!raw) return;
-
-    let parsed, tree;
-    try {
-      parsed = jsyaml.load(raw);
-      tree   = yamlToTree(parsed);
-    } catch(e) {
-      errBar.style.display = 'block';
-      errBar.textContent   = '⚠ ' + e.message;
-      return;
-    }
-
-    // Stats
-    const s = walkStats(tree, 0);
-    document.getElementById('stat-nodes').textContent = s.nodes;
-    document.getElementById('stat-dead').textContent  = s.dead;
-    document.getElementById('stat-wins').textContent  = s.wins;
-    document.getElementById('stat-depth').textContent = s.maxDepth;
-
-    // Tree
-    document.getElementById('tree-canvas').innerHTML = buildSVG(tree);
-
-    // Code
-    const header = `// AUTO-GENERATED by editor.html — do not edit by hand\n// Edit maze.yaml instead, then re-export.\n\n`;
-    lastJS = header + `const tree = ${treeToJS(tree, 0)};`;
-    document.getElementById('code-out').textContent = lastJS;
-  }
-
-  function onYamlInput() {
-    clearTimeout(onYamlInput._t);
-    onYamlInput._t = setTimeout(runUpdate, 600);
-    document.getElementById('char-count').textContent = document.getElementById('yaml-in').value.length + ' chars';
-  }
-
-  // ── Download ─────────────────────────────────────────────────────────────────
-  function downloadJS() {
-    if (!lastJS) { runUpdate(); }
-    if (!lastJS) return;
-    const blob = new Blob([lastJS], { type: 'application/javascript' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'maze.js';
-    a.click();
-  }
-
-  // ── Tabs ─────────────────────────────────────────────────────────────────────
-  function switchTab(t) {
-    ['tree','code','cheat'].forEach(id => {
-      document.getElementById('tab-'+id).className  = 'tab' + (id===t?' active':'');
-      document.getElementById('pane-'+id).className = 'tab-content' + (id===t?' active':'');
+      drawEdges(c);
     });
   }
 
-  // ── Example ──────────────────────────────────────────────────────────────────
-  const EXAMPLE = `text: Welcome to Ethos Studio
+  function drawNodes(n) {
+    const x=n.x+ox, y=n.y;
+    let fill, stroke, tFill;
+    if (n.node.dead)     { fill='#fcebeb'; stroke='#e24b4a'; tFill='#a32d2d'; }
+    else if (n.node.win) { fill='#e1f5ee'; stroke='#5DCAA5'; tFill='#0f6e56'; }
+    else                  { fill='var(--surface,#eeeae1)'; stroke='rgba(0,0,0,0.2)'; tFill='var(--text,#1a1814)'; }
+    const raw = n.node.text || '(start)';
+    const lbl = raw.length>20 ? raw.slice(0,18)+'…' : raw;
+    parts.push(`<rect x="${x}" y="${y}" width="${NW}" height="${NH}" rx="5" fill="${fill}" stroke="${stroke}" stroke-width="0.8"/>`);
+    parts.push(`<text x="${x+NW/2}" y="${y+NH/2+4}" text-anchor="middle" font-size="10" fill="${tFill}" font-family="'Crimson Pro',serif">${lbl.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</text>`);
+    n.children.forEach(c=>drawNodes(c));
+  }
+
+  drawEdges(laid); drawNodes(laid);
+  return `<svg viewBox="0 0 ${svgW} ${svgH}" width="${svgW}" height="${svgH}" style="max-width:100%;display:block">${parts.join('')}</svg>`;
+}
+
+// ════════════════════════════════════════════════════════════
+//  MAIN UPDATE
+// ════════════════════════════════════════════════════════════
+let lastJS = '', updateTimer = null;
+
+function runUpdate() {
+  applyHighlight();
+  const raw    = document.getElementById('yaml-in').value.trim();
+  const errBar = document.getElementById('error-bar');
+  errBar.style.display = 'none';
+  if (!raw) return;
+
+  let tree;
+  try { tree = yamlToTree(jsyaml.load(raw)); }
+  catch(e) { errBar.style.display='block'; errBar.textContent='⚠ '+e.message; return; }
+
+  const s = walkStats(tree, 0);
+  document.getElementById('stat-nodes').textContent = s.nodes;
+  document.getElementById('stat-dead').textContent  = s.dead;
+  document.getElementById('stat-wins').textContent  = s.wins;
+  document.getElementById('stat-depth').textContent = s.maxDepth;
+
+  document.getElementById('tree-canvas').innerHTML = buildSVG(tree);
+
+  const header = '// AUTO-GENERATED by editor.html — do not edit by hand.\n// Edit maze.yaml instead, then re-export.\n\n';
+  lastJS = header + `const tree = ${treeToJS(tree, 0)};`;
+  document.getElementById('code-out').textContent = lastJS;
+}
+
+function onYamlInput() {
+  applyHighlight();
+  clearTimeout(updateTimer);
+  updateTimer = setTimeout(runUpdate, 500);
+}
+
+// ════════════════════════════════════════════════════════════
+//  DOWNLOAD
+// ════════════════════════════════════════════════════════════
+function downloadJS() {
+  if (!lastJS) runUpdate();
+  if (!lastJS) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([lastJS], { type: 'application/javascript' }));
+  a.download = 'maze.js'; a.click();
+}
+
+// ════════════════════════════════════════════════════════════
+//  TABS
+// ════════════════════════════════════════════════════════════
+function switchTab(t) {
+  ['tree','code','cheat'].forEach(id => {
+    document.getElementById('tab-'+id).className  = 'tab'+(id===t?' active':'');
+    document.getElementById('pane-'+id).className = 'tab-content'+(id===t?' active':'');
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+//  HOTSPOT DRAWER
+// ════════════════════════════════════════════════════════════
+let drawnHotspots = [];
+let drawState     = null; // { startX, startY, rect }
+let imgNaturalW   = 1, imgNaturalH = 1;
+let imgDisplayX   = 0, imgDisplayY = 0, imgDisplayW = 1, imgDisplayH = 1;
+
+const COLORS = [
+  'rgba(93,202,165,0.75)',
+  'rgba(175,169,236,0.75)',
+  'rgba(240,180,80,0.75)',
+  'rgba(240,120,120,0.75)',
+  'rgba(100,180,240,0.75)',
+];
+
+function handleImgDrop(e) {
+  e.preventDefault();
+  document.getElementById('draw-area').style.outline = '';
+  const file = Array.from(e.dataTransfer.files).find(f => f.type.startsWith('image/'));
+  if (!file) return;
+  loadDrawImage(URL.createObjectURL(file));
+}
+
+function loadDrawImage(src) {
+  const img = document.getElementById('draw-img');
+  const ph  = document.getElementById('draw-img-placeholder');
+  img.onload = () => {
+    imgNaturalW = img.naturalWidth;
+    imgNaturalH = img.naturalHeight;
+    img.style.display = 'block';
+    ph.style.display  = 'none';
+    updateImgBounds();
+  };
+  img.src = src;
+}
+
+function updateImgBounds() {
+  const img  = document.getElementById('draw-img');
+  const area = document.getElementById('draw-area');
+  if (!img.naturalWidth) return;
+  const ar  = area.getBoundingClientRect();
+  const iAR = img.naturalWidth / img.naturalHeight;
+  const bAR = ar.width / ar.height;
+  if (iAR > bAR) {
+    imgDisplayW = ar.width; imgDisplayH = ar.width / iAR;
+    imgDisplayX = 0;        imgDisplayY = (ar.height - imgDisplayH) / 2;
+  } else {
+    imgDisplayH = ar.height; imgDisplayW = ar.height * iAR;
+    imgDisplayY = 0;         imgDisplayX = (ar.width - imgDisplayW) / 2;
+  }
+  redrawSVG();
+}
+
+// Mouse drawing
+const drawArea = document.getElementById('draw-area');
+
+drawArea.addEventListener('mousedown', e => {
+  if (!document.getElementById('draw-img').naturalWidth) return;
+  updateImgBounds();
+  const ar = drawArea.getBoundingClientRect();
+  const mx = e.clientX - ar.left;
+  const my = e.clientY - ar.top;
+  // Only start if within image bounds
+  if (mx < imgDisplayX || mx > imgDisplayX+imgDisplayW ||
+      my < imgDisplayY || my > imgDisplayY+imgDisplayH) return;
+
+  const svg  = document.getElementById('draw-svg');
+  const rect  = document.createElementNS('http://www.w3.org/2000/svg','rect');
+  const color = COLORS[drawnHotspots.length % COLORS.length];
+  rect.setAttribute('fill',   color.replace('0.75','0.18'));
+  rect.setAttribute('stroke', color);
+  rect.setAttribute('stroke-width','1.5');
+  rect.setAttribute('rx','2');
+  svg.appendChild(rect);
+
+  drawState = { startX: mx, startY: my, rect, color };
+  e.preventDefault();
+});
+
+window.addEventListener('mousemove', e => {
+  if (!drawState) return;
+  const ar  = drawArea.getBoundingClientRect();
+  const mx  = Math.min(Math.max(e.clientX - ar.left, imgDisplayX), imgDisplayX+imgDisplayW);
+  const my  = Math.min(Math.max(e.clientY - ar.top,  imgDisplayY), imgDisplayY+imgDisplayH);
+  const x   = Math.min(drawState.startX, mx);
+  const y   = Math.min(drawState.startY, my);
+  const w   = Math.abs(mx - drawState.startX);
+  const h   = Math.abs(my - drawState.startY);
+  drawState.rect.setAttribute('x', x);
+  drawState.rect.setAttribute('y', y);
+  drawState.rect.setAttribute('width',  w);
+  drawState.rect.setAttribute('height', h);
+});
+
+window.addEventListener('mouseup', e => {
+  if (!drawState) return;
+  const ar   = drawArea.getBoundingClientRect();
+  const mx   = Math.min(Math.max(e.clientX - ar.left, imgDisplayX), imgDisplayX+imgDisplayW);
+  const my   = Math.min(Math.max(e.clientY - ar.top,  imgDisplayY), imgDisplayY+imgDisplayH);
+  const rawX = Math.min(drawState.startX, mx);
+  const rawY = Math.min(drawState.startY, my);
+  const rawW = Math.abs(mx - drawState.startX);
+  const rawH = Math.abs(my - drawState.startY);
+
+  // Too small — ignore
+  if (rawW < 6 || rawH < 6) {
+    drawState.rect.remove();
+    drawState = null;
+    return;
+  }
+
+  // Convert to % of image
+  const pxPct = v => Math.round((v / imgDisplayW) * 100);
+  const pyPct = v => Math.round((v / imgDisplayH) * 100);
+  const px = pxPct(rawX - imgDisplayX);
+  const py = pyPct(rawY - imgDisplayY);
+  const pw = pxPct(rawW);
+  const ph = pyPct(rawH);
+
+  const label = document.getElementById('hs-label-input').value.trim() || `Hotspot ${drawnHotspots.length + 1}`;
+  drawnHotspots.push({ label, region: [px, py, pw, ph], rect: drawState.rect, color: drawState.color });
+  drawState = null;
+
+  renderHotspotList();
+  updateSnippet();
+});
+
+function redrawSVG() {
+  const svg  = document.getElementById('draw-svg');
+  const area = document.getElementById('draw-area');
+  const ar   = area.getBoundingClientRect();
+  svg.setAttribute('viewBox', `0 0 ${ar.width} ${ar.height}`);
+  svg.setAttribute('width',  ar.width);
+  svg.setAttribute('height', ar.height);
+  // Re-position existing rects based on current img bounds
+  drawnHotspots.forEach(hs => {
+    const x = imgDisplayX + (hs.region[0] / 100) * imgDisplayW;
+    const y = imgDisplayY + (hs.region[1] / 100) * imgDisplayH;
+    const w = (hs.region[2] / 100) * imgDisplayW;
+    const h = (hs.region[3] / 100) * imgDisplayH;
+    hs.rect.setAttribute('x', x); hs.rect.setAttribute('y', y);
+    hs.rect.setAttribute('width', w); hs.rect.setAttribute('height', h);
+  });
+}
+
+window.addEventListener('resize', () => { updateImgBounds(); });
+
+function renderHotspotList() {
+  const list  = document.getElementById('hs-list');
+  const empty = document.getElementById('hs-empty');
+
+  if (!drawnHotspots.length) {
+    empty.style.display = 'block';
+    // Remove all items except empty
+    [...list.querySelectorAll('.hs-item')].forEach(el=>el.remove());
+    return;
+  }
+  empty.style.display = 'none';
+  [...list.querySelectorAll('.hs-item')].forEach(el=>el.remove());
+
+  drawnHotspots.forEach((hs, i) => {
+    const div = document.createElement('div');
+    div.className = 'hs-item';
+    div.innerHTML = `
+      <span class="hs-label" title="${hs.label}">${hs.label}</span>
+      <span class="hs-coords">[${hs.region.join(', ')}]</span>
+      <span class="hs-del" onclick="deleteHotspot(${i})" title="Delete">✕</span>`;
+    list.appendChild(div);
+  });
+}
+
+function deleteHotspot(i) {
+  drawnHotspots[i].rect.remove();
+  drawnHotspots.splice(i, 1);
+  renderHotspotList();
+  updateSnippet();
+}
+
+function clearDrawnHotspots() {
+  drawnHotspots.forEach(hs => hs.rect.remove());
+  drawnHotspots = [];
+  renderHotspotList();
+  updateSnippet();
+}
+
+function updateSnippet() {
+  const snip = document.getElementById('snippet-out');
+  if (!drawnHotspots.length) {
+    snip.textContent = '— draw hotspots to generate YAML snippet —';
+    return;
+  }
+  const yaml = buildHotspotYAML(drawnHotspots);
+  snip.textContent = yaml.split('\n')[0] + ' …';
+  snip._full = yaml;
+}
+
+function buildHotspotYAML(hotspots) {
+  return hotspots.map(hs =>
+    `  - label: ${hs.label}\n    region: [${hs.region.join(', ')}]\n    next:\n      text: (describe this scene)\n      img: media/your-image.jpg\n`
+  ).join('');
+}
+
+function copySnippet() {
+  const snip = document.getElementById('snippet-out');
+  const text = snip._full || snip.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-snippet-bar .btn');
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = orig, 1500);
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+//  EXAMPLE YAML
+// ════════════════════════════════════════════════════════════
+const EXAMPLE = `text: Welcome to Ethos Studio. The lobby stretches out in front of you.
 img: media/entry.jpg
-leftImg: media/couch.jpg
-rightImg: media/entry.jpg
 
-left:
-  text: You sit on the couch — it's too comfy! You miss your color session.
-  dead: true
-
-right:
-  text: You sign in with Bones and put in your coffee order. Just in time for KB!
-
-  left:
-    text: This is the Bathroom.
-    left:
-      text: You stay too long. Someone cranks the Sonos full volume. You're knocked out.
+hotspots:
+  - label: Sit on the couch
+    region: [4, 52, 38, 40]
+    next:
+      text: It's way too comfortable. You lose track of time entirely. You miss your session.
+      img: media/couch.jpg
       dead: true
-    right:
-      text: You're in the hallway — where now?
-      left:
-        text: You're in Sam's suite — he has clients in session right now.
-        left:
-          text: Okay, you can stay — but you've missed your color session with KB.
-          dead: true
-        right:
-          text: You're back in the hallway.
-          left:
-            text: You're in Ryan's suite.
-            left:
-              text: You talk espresso machines until 6pm. No session, but great foam technique.
-              dead: true
-            right:
-              text: You're in the hallway.
-              left:
-                text: You turn into assist alley. They consume your life force.
-                dead: true
-          right:
-            text: You made it to KB's suite! Time to color.
-            win: true
 
-  right:
-    text: You're in Dante's suite.
-    left:
-      text: You try to make Lucy acknowledge you. You never leave.
-      dead: true
-    right:
-      text: You're back in the hallway.
-      right:
-        text: You made it to KB's suite! Time to color.
-        win: true`;
+  - label: Sign in at the desk
+    region: [58, 28, 36, 44]
+    next:
+      text: You sign in with Bones and order a coffee. KB is ready — which way?
+      img: media/desk.jpg
+
+      hotspots:
+        - label: Take the left hallway
+          region: [2, 20, 22, 70]
+          next:
+            text: You step into the bathroom. Quiet in here.
+            img: media/bathroom.jpg
+
+            hotspots:
+              - label: Linger a while
+                region: [10, 30, 35, 50]
+                next:
+                  text: Someone cranks the Sonos full volume. Vibrations knock you out. You miss everything.
+                  dead: true
+
+              - label: Head back to the hallway
+                region: [55, 35, 35, 50]
+                next:
+                  text: Back in the hallway. Three doors ahead.
+                  img: media/hallway.jpg
+
+                  hotspots:
+                    - label: KB's suite
+                      region: [38, 20, 28, 60]
+                      next:
+                        text: You made it to KB's suite! Time to color.
+                        img: media/kb.jpg
+                        win: true
+
+        - label: Dante's suite
+          region: [74, 28, 22, 50]
+          next:
+            text: You're in Dante's suite. Lucy ignores you.
+            img: media/dante.jpg
+
+            hotspots:
+              - label: Try to get Lucy's attention
+                region: [30, 55, 40, 35]
+                next:
+                  text: She never acknowledges you. You never leave.
+                  dead: true
+
+              - label: Head back out
+                region: [5, 30, 18, 50]
+                next:
+                  text: Back in the hallway. KB's suite is just ahead.
+                  img: media/hallway.jpg
+
+                  hotspots:
+                    - label: KB's suite
+                      region: [38, 20, 28, 60]
+                      next:
+                        text: You made it to KB's suite! Time to color.
+                        win: true`;
 </script>
 </body>
 </html>
