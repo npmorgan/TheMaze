@@ -19,8 +19,6 @@
       --text3: #999490;
       --danger: #a32d2d;
       --success: #0f6e56;
-      --teal: #5DCAA5;
-      --purple: #AFA9EC;
       --radius-md: 8px;
       --radius-lg: 12px;
     }
@@ -41,9 +39,7 @@
     }
 
     body {
-      /* background-image: url('media/uni3bac.jpg');
-      background-repeat: repeat; /* This makes the image tile */
-      background-color: var(--bg); /* Fallback for browsers that don't support images */
+      background-color: var(--bg);
       color: var(--text);
       font-family: 'Crimson Pro', serif;
       min-height: 100vh;
@@ -78,16 +74,21 @@
       align-items: center;
       gap: 4px;
       font-family: 'VT323', monospace;
-      font-size: 15px;
+      font-size: 14px;
       color: var(--text3);
       margin-bottom: 1rem;
       flex-wrap: wrap;
       min-height: 26px;
     }
 
-    .crumb { background: var(--surface); border: 0.5px solid var(--border); border-radius: 4px; padding: 2px 8px; }
-    .crumb.L { border-bottom: 2px solid var(--teal); color: #1D9E75; }
-    .crumb.R { border-bottom: 2px solid var(--purple); color: #7F77DD; }
+    .crumb {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 8px;
+    }
+
+    .crumb-sep { color: var(--text3); font-size: 12px; }
 
     /* Scene card */
     .scene-box {
@@ -107,67 +108,83 @@
       top: 14px;
       right: 16px;
       letter-spacing: 1px;
-      z-index: 2;
+      z-index: 4;
       background: var(--surface);
       padding: 0 4px;
       border-radius: 3px;
     }
 
-    /* Scene image */
+    /* Image + hotspot layer */
+    .scene-img-wrap {
+      width: 100%;
+      height: 62vh;
+      overflow: hidden;
+      position: relative;
+      background: #1a1814;
+    }
 
-    
-   /* .scene-img-wrap { width: 100%; height: 600px; overflow: hidden; } */
-    .scene-img-wrap { width: 100%; height: 60vh;  overflow: hidden; }
-    .scene-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .scene-img-wrap .img-placeholder {
+    .scene-img-wrap img {
       width: 100%; height: 100%;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
-      border-bottom: 0.5px dashed var(--border2);
-      color: var(--text3);
+      object-fit: cover; display: block;
+    }
+
+    .img-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 10px;
+      color: #5a5650;
       font-family: 'VT323', monospace; font-size: 15px; letter-spacing: 1px;
     }
-    .scene-img-wrap .img-placeholder svg { opacity: 0.35; }
 
-    /* Scene body */
+    .img-placeholder svg { opacity: 0.3; }
+
+    /* Hotspot SVG — sits over the image, % coords via viewBox */
+    #hotspot-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+
+    /* Floating label tooltip */
+    #hs-tooltip {
+      position: absolute;
+      z-index: 5;
+      font-family: 'VT323', monospace;
+      font-size: 17px;
+      letter-spacing: 1px;
+      background: rgba(10, 8, 6, 0.88);
+      color: #f0ece3;
+      padding: 4px 14px 5px;
+      border-radius: 4px;
+      pointer-events: none;
+      white-space: nowrap;
+      transform: translate(-50%, calc(-100% - 10px));
+      display: none;
+      border: 0.5px solid rgba(255,255,255,0.12);
+    }
+
+    /* "hover to explore" hint fades after first interaction */
+    #hs-hint {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'VT323', monospace;
+      font-size: 14px;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.28);
+      z-index: 3;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    /* Scene text */
     .scene-body { padding: 1.25rem 1.75rem 1.75rem; }
-    .scene-icon { font-size: 32px; display: block; margin-bottom: 8px; }
     .scene-text { font-size: 19px; line-height: 1.65; color: var(--text); }
     .scene-text.dead { color: var(--danger); font-style: italic; }
     .scene-text.win  { color: var(--success); }
-
-    /* Buttons */
-    .btn-row { display: flex; gap: 12px; margin-bottom: 1rem; }
-
-    .dir-btn {
-      flex: 1; padding: 0;
-      font-family: 'VT323', monospace; letter-spacing: 2px;
-      border: 0.5px solid var(--border2);
-      border-radius: var(--radius-md);
-      background: var(--bg); color: var(--text);
-      cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
-      overflow: hidden;
-      display: flex; flex-direction: column;
-    }
-    .dir-btn:hover  { background: var(--surface2); }
-    .dir-btn:active { transform: scale(0.97); }
-    .dir-btn.left-btn  { border-left: 3px solid var(--teal); }
-    .dir-btn.right-btn { border-right: 3px solid var(--purple); }
-    .dir-btn:disabled  { opacity: 0.35; cursor: not-allowed; }
-
-    /* Button image */
-    .btn-img-wrap { width: 100%; height: 110px; overflow: hidden; flex-shrink: 0; }
-    .btn-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .btn-img-wrap .img-placeholder {
-      width: 100%; height: 100%;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
-      border-bottom: 0.5px dashed var(--border2);
-      color: var(--text3);
-      font-family: 'VT323', monospace; font-size: 13px; letter-spacing: 1px;
-    }
-    .btn-img-wrap .img-placeholder svg { opacity: 0.3; }
-
-    .btn-label { font-size: 22px; padding: 14px 16px; display: block; text-align: center; }
 
     .restart-btn {
       width: 100%; padding: 12px;
@@ -178,7 +195,6 @@
     }
     .restart-btn:hover { background: var(--surface); color: var(--text); }
 
-    .hidden { display: none !important; }
     .fade-in { animation: fi 0.3s ease; }
     @keyframes fi { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   </style>
@@ -186,247 +202,180 @@
 <body>
   <div class="maze-wrap">
     <div class="maze-header">Get to the Session!</div>
-    <div class="maze-sub">Navigate the studio.</div>
+    <div class="maze-sub">Click on what you see.</div>
 
     <div class="breadcrumb" id="breadcrumb"></div>
 
     <div class="scene-box fade-in" id="scene-box">
       <span class="scene-depth" id="depth-label">DEPTH 0</span>
 
-      <!-- SCENE IMAGE: set img: "your-file.jpg" on the node to fill this -->
       <div class="scene-img-wrap" id="scene-img-wrap">
+        <!-- Image -->
         <div class="img-placeholder" id="scene-placeholder">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
             <polyline points="21 15 16 10 5 21"/>
           </svg>
-          YOUR SCENE IMAGE
+          SCENE IMAGE
         </div>
         <img id="scene-img" src="" alt="scene" style="display:none;" />
+
+        <!-- Hotspot overlay — viewBox 0 0 100 100 maps to % of image -->
+        <svg id="hotspot-svg"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          style="pointer-events:none;"></svg>
+
+        <!-- Tooltip -->
+        <div id="hs-tooltip"></div>
+
+        <!-- Subtle hover hint -->
+        <div id="hs-hint">hover to explore</div>
       </div>
 
       <div class="scene-body">
-        <span class="scene-icon" id="scene-icon"></span>
         <div class="scene-text" id="scene-text"></div>
       </div>
-    </div>
-
-    <div class="btn-row" id="choice-row">
-      <button class="dir-btn left-btn" id="btn-left" onclick="go('left')">
-        <!-- LEFT BUTTON IMAGE: set leftImg: "your-file.jpg" on the node to fill this -->
-        <div class="btn-img-wrap">
-          <div class="img-placeholder" id="left-placeholder">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
-              <polyline points="21 15 16 10 5 21"/>
-            </svg>
-            LEFT IMAGE
-          </div>
-          <img id="left-img" src="" alt="left path" style="display:none;" />
-        </div>
-        <span class="btn-label">← LEFT</span>
-      </button>
-
-      <button class="dir-btn right-btn" id="btn-right" onclick="go('right')">
-        <!-- RIGHT BUTTON IMAGE: set rightImg: "your-file.jpg" on the node to fill this -->
-        <div class="btn-img-wrap">
-          <div class="img-placeholder" id="right-placeholder">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
-              <polyline points="21 15 16 10 5 21"/>
-            </svg>
-            RIGHT IMAGE
-          </div>
-          <img id="right-img" src="" alt="right path" style="display:none;" />
-        </div>
-        <span class="btn-label">RIGHT →</span>
-      </button>
     </div>
 
     <button class="restart-btn" onclick="restart()">↺ START OVER</button>
   </div>
 
+  <!-- Tree data — regenerate maze.js from editor.html when you update maze.yaml -->
+  <script src="maze.js"></script>
+
   <script>
-    /*
-    ═══════════════════════════════════════════════════════════════
-      HOW TO ADD IMAGES
-    ═══════════════════════════════════════════════════════════════
-
-      Each node supports three optional image fields:
-
-        img      → big image shown in the scene card
-        leftImg  → image shown on the LEFT button
-        rightImg → image shown on the RIGHT button
-
-      Set any of them to a file path or URL, for example:
-        img:      "images/castle.jpg"
-        leftImg:  "images/torch-corridor.jpg"
-        rightImg: "images/foggy-path.jpg"
-
-      Leave a field out (or set it to "") to show the placeholder.
-      All image fields are optional — the game works fine without any.
-
-      Tip: create an "images/" folder next to this HTML file and
-      drop your images in there, then reference them as shown above.
-    ═══════════════════════════════════════════════════════════════
-    */
-const tree = {
-  icon: '', img: 'media/entry.jpg', leftImg: 'media/couch.jpg', rightImg: 'media/entry.jpg',
-  text: "welcome to the studio",
-  left: {
-    icon: '', img: 'media/couch.jpg', leftImg: 'media/couch.jpg', rightImg: 'media/entry.jpg',
-    text: "You sit on the couch - and it's too comfy! You lose track of time, and you miss your color session.",
-    dead: true,
-    deathText: "You sit on the couch - and it's too comfy! You lose track of time, and you miss your color session."
-  },
-  right: {
-    icon: '', img: '', leftImg: '', rightImg: '',
-    text: "You sign in with Bones and put in your coffee order. Just in time for your session with KB!",
-    left: {
-      icon: '', img: '', leftImg: '', rightImg: '',
-      text: "This is the Bathroom",
-      left: {
-        icon: '', img: '', leftImg: '', rightImg: '',
-        text: "You decide to stay a while, but someone suddenly turns on the Sonos speaker full volume and the vibrations knock you out. You miss your color session.",
-        dead: true,
-        deathText: "You decide to stay a while, but someone suddenly turns on the Sonos speaker full volume and the vibrations knock you out. You miss your color session."
-      },
-      right: {
-        icon: '', img: '', leftImg: '', rightImg: '',
-        text: "You're in the hallway - where now?",
-        left: {
-          icon: '', img: '', leftImg: '', rightImg: '',
-          text: "You're in Sam's suite - but he has clients in session right now. You're kind of interrupting.",
-          left: {
-            icon: '', img: '', leftImg: '', rightImg: '',
-            text: "Okay... I guess you can stay, but you've missed your color session with KB.",
-            dead: true,
-            deathText: "Okay... I guess you can stay, but you've missed your color session with KB."
-          },
-          right: {
-            icon: '', img: '', leftImg: '', rightImg: '',
-            text: "You're back in the hallway",
-            left: {
-              icon: '', img: '', leftImg: '', rightImg: '',
-              text: "You're in Ryan's suite",
-              left: {
-                icon: '', img: '', leftImg: '', rightImg: '',
-                text: "You guys start talking about espresso machines and suddenly it's 6:00 - you miss your session, but you now know how to make latte foam.",
-                dead: true,
-                deathText: "You guys start talking about espresso machines and suddenly it's 6:00 - you miss your session, but you now know how to make latte foam."
-              },
-              right: {
-                icon: '', img: '', leftImg: '', rightImg: '',
-                text: "You're in the Hallway",
-                left: {
-                  icon: '', img: '', leftImg: '', rightImg: '',
-                  text: "You turn left into assist alley - they attack and consume your life force.",
-                  dead: true,
-                  deathText: "You turn left into assist alley - they attack and consume your life force."
-                }
-              }
-            },
-            right: {
-              icon: '', img: '', leftImg: '', rightImg: '',
-              text: "You made it to KB's suite! Time to color.",
-              win: true,
-              winText: "You made it to KB's suite! Time to color."
-            }
-          }
-        }
-      }
-    },
-    right: {  // Dante's suite
-      icon: '', img: '', leftImg: '', rightImg: '',
-      text: "You're in Dante's suite",
-      left: {
-        icon: '', img: '', leftImg: '', rightImg: '',
-        text: "You decide to stay until you can make Lucy acknowledge you. You never leave.",
-        dead: true,
-        deathText: "You decide to stay until you can make Lucy acknowledge you. You never leave."
-      },
-      right: {
-        icon: '', img: '', leftImg: '', rightImg: '',
-        text: "You're back in the hallway",
-        right: {
-          icon: '', img: '', leftImg: '', rightImg: '',
-          text: "You made it to KB's suite! Time to color.",
-          win: true,
-          winText: "You made it to KB's suite! Time to color."
-        }
-      }
-    }
-  }
-};
-
     let current = tree;
-    let path = [];
-
-    function setImg(imgEl, placeholderEl, src) {
-      if (src) {
-        imgEl.src = src;
-        imgEl.style.display = 'block';
-        placeholderEl.style.display = 'none';
-      } else {
-        imgEl.src = '';
-        imgEl.style.display = 'none';
-        placeholderEl.style.display = 'flex';
-      }
-    }
+    let path    = [];
+    let hinted  = false;
 
     function render() {
+      // Fade animation
       const box = document.getElementById('scene-box');
       box.classList.remove('fade-in');
       void box.offsetWidth;
       box.classList.add('fade-in');
 
-      document.getElementById('scene-icon').textContent = current.icon;
       document.getElementById('depth-label').textContent = 'DEPTH ' + path.length;
 
-      setImg(
-        document.getElementById('scene-img'),
-        document.getElementById('scene-placeholder'),
-        current.img || ""
-      );
-
-      const st  = document.getElementById('scene-text');
-      const row = document.getElementById('choice-row');
-
-      if (current.dead) {
-        st.className = 'scene-text dead';
-        st.textContent = '💀 ' + current.deathText;
-        row.classList.add('hidden');
-      } else if (current.win) {
-        st.className = 'scene-text win';
-        st.textContent = '✨ ' + current.winText;
-        row.classList.add('hidden');
+      // Image
+      const img         = document.getElementById('scene-img');
+      const placeholder = document.getElementById('scene-placeholder');
+      if (current.img) {
+        img.src            = current.img;
+        img.style.display  = 'block';
+        placeholder.style.display = 'none';
       } else {
-        st.className = 'scene-text';
-        st.textContent = current.text;
-        row.classList.remove('hidden');
-        document.getElementById('btn-left').disabled  = !current.left;
-        document.getElementById('btn-right').disabled = !current.right;
-        setImg(document.getElementById('left-img'),  document.getElementById('left-placeholder'),  current.leftImg  || "");
-        setImg(document.getElementById('right-img'), document.getElementById('right-placeholder'), current.rightImg || "");
+        img.style.display  = 'none';
+        placeholder.style.display = 'flex';
       }
 
+      // Text
+      const st = document.getElementById('scene-text');
+      if (current.dead) {
+        st.className  = 'scene-text dead';
+        st.textContent = '💀 ' + (current.deathText || current.text);
+      } else if (current.win) {
+        st.className  = 'scene-text win';
+        st.textContent = '✨ ' + (current.winText || current.text);
+      } else {
+        st.className  = 'scene-text';
+        st.textContent = current.text;
+      }
+
+      // Hotspots
+      buildHotspots();
+
+      // Breadcrumb
       const bc = document.getElementById('breadcrumb');
       bc.innerHTML = path.length
-        ? path.map(d => `<span class="crumb ${d}">${d === 'L' ? '← L' : 'R →'}</span>`).join(' ')
+        ? path.map(p => `<span class="crumb">${p}</span>`).join('<span class="crumb-sep"> › </span>')
         : '';
     }
 
-    function go(dir) {
-      const next = dir === 'left' ? current.left : current.right;
-      if (!next) return;
-      path.push(dir === 'left' ? 'L' : 'R');
-      current = next;
-      render();
+    function buildHotspots() {
+      const svg     = document.getElementById('hotspot-svg');
+      const tooltip = document.getElementById('hs-tooltip');
+      const hint    = document.getElementById('hs-hint');
+      svg.innerHTML = '';
+      tooltip.style.display = 'none';
+
+      const hotspots = (current.hotspots || []).filter(hs => hs.next);
+
+      if (current.dead || current.win || hotspots.length === 0) {
+        svg.style.pointerEvents = 'none';
+        hint.style.opacity = '0';
+        return;
+      }
+
+      svg.style.pointerEvents = 'all';
+      hint.style.opacity = hinted ? '0' : '1';
+
+      hotspots.forEach(hs => {
+        const [x, y, w, h] = hs.region;
+
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.style.cursor = 'pointer';
+
+        // Hit rect
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttribute('x', x);
+        rect.setAttribute('y', y);
+        rect.setAttribute('width', w);
+        rect.setAttribute('height', h);
+        rect.setAttribute('rx', '0.6');
+        rect.setAttribute('fill', 'rgba(255,255,255,0)');
+        rect.setAttribute('stroke', 'rgba(255,255,255,0)');
+        rect.setAttribute('stroke-width', '0.4');
+        rect.style.transition = 'fill 0.12s, stroke 0.12s';
+
+        g.appendChild(rect);
+        svg.appendChild(g);
+
+        g.addEventListener('mouseenter', e => {
+          rect.setAttribute('fill', 'rgba(255,255,255,0.09)');
+          rect.setAttribute('stroke', 'rgba(255,255,255,0.52)');
+          hint.style.opacity = '0';
+          hinted = true;
+          tooltip.textContent   = hs.label;
+          tooltip.style.display = 'block';
+          moveTooltip(e);
+        });
+
+        g.addEventListener('mousemove', moveTooltip);
+
+        g.addEventListener('mouseleave', () => {
+          rect.setAttribute('fill', 'rgba(255,255,255,0)');
+          rect.setAttribute('stroke', 'rgba(255,255,255,0)');
+          tooltip.style.display = 'none';
+        });
+
+        g.addEventListener('click', () => {
+          tooltip.style.display = 'none';
+          path.push(hs.label.length > 16 ? hs.label.slice(0, 14) + '…' : hs.label);
+          current = hs.next;
+          render();
+        });
+      });
+    }
+
+    function moveTooltip(e) {
+      const tooltip = document.getElementById('hs-tooltip');
+      const wrap    = document.getElementById('scene-img-wrap');
+      const r       = wrap.getBoundingClientRect();
+      const x       = e.clientX - r.left;
+      const y       = e.clientY - r.top;
+
+      // Keep within horizontal bounds
+      tooltip.style.left = Math.min(Math.max(x, 60), r.width - 60) + 'px';
+      tooltip.style.top  = y + 'px';
     }
 
     function restart() {
       current = tree;
-      path = [];
+      path    = [];
+      hinted  = false;
       render();
     }
 
