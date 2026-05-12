@@ -160,64 +160,49 @@ const tree = {
   img: 'media/IMG_0183.PNG',
   hotspots: [
     {
-      label: 'Investigate',
+      label: 'investigate',
       region: [30, 30, 40, 40],
       next: {
-        text: 'goblin runs',
-        img: 'media/IMG_0187.PNG',
+        text: 'Who is that?',
+        img: 'media/IMG_0184.PNG',
         hotspots: [
           {
-            label: 'Dark Hall',
-            region: [5, 20, 40, 60],
+            label: 'Who is that?',
+            region: [20, 30, 60, 25],
             next: {
-              text: 'torch',
-              img: 'media/torch.jpg',
+              text: 'A Goblin!',
+              img: 'media/IMG_0185.PNG',
               hotspots: [
                 {
                   label: 'Continue',
-                  region: [30, 40, 40, 30],
+                  region: [30, 50, 40, 30],
                   next: {
-                    text: 'illuminated room',
-                    img: 'media/illuminated-room.jpg',
+                    text: 'They have stolen your babys gender!',
+                    img: 'media/IMG_0186.PNG',
                     hotspots: [
                       {
-                        label: 'ladder',
-                        region: [10, 20, 30, 60],
+                        label: 'Get them!',
+                        region: [5, 20, 40, 60],
                         next: {
-                          text: 'Mouse party room',
-                          img: 'media/mouse-party.jpg',
+                          text: 'torch',
+                          img: 'media/torch.jpg',
                           hotspots: [
                             {
-                              label: 'Back to illuminated room',
-                              region: [30, 70, 40, 20],
-                              next: null,
+                              label: 'Continue',
+                              region: [30, 40, 40, 30],
+                              next: illuminatedRoom,
                             },
                           ],
                         },
                       },
                       {
-                        label: 'doorway',
-                        region: [60, 20, 30, 60],
+                        label: "don't chase",
+                        region: [55, 20, 40, 60],
                         next: {
-                          text: 'creature holding goblin snack',
-                          img: 'media/creature-snack.jpg',
-                          hotspots: [
-                            {
-                              label: 'closeup on goblin snack',
-                              region: [30, 30, 40, 40],
-                              next: {
-                                text: 'take goblin snack',
-                                img: 'media/take-snack.jpg',
-                                hotspots: [
-                                  {
-                                    label: 'doorway',
-                                    region: [30, 40, 40, 30],
-                                    next: wizardRoom,
-                                  },
-                                ],
-                              },
-                            },
-                          ],
+                          text: "don't chase",
+                          img: 'media/dont-chase.jpg',
+                          dead: true,
+                          deathText: "don't chase",
                         },
                       },
                     ],
@@ -226,26 +211,8 @@ const tree = {
               ],
             },
           },
-          {
-            label: "don't chase",
-            region: [55, 20, 40, 60],
-            next: {
-              text: "don't chase",
-              img: 'media/dont-chase.jpg',
-              dead: true,
-              deathText: "don't chase",
-            },
-          },
         ],
       },
     },
   ],
 };
-
-const illuminatedRoom =
-  tree.hotspots[0]
-    .next.hotspots[0]
-    .next.hotspots[0]
-    .next;
-
-illuminatedRoom.hotspots[0].next.hotspots[0].next = illuminatedRoom;
