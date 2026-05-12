@@ -157,14 +157,14 @@ wizardRoom.hotspots[1].next = wizardRoom;
 
 const tree = {
   text: 'Start: Cupcake',
-  img: 'media/cupcake.jpg',
+  img: 'media/IMG_0183.PNG',
   hotspots: [
     {
-      label: 'goblin in cupcake',
+      label: 'Investigate',
       region: [30, 30, 40, 40],
       next: {
         text: 'goblin runs',
-        img: 'media/goblin-runs.jpg',
+        img: 'media/IMG_0187.PNG',
         hotspots: [
           {
             label: 'Dark Hall',
