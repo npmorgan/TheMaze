@@ -1,27 +1,27 @@
 const wizardRoom = {
   text: 'Wizard room',
-  img: 'media/wizard-room.jpg',
+  img: 'media/IMG_0198.PNG',
   hotspots: [
     {
       label: 'Read spell book',
       region: [20, 20, 40, 50],
       next: {
         text: "wizard appears\nHey! don't touch my stuff",
-        img: 'media/wizard-appears.jpg',
+        img: 'media/IMG_0201_1.PNG',
         hotspots: [
           {
             label: 'Continue',
             region: [30, 40, 40, 30],
             next: {
               text: "oh wow it’s the two headed nonbinary wizard. they’re famous in this part of town",
-              img: 'media/two-headed-wizard.jpg',
+              img: 'media/IMG_0201_2.PNG',
               hotspots: [
                 {
                   label: 'Continue',
                   region: [30, 40, 40, 30],
                   next: {
                     text: "wizard\ndon't worry about it. everybody makes mistakes. anyways what can I help you with?",
-                    img: 'media/wizard-help.jpg',
+                    img: 'media/media/IMG_0204_1.PNG',
                     hotspots: [
                       {
                         label: "ignore the irony of asking this two headed nonbinary wizard for help finding your baby’s gender?",
