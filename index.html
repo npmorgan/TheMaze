@@ -399,10 +399,11 @@
     }
 
 function buildHotspots() {
-  const svg     = document.getElementById('hotspot-svg');
+  const oldSvg  = document.getElementById('hotspot-svg');
+  const svg     = oldSvg.cloneNode(false);   // fresh copy, no listeners, no children
+  oldSvg.replaceWith(svg);
   const tooltip = document.getElementById('hs-tooltip');
   const hint    = document.getElementById('hs-hint');
-  svg.innerHTML = '';
   tooltip.style.display = 'none';
 
   const hotspots = (current.hotspots || []).filter(hs => hs.next);
