@@ -370,7 +370,7 @@ const takeGoblinSnack = {
 
 const snackCloseup = {
   text: 'does that say goblin snack? hmm that could be useful',
-  img: 'media/img_0195.PNG', // TODO
+  img: 'media/IMG_0195.PNG', // TODO
   hotspots: [
     { label: 'take goblin snack', region: [63, 14, 23, 31], next: takeGoblinSnack },
   ],
@@ -381,7 +381,7 @@ const snackCloseup = {
 
 const creatureSnack = {
   text: 'oh hi little guy. whatcha got there?',
-  img: 'media/img_0194.PNG', // TODO
+  img: 'media/IMG_0194.PNG', // TODO
   hotspots: [
     { label: 'Look closer', region: [18, 16, 41, 59], next: snackCloseup },
   ],
@@ -392,7 +392,7 @@ const creatureSnack = {
 
 const mouseParty = {
   text: 'oops looks like theres a mouse party in here better head back',
-  img: 'media/img_0193.PNG', // TODO
+  img: 'media/IMG_0193.PNG', // TODO
   hotspots: [
     { label: 'Leave', region: [2, 0, 98, 100], next: null }, // ← wired below
   ],
@@ -404,7 +404,7 @@ const mouseParty = {
 
 const illuminatedRoom = {
   text: 'Illuminated room',
-  img: 'media/img_0192.PNG', // TODO
+  img: 'media/IMG_0192.PNG', // TODO
   hotspots: [
     { label: 'ladder',  region: [72, 0, 16, 82], next: mouseParty },        // G
     { label: 'doorway', region: [12, 20, 26, 54], next: creatureSnack },  // n1
