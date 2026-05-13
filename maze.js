@@ -239,7 +239,7 @@ const wizardRoom = {
 };
 
 // Wire wizard closet back to wizard room (n9 → J)
-wizardRoom.hotspots[1].next = wizardRoom;
+//wizardRoom.hotspots[1].next = wizardRoom;
 
 
 // ── n8: doorway → wizard room ─────────────────────────────────────────────────
