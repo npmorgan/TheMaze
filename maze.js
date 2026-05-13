@@ -334,13 +334,15 @@ const illuminatedRoom = {
 mouseParty.hotspots[0].next = illuminatedRoom;
 
 
+
+
 // ── n4: torch → D ────────────────────────────────────────────────────────────
 
 const torchScene = {
-  text: 'torch',
+  text: 'you got a torch',
   img: 'media/torch.jpg',
   hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: illuminatedRoom },
+    { label: 'fumble around', region: [30, 40, 40, 30], next: illuminatedRoom },
   ],
 };
 
@@ -348,24 +350,24 @@ const torchScene = {
 // ── n3: Dark Hall → n4 ───────────────────────────────────────────────────────
 
 const darkHall = {
-  text: 'Dark Hall',
-  img: 'media/dark-hall.jpg', // TODO
+  text: 'whoa this hallway is pretty dark and creepy',
+  img: 'media/IMG_0188.PNG',
   hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: torchScene },
+    { label: 'find some light', region: [30, 40, 40, 30], next: torchScene },
   ],
 };
 
 
 // ── C: goblin runs ────────────────────────────────────────────────────────────
 
-const goblinRuns = {
-  text: 'goblin runs',
-  img: 'media/goblin-runs.jpg', // TODO
-  hotspots: [
-    { label: 'Chase into the Dark Hall', region: [5, 20, 40, 60],  next: darkHall },      // n3
-    { label: "don't chase",              region: [55, 20, 40, 60], next: dontChaseDead }, // n5
-  ],
-};
+// const goblinRuns = {
+//  text: 'goblin runs',
+//  img: 'media/goblin-runs.jpg', // TODO
+//  hotspots: [
+//    { label: 'Chase into the Dark Hall', region: [5, 20, 40, 60],  next: darkHall },      // n3
+//    { label: "don't chase",              region: [55, 20, 40, 60], next: dontChaseDead }, // n5
+//  ],
+//};
 
 
 // ── n22: Get it! → C ─────────────────────────────────────────────────────────
@@ -374,7 +376,7 @@ const getItScene = {
   text: 'dang that goblin just stole your babys gender are you gonna let him get away with that?',
   img: 'media/IMG_0187.PNG',
   hotspots: [
-    { label: 'heck no', region: [30, 40, 40, 30], next: goblinRuns },
+    { label: 'heck no', region: [30, 40, 40, 30], next: darkHall },
   ],
 };
 
