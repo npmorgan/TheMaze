@@ -121,24 +121,34 @@ const wizardWait = {
 // ── S: goblin speech → T ──────────────────────────────────────────────────────
 
 const goblinSpeech = {
-  text: "goblin inside cabinet\nLOL I'll never hand over the gender. that is, unless you have any goblin snacks?",
-  img: 'media/goblin-cabinet.jpg',
+  text: "omg get a load of this guy",
+  img: 'media/IMG_0213.PNG',
   hotspots: [
     { label: 'Continue', region: [30, 40, 40, 30], next: wizardWait },
   ],
 };
 
-
+const goblinCabinet2 = {
+  text: 'Hey! There he is - hand over the gender, freak!',
+  img: 'media/IMG_0212.PNG',
+  hotspots: [
+    {
+      label: "there's some rustling coming from this cabinet",
+      region: [10, 20, 80, 30],
+      next: goblinSpeech,
+    },
+  ],
+};
 // ── R: goblin inside cabinet → S ──────────────────────────────────────────────
 
 const goblinCabinet = {
-  text: 'goblin inside cabinet',
-  img: 'media/goblin-cabinet.jpg',
+  text: 'theres some rustling coming from this cabinet',
+  img: 'media/IMG_0211.PNG',
   hotspots: [
     {
-      label: "goblin inside cabinet\nLOL I'll never hand over the gender. that is, unless you have any goblin snacks?",
+      label: "check it out",
       region: [10, 20, 80, 30],
-      next: goblinSpeech,
+      next: goblinCabinet2,
     },
   ],
 };
@@ -147,8 +157,8 @@ const goblinCabinet = {
 // ── P: cats eating a big fish → kitchen (wired below) ────────────────────────
 
 const catsFish = {
-  text: 'cats eating a big fish',
-  img: 'media/cats-fish.jpg',
+  text: 'thats pretty cute but lets not get distracted',
+  img: 'media/IMG_0210.PNG',
   hotspots: [
     { label: 'Back to kitchen', region: [30, 70, 40, 20], next: null }, // ← wired below
   ],
@@ -159,7 +169,7 @@ const catsFish = {
 
 const kitchen = {
   text: 'kitchen',
-  img: 'media/kitchen.jpg',
+  img: 'media/IMG_0209.PNG',
   hotspots: [
     { label: 'Look in fridge', region: [5, 20, 40, 60],  next: catsFish },      // O → P
     { label: 'Open cabinet',   region: [55, 20, 35, 60], next: goblinCabinet }, // Q → R
@@ -174,18 +184,18 @@ catsFish.hotspots[0].next = kitchen;
 
 const trapDoor = {
   text: 'jump down trap door',
-  img: 'media/trap-door.jpg',
+  img: 'media/IMG_0208.PNG',
   hotspots: [
     { label: 'Go to kitchen', region: [30, 40, 40, 30], next: kitchen },
   ],
 };
 
 const wizardHelp3 = {
-  text: "wizard\ndon't worry about it. everybody makes mistakes. anyways what can I help you with?",
-  img: 'media/IMG_0204_1.PNG',
+  text: "",
+  img: 'media/IMG_0207.PNG',
   hotspots: [
     {
-      label: "ignore the irony of asking this two headed nonbinary wizard for help finding your baby's gender?",
+      label: "continue",
       region: [10, 20, 80, 30],
       next: trapDoor,      // n11 → N
     },
@@ -194,11 +204,11 @@ const wizardHelp3 = {
 
 
 const wizardHelp2 = {
-  text: "wizard\ndon't worry about it. everybody makes mistakes. anyways what can I help you with?",
-  img: 'media/IMG_0204_1.PNG',
+  text: "",
+  img: 'media/IMG_0204_2.PNG',
   hotspots: [
     {
-      label: "ignore the irony of asking this two headed nonbinary wizard for help finding your baby's gender?",
+      label: "continue",
       region: [10, 20, 80, 30],
       next: wizardHelp3,      // n11 → N
     },
@@ -209,7 +219,7 @@ const wizardHelp2 = {
 
 // n10: wizard — what can I help you with?
 const wizardHelp = {
-  text: "wizard\ndon't worry about it. everybody makes mistakes. anyways what can I help you with?",
+  text: "",
   img: 'media/IMG_0204_1.PNG',
   hotspots: [
     {
