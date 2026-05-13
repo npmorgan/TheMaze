@@ -416,10 +416,8 @@ function buildHotspots() {
   svg.style.pointerEvents = 'all';
   hint.style.opacity = hinted ? '0' : '1';
 
-  // Build rects — mouse events stay per-hotspot, touch is handled at SVG level
   hotspots.forEach(hs => {
     const [x, y, w, h] = hs.region;
-
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     g.style.cursor = 'pointer';
 
@@ -432,7 +430,6 @@ function buildHotspots() {
     rect.setAttribute('fill', 'rgba(255,255,255,0)');
     rect.setAttribute('stroke', 'rgba(255,255,255,0)');
     rect.setAttribute('stroke-width', '0.0');
-    rect.style.transition = 'fill 0.12s, stroke 0.12s';
 
     g.appendChild(rect);
     svg.appendChild(g);
@@ -444,31 +441,20 @@ function buildHotspots() {
       tooltip.style.display = 'block';
       moveTooltip(e);
     });
-
     g.addEventListener('mousemove', moveTooltip);
-
-    g.addEventListener('mouseleave', () => {
-      tooltip.style.display = 'none';
-    });
-
-    g.addEventListener('click', () => {
-      tooltip.style.display = 'none';
-      navigateTo(hs);
-    });
+    g.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+    g.addEventListener('click', () => { tooltip.style.display = 'none'; navigateTo(hs); });
   });
 
-  // ── Touch: drag-to-explore, lift-to-activate ──────────────────────────────
-  // All touch events live on the SVG so the finger can roam freely across
-  // hotspot boundaries without triggering per-element enter/leave chaos.
+  // ── Touch listeners — attached ONCE to the SVG, outside the forEach ───────
 
   let activeHotspot = null;
 
   function hotspotAtTouch(touch) {
     const wrap = document.getElementById('scene-img-wrap');
     const r    = wrap.getBoundingClientRect();
-    // Map pixel position → SVG viewBox coords (0–100)
-    const sx = (touch.clientX - r.left)  / r.width  * 100;
-    const sy = (touch.clientY - r.top)   / r.height * 100;
+    const sx   = (touch.clientX - r.left) / r.width  * 100;
+    const sy   = (touch.clientY - r.top)  / r.height * 100;
     return hotspots.find(hs => {
       const [x, y, w, h] = hs.region;
       return sx >= x && sx <= x + w && sy >= y && sy <= y + h;
@@ -476,12 +462,11 @@ function buildHotspots() {
   }
 
   svg.addEventListener('touchstart', e => {
-    e.preventDefault();          // block scroll + ghost click
+    e.preventDefault();
     hinted = true;
     hint.style.opacity = '0';
     const touch = e.touches[0];
     activeHotspot = hotspotAtTouch(touch);
-    tooltip.style.display = 'none';
     if (activeHotspot) {
       tooltip.textContent     = activeHotspot.label;
       tooltip.style.display   = 'block';
@@ -497,7 +482,6 @@ function buildHotspots() {
     e.preventDefault();
     const touch = e.touches[0];
     const found = hotspotAtTouch(touch);
-
     if (found !== activeHotspot) {
       activeHotspot = found;
       if (found) {
