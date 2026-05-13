@@ -100,7 +100,7 @@ const murderScene = {
 
 const blowDustScene = {
   text: 'blow away dust, reveal POISON goblin snack',
-  img: 'media/wizard-dust.jpg',
+  img: 'media/IMG_0215_1.PNG',
   hotspots: [
     { label: 'blow away dust, reveal POISON goblin snack', region: [20, 30, 60, 40], next: murderScene },
   ],
@@ -110,21 +110,26 @@ const blowDustScene = {
 // ── T: wizard wait → U ────────────────────────────────────────────────────────
 
 const wizardWait = {
-  text: "wizard\nWait! looks like there's some dust on that goblin snack bag.",
-  img: 'media/wizard-dust.jpg',
+  text: "Wait! looks like there's some dust on that goblin snack bag.",
+  img: 'media/IMG_0214_2.PNG',
   hotspots: [
-    { label: 'blow away dust, reveal POISON goblin snack', region: [20, 30, 60, 40], next: blowDustScene },
+    { label: 'blow away dust', region: [20, 30, 60, 40], next: blowDustScene },
   ],
 };
 
-
-// ── S: goblin speech → T ──────────────────────────────────────────────────────
+const snacksOffer = {
+  text: "omg get a load of this guy",
+  img: 'media/IMG_0214_1.PNG',
+  hotspots: [
+    { label: 'Continue', region: [30, 40, 40, 30], next: wizardWait },
+  ],
+};
 
 const goblinSpeech = {
   text: "omg get a load of this guy",
   img: 'media/IMG_0213.PNG',
   hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: wizardWait },
+    { label: 'Produce goblin snacks', region: [30, 40, 40, 30], next: snacksOffer },
   ],
 };
 
@@ -133,7 +138,7 @@ const goblinCabinet2 = {
   img: 'media/IMG_0212.PNG',
   hotspots: [
     {
-      label: "there's some rustling coming from this cabinet",
+      label: "continue",
       region: [10, 20, 80, 30],
       next: goblinSpeech,
     },
@@ -183,10 +188,10 @@ catsFish.hotspots[0].next = kitchen;
 // ── N: jump down trap door → kitchen ──────────────────────────────────────────
 
 const trapDoor = {
-  text: 'jump down trap door',
+  text: '',
   img: 'media/IMG_0208.PNG',
   hotspots: [
-    { label: 'Go to kitchen', region: [30, 40, 40, 30], next: kitchen },
+    { label: 'jump down trap door', region: [30, 40, 40, 30], next: kitchen },
   ],
 };
 
@@ -208,7 +213,7 @@ const wizardHelp2 = {
   img: 'media/IMG_0204_2.PNG',
   hotspots: [
     {
-      label: "continue",
+      label: "lets do it",
       region: [10, 20, 80, 30],
       next: wizardHelp3,      // n11 → N
     },
