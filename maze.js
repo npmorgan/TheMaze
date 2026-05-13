@@ -12,19 +12,19 @@
 
 // ── Dead ends ─────────────────────────────────────────────────────────────────
 
-const dontChaseDead = {
-  text: "don't chase",
-  img: 'media/dont-chase.jpg',
-  dead: true,
-  deathText: "don't chase",
-};
+// const dontChaseDead = {
+//  text: "don't chase",
+//  img: 'media/dont-chase.jpg',
+//  dead: true,
+//  deathText: "don't chase",
+// };
 
-const ignoreDeadEnd = {
-  text: 'ignore - dead end',
-  img: 'media/dead-end.jpg',
-  dead: true,
-  deathText: 'ignore - dead end',
-};
+// const ignoreDeadEnd = {
+//   text: 'ignore - dead end',
+//img: 'media/dead-end.jpg',
+//  dead: true,
+//  deathText: 'ignore - dead end',
+//};
 
 
 // ── n19: THE END ──────────────────────────────────────────────────────────────
@@ -192,11 +192,6 @@ const wizardHelp = {
       label: "ignore the irony of asking this two headed nonbinary wizard for help finding your baby's gender?",
       region: [10, 20, 80, 30],
       next: trapDoor,      // n11 → N
-    },
-    {
-      label: 'ignore - dead end',
-      region: [10, 60, 80, 20],
-      next: ignoreDeadEnd, // n12
     },
   ],
 };
