@@ -417,3 +417,5 @@ const tree = {
     { label: 'investigate', region: [30, 30, 40, 40], next: investigateScene },
   ],
 };
+
+export {tree};
