@@ -228,13 +228,19 @@ const readSpellBook = {
   ],
 };
 
+const wizardCloset = {
+  text: 'no goblins in here',
+  img: 'media/IMG_0199.PNG',
+  hotspots: [
+    { label: 'back to the wizard room', region: [30, 40, 40, 30], next: wizardRoom }
+
 // J: wizard room (n9 closet loop wired below)
 const wizardRoom = {
-  text: 'Wizard room',
+  text: 'whoa this room is kind of cool',
   img: 'media/IMG_0198.PNG',
   hotspots: [
     { label: 'Read spell book',                 region: [20, 20, 40, 50], next: readSpellBook }, // K
-    { label: 'wizard closet - no goblins here', region: [65, 20, 25, 60], next: null },          // n9 ← wired below
+    { label: 'wizard closet - no goblins here', region: [65, 20, 25, 60], next: wizardCloset },          // n9 ← wired below
   ],
 };
 
@@ -245,8 +251,8 @@ wizardRoom.hotspots[1].next = wizardRoom;
 // ── n8: doorway → wizard room ─────────────────────────────────────────────────
 
 const doorwayToWizard = {
-  text: 'doorway',
-  img: 'media/doorway.jpg', // TODO
+  text: 'oh a door',
+  img: 'IMG_0197.PNG', // TODO
   hotspots: [
     { label: 'Enter the wizard room', region: [30, 40, 40, 30], next: wizardRoom },
   ],
@@ -256,8 +262,8 @@ const doorwayToWizard = {
 // ── n7: take goblin snack → n8 ───────────────────────────────────────────────
 
 const takeGoblinSnack = {
-  text: 'take goblin snack',
-  img: 'media/take-snack.jpg', // TODO
+  text: 'thanks!',
+  img: 'media/IMG_0196.PNG', // TODO
   hotspots: [
     { label: 'Continue', region: [30, 40, 40, 30], next: doorwayToWizard },
   ],
@@ -267,8 +273,8 @@ const takeGoblinSnack = {
 // ── n6: closeup on goblin snack → n7 ─────────────────────────────────────────
 
 const snackCloseup = {
-  text: 'closeup on goblin snack',
-  img: 'media/snack-closeup.jpg', // TODO
+  text: 'does that say goblin snack? hmm that could be useful',
+  img: 'media/img_0195.PNG', // TODO
   hotspots: [
     { label: 'take goblin snack', region: [30, 30, 40, 40], next: takeGoblinSnack },
   ],
@@ -278,21 +284,10 @@ const snackCloseup = {
 // ── n2: creature holding goblin snack → n6 ───────────────────────────────────
 
 const creatureSnack = {
-  text: 'creature holding goblin snack',
-  img: 'media/creature-snack.jpg', // TODO
+  text: 'oh hi little guy. whatcha got there?',
+  img: 'media/img_0194.PNG', // TODO
   hotspots: [
-    { label: 'Look at snack', region: [30, 30, 40, 40], next: snackCloseup },
-  ],
-};
-
-
-// ── n1: doorway → n2 ─────────────────────────────────────────────────────────
-
-const doorwayToCreature = {
-  text: 'doorway',
-  img: 'media/doorway.jpg', // TODO
-  hotspots: [
-    { label: 'Enter', region: [30, 40, 40, 30], next: creatureSnack },
+    { label: 'Look closer', region: [30, 30, 40, 40], next: snackCloseup },
   ],
 };
 
@@ -300,33 +295,23 @@ const doorwayToCreature = {
 // ── H: mouse party room → D (wired below) ────────────────────────────────────
 
 const mouseParty = {
-  text: 'Mouse party room',
-  img: 'media/mouse-party.jpg', // TODO
+  text: 'oops looks like theres a mouse party in here better head back',
+  img: 'media/img_0193.PNG', // TODO
   hotspots: [
-    { label: 'Leave', region: [30, 70, 40, 20], next: null }, // ← wired below
+    { label: 'Leave', region: [30, 70, 40, 20], next: illuminatedRoom }, // ← wired below
   ],
 };
 
-
-// ── G: ladder → H ────────────────────────────────────────────────────────────
-
-const ladderScene = {
-  text: 'ladder',
-  img: 'media/ladder.jpg', // TODO
-  hotspots: [
-    { label: 'Climb ladder', region: [30, 40, 40, 30], next: mouseParty },
-  ],
-};
 
 
 // ── D: illuminated room ───────────────────────────────────────────────────────
 
 const illuminatedRoom = {
   text: 'Illuminated room',
-  img: 'media/illuminated-room.jpg', // TODO
+  img: 'media/img_0192.PNG', // TODO
   hotspots: [
-    { label: 'ladder',  region: [20, 30, 30, 40], next: ladderScene },        // G
-    { label: 'doorway', region: [60, 30, 30, 40], next: doorwayToCreature },  // n1
+    { label: 'ladder',  region: [20, 30, 30, 40], next: mouseParty },        // G
+    { label: 'doorway', region: [60, 30, 30, 40], next: creatureSnack },  // n1
   ],
 };
 
@@ -334,15 +319,30 @@ const illuminatedRoom = {
 mouseParty.hotspots[0].next = illuminatedRoom;
 
 
+const torchScene3 = {
+  text: 'oh, a door!',
+  img: 'IMG_0191.PNG',
+  hotspots: [
+    { label: 'I sure hope this leads to an illuminated room', region: [30, 40, 40, 30], next: illuminatedRoom },
+  ],
+};
+
+const torchScene2 = {
+  text: 'this is a long tunnel',
+  img: 'IMG_0190.PNG',
+  hotspots: [
+    { label: 'keep walking ig', region: [30, 40, 40, 30], next: torchScene3 },
+  ],
+};
 
 
 // ── n4: torch → D ────────────────────────────────────────────────────────────
 
 const torchScene = {
   text: 'you got a torch',
-  img: 'media/torch.jpg',
+  img: 'IMG_0189.PNG',
   hotspots: [
-    { label: 'fumble around', region: [30, 40, 40, 30], next: illuminatedRoom },
+    { label: 'fumble around', region: [30, 40, 40, 30], next: torchScene2 },
   ],
 };
 
