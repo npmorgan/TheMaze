@@ -371,10 +371,10 @@ const goblinRuns = {
 // ── n22: Get it! → C ─────────────────────────────────────────────────────────
 
 const getItScene = {
-  text: 'Get it!',
-  img: 'media/get-it.jpg', // TODO
+  text: 'dang that goblin just stole your babys gender are you gonna let him get away with that?',
+  img: 'media/IMG_0187.PNG',
   hotspots: [
-    { label: 'Chase the goblin', region: [30, 40, 40, 30], next: goblinRuns },
+    { label: 'heck no', region: [30, 40, 40, 30], next: goblinRuns },
   ],
 };
 
@@ -382,7 +382,7 @@ const getItScene = {
 // ── n21: What do they have? → n22 ────────────────────────────────────────────
 
 const whatDoTheyHave = {
-  text: 'What do they have?',
+  text: 'What do they have there?',
   img: 'media/IMG_0186.PNG',
   hotspots: [
     { label: 'Get it!', region: [5, 20, 40, 60], next: getItScene },
@@ -393,7 +393,7 @@ const whatDoTheyHave = {
 // ── n20: Who is that? → n21 ──────────────────────────────────────────────────
 
 const whoIsThat = {
-  text: 'Who is that?',
+  text: 'oh shit. theres a sneaky little goblin up in here!',
   img: 'media/IMG_0185.PNG',
   hotspots: [
     { label: 'Continue', region: [30, 50, 40, 30], next: whatDoTheyHave },
@@ -404,10 +404,10 @@ const whoIsThat = {
 // ── B: investigate → n20 ─────────────────────────────────────────────────────
 
 const investigateScene = {
-  text: 'Who is that?',
+  text: 'oh shit. theres a sneaky little goblin up in here!',
   img: 'media/IMG_0184.PNG',
   hotspots: [
-    { label: 'Who is that?', region: [20, 30, 60, 25], next: whoIsThat },
+    { label: 'continue', region: [20, 30, 60, 25], next: whoIsThat },
   ],
 };
 
@@ -415,7 +415,7 @@ const investigateScene = {
 // ── A: Start / tree ───────────────────────────────────────────────────────────
 
 const tree = {
-  text: 'Start: Cupcake',
+  text: 'what a delicious looking cupcake. I wonder if the gender of your baby is inside?',
   img: 'media/IMG_0183.PNG',
   hotspots: [
     { label: 'investigate', region: [30, 30, 40, 40], next: investigateScene },
