@@ -455,8 +455,8 @@
         // ── Mouse events (desktop) ────────────────────────────────────────────
 
         g.addEventListener('mouseenter', e => {
-          rect.setAttribute('fill', 'rgba(255,255,255,0.09)');
-          rect.setAttribute('stroke', 'rgba(255,255,255,0.52)');
+          rect.setAttribute('fill', 'rgba(255,255,255,0.00)');
+          rect.setAttribute('stroke', 'rgba(255,255,255,0.0)');
           hint.style.opacity = '0';
           hinted = true;
           tooltip.textContent   = hs.label;
@@ -489,8 +489,8 @@
           hinted = true;
           hint.style.opacity = '0';
 
-          rect.setAttribute('fill', 'rgba(255,255,255,0.14)');
-          rect.setAttribute('stroke', 'rgba(255,255,255,0.6)');
+          rect.setAttribute('fill', 'rgba(255,255,255,0.0)');
+          rect.setAttribute('stroke', 'rgba(255,255,255,0.0)');
 
           // Show tooltip pinned to top of image on mobile
           const wrap = document.getElementById('scene-img-wrap');
