@@ -116,7 +116,7 @@ const murderScene4 = {
   text: '',
   img: 'media/IMG_0221_2.PNG',
   hotspots: [
-    { label: 'investigate', region: [59, 5, 14, 13]], next: genderFind },
+    { label: 'investigate', region: [59, 5, 14, 13], next: genderFind },
   ],
 };
 const murderScene3 = {
@@ -154,7 +154,7 @@ const blowDustScene3 = {
   text: 'oh shit should we murder this goblin right now',
   img: 'media/IMG_0215_3.PNG',
   hotspots: [
-    { label: 'continue', region: [20, 30, 60, 40], next: BlowDustScene4 },
+    { label: 'continue', region: [20, 30, 60, 40], next: blowDustScene4 },
   ],
 };
 
