@@ -57,49 +57,49 @@ const genderFind7 = {
   text: 'there it is!',
   img: 'media/IMG_0230.PNG',
   hotspots: [
-    { label: 'click', region: [20, 40, 60, 30], next: genderfind8 },
+    { label: 'click', region: [20, 40, 60, 30], next: genderFind8 },
   ],
   };
 const genderFind6 = {
   text: 'there it is!',
   img: 'media/IMG_0229.PNG',
   hotspots: [
-    { label: 'click', region: [20, 40, 60, 30], next: genderfind7 },
+    { label: 'click', region: [20, 40, 60, 30], next: genderFind7 },
   ],
   };
 const genderFind5 = {
   text: 'there it is!',
   img: 'media/IMG_0227.PNG',
   hotspots: [
-    { label: 'click', region: [20, 40, 60, 30], next: genderfind6 },
+    { label: 'click', region: [20, 40, 60, 30], next: genderFind6 },
   ],
   };
 const genderFind4 = {
   text: 'there it is!',
   img: 'media/IMG_0226.PNG',
   hotspots: [
-    { label: 'click', region: [20, 40, 60, 30], next: genderfind5 },
+    { label: 'click', region: [20, 40, 60, 30], next: genderFind5 },
   ],
   };
 const genderFind3 = {
   text: 'there it is!',
   img: 'media/IMG_0225.PNG',
   hotspots: [
-    { label: 'click', region: [20, 40, 60, 30], next: genderfind4 },
+    { label: 'click', region: [20, 40, 60, 30], next: genderFind4 },
   ],
   };
 const genderFind2 = {
   text: 'there it is!',
   img: 'media/IMG_0224.PNG',
   hotspots: [
-    { label: 'click', region: [20, 40, 60, 30], next: genderfind3 },
+    { label: 'click', region: [20, 40, 60, 30], next: genderFind3 },
   ],
   };
 const genderFind = {
   text: 'there it is!',
   img: 'media/IMG_0223.PNG',
   hotspots: [
-    { label: 'click', region: [20, 40, 60, 30], next: genderfind2 },
+    { label: 'click', region: [20, 40, 60, 30], next: genderFind2 },
   ],
   };
 
@@ -109,7 +109,7 @@ const murderScene4 = {
   text: '',
   img: 'media/IMG_0221_2.PNG',
   hotspots: [
-    { label: 'investigate', region: [20, 40, 60, 30], next: strangleChoice },
+    { label: 'investigate', region: [20, 40, 60, 30], next: genderFind },
   ],
 };
 const murderScene3 = {
