@@ -224,7 +224,7 @@ const wizardCloset = {
   text: 'no goblins in here',
   img: 'media/IMG_0199.PNG',
   hotspots: [
-    { label: 'back to the wizard room', region: [30, 40, 40, 30], next: wizardRoom }
+    { label: 'back to the wizard room', region: [30, 40, 40, 30], next: null }
   ],
 };
 
@@ -233,11 +233,11 @@ const wizardRoom = {
   text: 'whoa this room is kind of cool',
   img: 'media/IMG_0198.PNG',
   hotspots: [
-    { label: 'Research goblin catching spells', region: [20, 20, 40, 50], next: readSpellBook }, // K
+    { label: 'Research goblin catching spells', region: [20, 20, 40, 50], next: wizardAppears }, // K
     { label: 'wizard closet - no goblins here', region: [65, 20, 25, 60], next: wizardCloset },          // n9 ← wired below
   ],
 };
-
+wizardCloset.hotspots[0].next = wizardRoom;
 // Wire wizard closet back to wizard room (n9 → J)
 //wizardRoom.hotspots[1].next = wizardRoom;
 
