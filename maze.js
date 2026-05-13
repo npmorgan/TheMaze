@@ -180,6 +180,30 @@ const trapDoor = {
   ],
 };
 
+const wizardHelp3 = {
+  text: "wizard\ndon't worry about it. everybody makes mistakes. anyways what can I help you with?",
+  img: 'media/IMG_0204_1.PNG',
+  hotspots: [
+    {
+      label: "ignore the irony of asking this two headed nonbinary wizard for help finding your baby's gender?",
+      region: [10, 20, 80, 30],
+      next: trapDoor,      // n11 → N
+    },
+  ],
+};
+
+
+const wizardHelp2 = {
+  text: "wizard\ndon't worry about it. everybody makes mistakes. anyways what can I help you with?",
+  img: 'media/IMG_0204_1.PNG',
+  hotspots: [
+    {
+      label: "ignore the irony of asking this two headed nonbinary wizard for help finding your baby's gender?",
+      region: [10, 20, 80, 30],
+      next: wizardHelp3,      // n11 → N
+    },
+  ],
+};
 
 // ── Wizard room subtree (n10 → M → L → K → J) ────────────────────────────────
 
@@ -191,7 +215,7 @@ const wizardHelp = {
     {
       label: "ignore the irony of asking this two headed nonbinary wizard for help finding your baby's gender?",
       region: [10, 20, 80, 30],
-      next: trapDoor,      // n11 → N
+      next: wizardHelp2,      // n11 → N
     },
   ],
 };
