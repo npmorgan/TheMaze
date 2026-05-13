@@ -30,79 +30,134 @@
 // ── n19: THE END ──────────────────────────────────────────────────────────────
 
 const theEnd = {
-  text: 'all the creatures hanging out together with your baby having a good time THE END',
-  img: 'media/the-end.jpg',
+  text: 'THE END',
+  img: 'media/IMG_0232.PNG',
   win: true,
-  winText: 'all the creatures hanging out together with your baby having a good time THE END',
+  winText: 'THE END',
 };
 
 
 // ── n18 → n19 ─────────────────────────────────────────────────────────────────
 
 const eggOpening = {
-  text: 'little animation of the egg opening to reveal the gender congrats, your baby is awesome',
-  img: 'media/egg.jpg',
+  text: 'Congrats, your baby is awesome.',
+  img: 'media/IMG_0231.PNG',
   hotspots: [
     { label: 'Continue', region: [30, 70, 40, 20], next: theEnd },
   ],
 };
-
-
-// ── n17 → n18 ─────────────────────────────────────────────────────────────────
-
-const genderPops = {
-  text: "baby gender pops out of goblin's back pocket, click on it",
-  img: 'media/strangle.jpg',
+const genderFind8 = {
+  text: 'there it is!',
+  img: 'media/IMG_0231.PNG',
   hotspots: [
-    {
-      label: "baby gender pops out of goblin's back pocket, click on it",
-      region: [40, 40, 20, 20],
-      next: eggOpening,
-    },
+    { label: 'click', region: [20, 40, 60, 30], next: eggOpening },
   ],
-};
-
-
-// ── n16: wizard strangles → n17 ───────────────────────────────────────────────
-
-const wizardStrangles = {
-  text: "wizard strangles the goblin bart style\nhand over the baby gender cretin",
-  img: 'media/strangle.jpg',
+  };
+const genderFind7 = {
+  text: 'there it is!',
+  img: 'media/IMG_0230.PNG',
   hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: genderPops },
+    { label: 'click', region: [20, 40, 60, 30], next: genderfind8 },
   ],
-};
-
-
-// ── n15: no just strangle him bart style → n16 ────────────────────────────────
-
-const strangleChoice = {
-  text: 'no just strangle him bart style',
-  img: 'media/poison-snack.jpg',
+  };
+const genderFind6 = {
+  text: 'there it is!',
+  img: 'media/IMG_0229.PNG',
   hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: wizardStrangles },
+    { label: 'click', region: [20, 40, 60, 30], next: genderfind7 },
   ],
-};
+  };
+const genderFind5 = {
+  text: 'there it is!',
+  img: 'media/IMG_0227.PNG',
+  hotspots: [
+    { label: 'click', region: [20, 40, 60, 30], next: genderfind6 },
+  ],
+  };
+const genderFind4 = {
+  text: 'there it is!',
+  img: 'media/IMG_0226.PNG',
+  hotspots: [
+    { label: 'click', region: [20, 40, 60, 30], next: genderfind5 },
+  ],
+  };
+const genderFind3 = {
+  text: 'there it is!',
+  img: 'media/IMG_0225.PNG',
+  hotspots: [
+    { label: 'click', region: [20, 40, 60, 30], next: genderfind4 },
+  ],
+  };
+const genderFind2 = {
+  text: 'there it is!',
+  img: 'media/IMG_0224.PNG',
+  hotspots: [
+    { label: 'click', region: [20, 40, 60, 30], next: genderfind3 },
+  ],
+  };
+const genderFind = {
+  text: 'there it is!',
+  img: 'media/IMG_0223.PNG',
+  hotspots: [
+    { label: 'click', region: [20, 40, 60, 30], next: genderfind2 },
+  ],
+  };
 
 
 // ── V: oh shit should we murder this goblin → n15 ────────────────────────────
+const murderScene4 = {
+  text: '',
+  img: 'media/IMG_0221_2.PNG',
+  hotspots: [
+    { label: 'investigate', region: [20, 40, 60, 30], next: strangleChoice },
+  ],
+};
+const murderScene3 = {
+  text: '',
+  img: 'media/IMG_0221_1.PNG',
+  hotspots: [
+    { label: 'flick!', region: [20, 40, 60, 30], next: murderScene4 },
+  ],
+};
+const murderScene2 = {
+  text: 'he dropped the gender!',
+  img: 'media/IMG_0220.PNG',
+  hotspots: [
+    { label: 'get outta here', region: [20, 40, 60, 30], next: murderScene3 },
+  ],
+};
 
 const murderScene = {
-  text: 'oh shit, should we murder this goblin right now?',
-  img: 'media/poison-snack.jpg',
+  text: '',
+  img: 'media/IMG_0219.PNG',
   hotspots: [
-    { label: 'no just strangle him bart style', region: [20, 40, 60, 30], next: strangleChoice },
+    { label: 'get him!', region: [20, 40, 60, 30], next: murderscene2 },
   ],
 };
 
 
 // ── U: blow away dust → V ────────────────────────────────────────────────────
+const blowDustScene3 = {
+  text: 'oh shit should we murder this goblin right now',
+  img: 'media/IMG_0215_3.PNG',
+  hotspots: [
+    { label: 'no just strangle him bart style', region: [20, 30, 60, 40], next: murderScene },
+  ],
+};
+
+const blowDustScene2 = {
+  text: '',
+  img: 'media/IMG_0215_2.PNG',
+  hotspots: [
+    { label: 'continue', region: [20, 30, 60, 40], next: blowDustScene3 },
+  ],
+};
 
 const blowDustScene = {
-  text: 'blow away dust, reveal POISON goblin snack',
+  text: '',
   img: 'media/IMG_0215_1.PNG',
   hotspots: [
-    { label: 'blow away dust, reveal POISON goblin snack', region: [20, 30, 60, 40], next: murderScene },
+    { label: 'continue', region: [20, 30, 60, 40], next: blowDustScene2 },
   ],
 };
 
