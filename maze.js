@@ -296,7 +296,7 @@ const wizardHelp = {
   img: 'media/IMG_0204_1.PNG',
   hotspots: [
     {
-      label: "ignore the irony of asking this two headed nonbinary wizard for help finding your baby's gender?",
+      label: "ignore the irony of asking this \n two headed nonbinary wizard for help \n finding your baby's gender?",
       region: [0, 0, 100, 100],
       next: wizardHelp2,      // n11 → N
     },
@@ -419,7 +419,7 @@ const torchScene3 = {
   text: 'oh, a door!',
   img: 'media/IMG_0191.PNG',
   hotspots: [
-    { label: 'I sure hope this\nleads to an illuminated room', region: [80, 28, 12, 27], next: illuminatedRoom },
+    { label: 'I sure hope this\n leads to an illuminated room', region: [80, 28, 12, 27], next: illuminatedRoom },
   ],
 };
 
