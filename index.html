@@ -517,10 +517,18 @@
       const r       = wrap.getBoundingClientRect();
       const x       = e.clientX - r.left;
       const y       = e.clientY - r.top;
-
+  
       tooltip.style.left = Math.min(Math.max(x, 60), r.width - 60) + 'px';
       tooltip.style.top  = y + 'px';
-      tooltip.style.transform = 'translate(-50%, calc(-100% - 10px))';
+  
+      // Flip below cursor if tooltip would go above the image top
+      const tipHeight = tooltip.offsetHeight;
+      const gap = 10;
+      if (y - tipHeight - gap < 0) {
+        tooltip.style.transform = 'translate(-50%, ' + gap + 'px)';
+      } else {
+        tooltip.style.transform = 'translate(-50%, calc(-100% - ' + gap + 'px))';
+      }
     }
 
     function spawnRipple(touch, container) {
