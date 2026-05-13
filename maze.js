@@ -336,7 +336,7 @@ const wizardRoom = {
   img: 'media/IMG_0198.PNG',
   hotspots: [
     { label: 'Research goblin catching spells', region: [32, 25, 11, 14], next: wizardAppears }, // K
-    { label: 'wizard closet - no goblins here', region: [76, 8, 17, 66], next: wizardCloset },          // n9 ← wired below
+    { label: 'wizard closet', region: [76, 8, 17, 66], next: wizardCloset },          // n9 ← wired below
   ],
 };
 wizardCloset.hotspots[0].next = wizardRoom;
