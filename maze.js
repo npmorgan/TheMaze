@@ -418,4 +418,4 @@ const tree = {
   ],
 };
 
-export {tree};
+window.tree = tree;
