@@ -292,7 +292,7 @@ const mouseParty = {
   text: 'oops looks like theres a mouse party in here better head back',
   img: 'media/img_0193.PNG', // TODO
   hotspots: [
-    { label: 'Leave', region: [30, 70, 40, 20], next: illuminatedRoom }, // ← wired below
+    { label: 'Leave', region: [30, 70, 40, 20], next: null }, // ← wired below
   ],
 };
 
