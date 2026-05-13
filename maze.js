@@ -186,7 +186,7 @@ const trapDoor = {
 // n10: wizard — what can I help you with?
 const wizardHelp = {
   text: "wizard\ndon't worry about it. everybody makes mistakes. anyways what can I help you with?",
-  img: 'media/media/IMG_0204_1.PNG',
+  img: 'media/IMG_0204_1.PNG',
   hotspots: [
     {
       label: "ignore the irony of asking this two headed nonbinary wizard for help finding your baby's gender?",
@@ -206,13 +206,13 @@ const famousWizard = {
   text: "oh wow it's the two headed nonbinary wizard. they're famous in this part of town",
   img: 'media/IMG_0201_2.PNG',
   hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: wizardHelp },
+    { label: 'Apologize', region: [30, 40, 40, 30], next: wizardHelp },
   ],
 };
 
 // L: wizard appears — Hey! don't touch my stuff
 const wizardAppears = {
-  text: "wizard appears\nHey! don't touch my stuff",
+  text: "Hey! don't touch my stuff",
   img: 'media/IMG_0201_1.PNG',
   hotspots: [
     { label: 'Continue', region: [30, 40, 40, 30], next: famousWizard },
