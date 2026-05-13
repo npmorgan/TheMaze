@@ -41,65 +41,72 @@ const theEnd = {
 
 const eggOpening = {
   text: 'Congrats, your baby is awesome.',
-  img: 'media/IMG_0231.PNG',
+  img: 'media/IMG_0232.PNG',
   hotspots: [
-    { label: 'Continue', region: [30, 70, 40, 20], next: theEnd },
+    { label: 'Continue', region: [0, 0, 100, 100], next: theEnd },
   ],
 };
 const genderFind8 = {
-  text: 'there it is!',
+  text: '!!!!!!!!!!!!!!!!',
   img: 'media/IMG_0231.PNG',
   hotspots: [
-    { label: 'click', region: [20, 40, 60, 30], next: eggOpening },
+    { label: 'click', region: [0, 0, 100, 100], next: eggOpening },
   ],
   };
 const genderFind7 = {
-  text: 'there it is!',
+  text: '',
   img: 'media/IMG_0230.PNG',
   hotspots: [
-    { label: 'click', region: [20, 40, 60, 30], next: genderFind8 },
+    { label: '???????????????', region: [66, 40, 11, 23], next: genderFind8 },
   ],
   };
 const genderFind6 = {
-  text: 'there it is!',
+  text: '',
   img: 'media/IMG_0229.PNG',
   hotspots: [
-    { label: 'click', region: [20, 40, 60, 30], next: genderFind7 },
+    { label: '!!!!!!!!!!', region: [60, 41, 17, 26], next: genderFind7 },
+  ],
+  };
+const genderFind5_5 = {
+  text: 'there it is!',
+  img: 'media/IMG_0228.PNG',
+  hotspots: [
+    { label: '!!!!!!', region: [11, 40, 77, 46], next: genderFind6 },
   ],
   };
 const genderFind5 = {
   text: 'there it is!',
   img: 'media/IMG_0227.PNG',
   hotspots: [
-    { label: 'click', region: [20, 40, 60, 30], next: genderFind6 },
+    { label: 'keep going!', region: [51, 41, 34, 39], next: genderFind5_5 },
   ],
   };
 const genderFind4 = {
   text: 'there it is!',
   img: 'media/IMG_0226.PNG',
   hotspots: [
-    { label: 'click', region: [20, 40, 60, 30], next: genderFind5 },
+    { label: 'almost there', region: [51, 41, 34, 39], next: genderFind5 },
   ],
   };
 const genderFind3 = {
   text: 'there it is!',
   img: 'media/IMG_0225.PNG',
   hotspots: [
-    { label: 'click', region: [20, 40, 60, 30], next: genderFind4 },
+    { label: 'investigate some more', region: [51, 41, 34, 39], next: genderFind4 },
   ],
   };
 const genderFind2 = {
   text: 'there it is!',
   img: 'media/IMG_0224.PNG',
   hotspots: [
-    { label: 'click', region: [20, 40, 60, 30], next: genderFind3 },
+    { label: 'keep investigating', region: [51, 41, 34, 39], next: genderFind3 },
   ],
   };
 const genderFind = {
   text: 'there it is!',
   img: 'media/IMG_0223.PNG',
   hotspots: [
-    { label: 'click', region: [20, 40, 60, 30], next: genderFind2 },
+    { label: 'investigate', region: [51, 41, 34, 39], next: genderFind2 },
   ],
   };
 
@@ -109,21 +116,21 @@ const murderScene4 = {
   text: '',
   img: 'media/IMG_0221_2.PNG',
   hotspots: [
-    { label: 'investigate', region: [20, 40, 60, 30], next: genderFind },
+    { label: 'investigate', region: [59, 5, 14, 13]], next: genderFind },
   ],
 };
 const murderScene3 = {
   text: '',
   img: 'media/IMG_0221_1.PNG',
   hotspots: [
-    { label: 'flick!', region: [20, 40, 60, 30], next: murderScene4 },
+    { label: 'flick!', region: [56, 45, 27, 34], next: murderScene4 },
   ],
 };
 const murderScene2 = {
-  text: 'he dropped the gender!',
+  text: 'gimme that gender goddamit',
   img: 'media/IMG_0220.PNG',
   hotspots: [
-    { label: 'get outta here', region: [20, 40, 60, 30], next: murderScene3 },
+    { label: 'give that goblin the business', region: [34, 16, 43, 83], next: murderScene3 },
   ],
 };
 
@@ -131,17 +138,23 @@ const murderScene = {
   text: '',
   img: 'media/IMG_0219.PNG',
   hotspots: [
-    { label: 'get him!', region: [20, 40, 60, 30], next: murderScene2 },
+    { label: 'get him!', region: [36, 0, 48, 21], next: murderScene2 },
   ],
 };
-
+const blowDustScene4 = {
+  text: 'oh shit should we murder this goblin right now',
+  img: 'media/IMG_0212.PNG',
+  hotspots: [
+    { label: 'no just strangle him bart style', region: [36, 0, 48, 21], next: murderScene },
+  ],
+};
 
 // ── U: blow away dust → V ────────────────────────────────────────────────────
 const blowDustScene3 = {
   text: 'oh shit should we murder this goblin right now',
   img: 'media/IMG_0215_3.PNG',
   hotspots: [
-    { label: 'no just strangle him bart style', region: [20, 30, 60, 40], next: murderScene },
+    { label: 'continue', region: [20, 30, 60, 40], next: BlowDustScene4 },
   ],
 };
 
@@ -149,7 +162,7 @@ const blowDustScene2 = {
   text: '',
   img: 'media/IMG_0215_2.PNG',
   hotspots: [
-    { label: 'continue', region: [20, 30, 60, 40], next: blowDustScene3 },
+    { label: 'continue', region: [0, 0, 100, 100], next: blowDustScene3 },
   ],
 };
 
@@ -157,7 +170,7 @@ const blowDustScene = {
   text: '',
   img: 'media/IMG_0215_1.PNG',
   hotspots: [
-    { label: 'continue', region: [20, 30, 60, 40], next: blowDustScene2 },
+    { label: 'continue', region: [0, 0, 100, 100], next: blowDustScene2 },
   ],
 };
 
@@ -165,18 +178,18 @@ const blowDustScene = {
 // ── T: wizard wait → U ────────────────────────────────────────────────────────
 
 const wizardWait = {
-  text: "Wait! Whats that?",
+  text: "",
   img: 'media/IMG_0214_2.PNG',
   hotspots: [
-    { label: 'blow away dust', region: [20, 30, 60, 40], next: blowDustScene },
+    { label: 'blow away dust', region: [71, 45, 18, 32], next: blowDustScene },
   ],
 };
 
 const snacksOffer = {
-  text: "omg get a load of this guy",
+  text: "good thing you picked these up earlier",
   img: 'media/IMG_0214_1.PNG',
   hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: wizardWait },
+    { label: 'give the snacks', region: [54, 43, 16, 32], next: wizardWait },
   ],
 };
 
@@ -184,7 +197,7 @@ const goblinSpeech = {
   text: "omg get a load of this guy",
   img: 'media/IMG_0213.PNG',
   hotspots: [
-    { label: 'Produce goblin snacks', region: [30, 40, 40, 30], next: snacksOffer },
+    { label: 'Produce goblin snacks', region: [34, 0, 51, 22], next: snacksOffer },
   ],
 };
 
@@ -194,7 +207,7 @@ const goblinCabinet2 = {
   hotspots: [
     {
       label: "continue",
-      region: [10, 20, 80, 30],
+      region: [34, 0, 51, 22],
       next: goblinSpeech,
     },
   ],
@@ -207,7 +220,7 @@ const goblinCabinet = {
   hotspots: [
     {
       label: "check it out",
-      region: [10, 20, 80, 30],
+      region: [34, 0, 51, 22],
       next: goblinCabinet2,
     },
   ],
@@ -220,7 +233,7 @@ const catsFish = {
   text: 'thats pretty cute but lets not get distracted',
   img: 'media/IMG_0210.PNG',
   hotspots: [
-    { label: 'Back to kitchen', region: [30, 70, 40, 20], next: null }, // ← wired below
+    { label: 'Back to kitchen', region: [0, 0, 100, 100], next: null }, // ← wired below
   ],
 };
 
@@ -231,8 +244,8 @@ const kitchen = {
   text: 'kitchen',
   img: 'media/IMG_0209.PNG',
   hotspots: [
-    { label: 'Look in fridge', region: [5, 20, 40, 60],  next: catsFish },      // O → P
-    { label: 'Open cabinet',   region: [55, 20, 35, 60], next: goblinCabinet }, // Q → R
+    { label: 'Look in fridge', region: [2, 9, 29, 77],  next: catsFish },      // O → P
+    { label: 'Check cabinet',   region: [34, 0, 51, 22], next: goblinCabinet }, // Q → R
   ],
 };
 
@@ -246,7 +259,7 @@ const trapDoor = {
   text: '',
   img: 'media/IMG_0208.PNG',
   hotspots: [
-    { label: 'jump down trap door', region: [30, 40, 40, 30], next: kitchen },
+    { label: 'jump down trap door', region: [5, 73, 33, 13], next: kitchen },
   ],
 };
 
@@ -256,7 +269,7 @@ const wizardHelp3 = {
   hotspots: [
     {
       label: "continue",
-      region: [10, 20, 80, 30],
+      region: [0, 0, 100, 100],
       next: trapDoor,      // n11 → N
     },
   ],
@@ -269,7 +282,7 @@ const wizardHelp2 = {
   hotspots: [
     {
       label: "lets do it",
-      region: [10, 20, 80, 30],
+      region: [0, 0, 100, 100],
       next: wizardHelp3,      // n11 → N
     },
   ],
@@ -284,7 +297,7 @@ const wizardHelp = {
   hotspots: [
     {
       label: "ignore the irony of asking this two headed nonbinary wizard for help finding your baby's gender?",
-      region: [10, 20, 80, 30],
+      region: [0, 0, 100, 100],
       next: wizardHelp2,      // n11 → N
     },
   ],
@@ -295,16 +308,16 @@ const famousWizard = {
   text: "oh wow it's the two headed nonbinary wizard. they're famous in this part of town",
   img: 'media/IMG_0201_2.PNG',
   hotspots: [
-    { label: 'Apologize', region: [30, 40, 40, 30], next: wizardHelp },
+    { label: 'Apologize', region: [0, 0, 100, 100], next: wizardHelp },
   ],
 };
 
 // L: wizard appears — Hey! don't touch my stuff
 const wizardAppears = {
-  text: "Hey! don't touch my stuff",
+  text: "oh wow it's the two headed nonbinary wizard. they're famous in this part of town",
   img: 'media/IMG_0201_1.PNG',
   hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: famousWizard },
+    { label: 'Continue', region: [0, 0, 100, 100], next: famousWizard },
   ],
 };
 
@@ -313,7 +326,7 @@ const wizardCloset = {
   text: 'no goblins in here',
   img: 'media/IMG_0199.PNG',
   hotspots: [
-    { label: 'back to the wizard room', region: [30, 40, 40, 30], next: null }
+    { label: 'back to the wizard room', region: [0, 0, 100, 100], next: null }
   ],
 };
 
@@ -322,8 +335,8 @@ const wizardRoom = {
   text: 'whoa this room is kind of cool',
   img: 'media/IMG_0198.PNG',
   hotspots: [
-    { label: 'Research goblin catching spells', region: [20, 20, 40, 50], next: wizardAppears }, // K
-    { label: 'wizard closet - no goblins here', region: [65, 20, 25, 60], next: wizardCloset },          // n9 ← wired below
+    { label: 'Research goblin catching spells', region: [32, 25, 11, 14], next: wizardAppears }, // K
+    { label: 'wizard closet - no goblins here', region: [76, 8, 17, 66], next: wizardCloset },          // n9 ← wired below
   ],
 };
 wizardCloset.hotspots[0].next = wizardRoom;
@@ -337,7 +350,7 @@ const doorwayToWizard = {
   text: 'oh a door',
   img: 'media/IMG_0197.PNG', // TODO
   hotspots: [
-    { label: 'Enter the wizard room', region: [30, 40, 40, 30], next: wizardRoom },
+    { label: 'Enter the wizard room', region: [72, 9, 19, 45], next: wizardRoom },
   ],
 };
 
@@ -348,7 +361,7 @@ const takeGoblinSnack = {
   text: 'thanks!',
   img: 'media/IMG_0196.PNG', // TODO
   hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: doorwayToWizard },
+    { label: 'Continue', region: [2, 0, 98, 100], next: doorwayToWizard },
   ],
 };
 
@@ -359,7 +372,7 @@ const snackCloseup = {
   text: 'does that say goblin snack? hmm that could be useful',
   img: 'media/img_0195.PNG', // TODO
   hotspots: [
-    { label: 'take goblin snack', region: [30, 30, 40, 40], next: takeGoblinSnack },
+    { label: 'take goblin snack', region: [63, 14, 23, 31], next: takeGoblinSnack },
   ],
 };
 
@@ -370,7 +383,7 @@ const creatureSnack = {
   text: 'oh hi little guy. whatcha got there?',
   img: 'media/img_0194.PNG', // TODO
   hotspots: [
-    { label: 'Look closer', region: [30, 30, 40, 40], next: snackCloseup },
+    { label: 'Look closer', region: [18, 16, 41, 59], next: snackCloseup },
   ],
 };
 
@@ -381,7 +394,7 @@ const mouseParty = {
   text: 'oops looks like theres a mouse party in here better head back',
   img: 'media/img_0193.PNG', // TODO
   hotspots: [
-    { label: 'Leave', region: [30, 70, 40, 20], next: null }, // ← wired below
+    { label: 'Leave', region: [2, 0, 98, 100], next: null }, // ← wired below
   ],
 };
 
@@ -393,8 +406,8 @@ const illuminatedRoom = {
   text: 'Illuminated room',
   img: 'media/img_0192.PNG', // TODO
   hotspots: [
-    { label: 'ladder',  region: [20, 30, 30, 40], next: mouseParty },        // G
-    { label: 'doorway', region: [60, 30, 30, 40], next: creatureSnack },  // n1
+    { label: 'ladder',  region: [72, 0, 16, 82], next: mouseParty },        // G
+    { label: 'doorway', region: [12, 20, 26, 54], next: creatureSnack },  // n1
   ],
 };
 
@@ -406,7 +419,7 @@ const torchScene3 = {
   text: 'oh, a door!',
   img: 'media/IMG_0191.PNG',
   hotspots: [
-    { label: 'I sure hope this leads to an illuminated room', region: [30, 40, 40, 30], next: illuminatedRoom },
+    { label: 'I sure hope this leads to an illuminated room', region: [80, 28, 12, 27], next: illuminatedRoom },
   ],
 };
 
@@ -414,7 +427,7 @@ const torchScene2 = {
   text: 'this is a long tunnel',
   img: 'media/IMG_0190.PNG',
   hotspots: [
-    { label: 'keep walking ig', region: [30, 40, 40, 30], next: torchScene3 },
+    { label: 'keep walking ig', region: [2, 0, 98, 100], next: torchScene3 },
   ],
 };
 
@@ -425,7 +438,7 @@ const torchScene = {
   text: 'you got a torch',
   img: 'media/IMG_0189.PNG',
   hotspots: [
-    { label: 'fumble around', region: [30, 40, 40, 30], next: torchScene2 },
+    { label: 'fumble around', region: [38, 4, 61, 83], next: torchScene2 },
   ],
 };
 
@@ -436,7 +449,7 @@ const darkHall = {
   text: 'whoa this hallway is pretty dark and creepy',
   img: 'media/IMG_0188.PNG',
   hotspots: [
-    { label: 'find some light', region: [30, 40, 40, 30], next: torchScene },
+    { label: 'find some light', region: [28, 12, 42, 73], next: torchScene },
   ],
 };
 
@@ -459,7 +472,7 @@ const getItScene = {
   text: 'dang that goblin just stole your babys gender are you gonna let him get away with that?',
   img: 'media/IMG_0187.PNG',
   hotspots: [
-    { label: 'heck no', region: [30, 40, 40, 30], next: darkHall },
+    { label: 'heck no', region: [56, 12, 32, 50], next: darkHall },
   ],
 };
 
@@ -481,7 +494,7 @@ const whoIsThat = {
   text: 'oh shit. theres a sneaky little goblin up in here!',
   img: 'media/IMG_0185.PNG',
   hotspots: [
-    { label: 'Continue', region: [30, 50, 40, 30], next: whatDoTheyHave },
+    { label: 'Continue', region: [2, 0, 98, 100], next: whatDoTheyHave },
   ],
 };
 
@@ -492,7 +505,7 @@ const investigateScene = {
   text: 'oh shit. theres a sneaky little goblin up in here!',
   img: 'media/IMG_0184.PNG',
   hotspots: [
-    { label: 'continue', region: [20, 30, 60, 25], next: whoIsThat },
+    { label: 'continue', region: [2, 0, 98, 100], next: whoIsThat },
   ],
 };
 
