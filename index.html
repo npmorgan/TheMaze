@@ -132,33 +132,17 @@
       border-radius: 3px;
     }
 
-    /* Image + hotspot layer */
+    /* Image + hotspot layer — height driven by the image itself */
     .scene-img-wrap {
       width: 100%;
-      /* Tall enough on desktop, shrinks to fit on mobile */
-      height: min(62vh, 700px);
-      overflow: hidden;
       position: relative;
       background: #1a1814;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    @media (max-width: 600px) {
-      .scene-img-wrap {
-        /* On mobile: use aspect ratio so image fits without cramming */
-        height: auto;
-        aspect-ratio: 4 / 3;
-        max-height: 55vw;
-      }
     }
 
     .scene-img-wrap img {
-      /* contain so the full image is always visible, centered */
       width: 100%;
-      height: 100%;
-      object-fit: contain;
+      height: auto;
+      max-height: 75vh;
       display: block;
     }
 
@@ -193,7 +177,10 @@
       padding: 4px 14px 5px;
       border-radius: 4px;
       pointer-events: none;
-      white-space: nowrap;
+      white-space: normal;           /* wrap long labels */
+      max-width: min(320px, 85%);    /* never overflows image on any screen */
+      text-align: center;
+      line-height: 1.2;
       transform: translate(-50%, calc(-100% - 10px));
       display: none;
       border: 0.5px solid rgba(255,255,255,0.12);
@@ -202,11 +189,8 @@
     @media (max-width: 600px) {
       #hs-tooltip {
         font-size: 20px;
-        /* On mobile, pin tooltip to top-center of image instead of following finger */
         transform: translateX(-50%);
-        white-space: normal;
-        max-width: 90%;
-        text-align: center;
+        max-width: 88%;
       }
     }
 
@@ -267,8 +251,7 @@
     .nav-btn.back-btn { color: var(--text3); }
     .nav-btn.back-btn:not(:disabled):hover { color: var(--text); }
 
-    .fade-in { animation: fi 0.3s ease; }
-    @keyframes fi { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    /* no scene transition — instant swap keeps images consistent */
 
     /* Touch ripple on hotspot (visual feedback) */
     .hs-ripple {
