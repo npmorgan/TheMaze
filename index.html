@@ -61,8 +61,8 @@
     }
 
     .maze-wrap {
-      max-width: 1000px;
-      width: 100%;
+      max-width: min(100% 1000px);
+      margin: 0 auto;
     }
 
     .maze-header {
@@ -116,6 +116,7 @@
       overflow: hidden;
       margin-bottom: 1rem;
       position: relative;
+      width: min(100%, 1000px);
     }
 
     .scene-depth {
@@ -142,8 +143,8 @@
     .scene-img-wrap img {
       width: 100%;
       height: auto;
-      max-height: 75vh;
       display: block;
+      object-fit: contain;
     }
 
     .img-placeholder {
