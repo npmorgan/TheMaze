@@ -53,7 +53,17 @@
       padding: 2rem 1rem;
     }
 
-    .maze-wrap { max-width: 1000px; width: 100%; }
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem 0.5rem;
+        align-items: flex-start;
+      }
+    }
+
+    .maze-wrap {
+      max-width: 1000px;
+      width: 100%;
+    }
 
     .maze-header {
       font-family: 'VT323', monospace;
@@ -63,6 +73,10 @@
       letter-spacing: 4px;
       line-height: 1;
       margin-bottom: 6px;
+    }
+
+    @media (max-width: 600px) {
+      .maze-header { font-size: 36px; letter-spacing: 2px; }
     }
 
     .maze-sub {
@@ -121,15 +135,31 @@
     /* Image + hotspot layer */
     .scene-img-wrap {
       width: 100%;
-      height: 62vh;
+      /* Tall enough on desktop, shrinks to fit on mobile */
+      height: min(62vh, 700px);
       overflow: hidden;
       position: relative;
       background: #1a1814;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (max-width: 600px) {
+      .scene-img-wrap {
+        /* On mobile: use aspect ratio so image fits without cramming */
+        height: auto;
+        aspect-ratio: 4 / 3;
+        max-height: 55vw;
+      }
     }
 
     .scene-img-wrap img {
-      width: 100%; height: 100%;
-      object-fit: cover; display: block;
+      /* contain so the full image is always visible, centered */
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
     }
 
     .img-placeholder {
@@ -169,6 +199,17 @@
       border: 0.5px solid rgba(255,255,255,0.12);
     }
 
+    @media (max-width: 600px) {
+      #hs-tooltip {
+        font-size: 20px;
+        /* On mobile, pin tooltip to top-center of image instead of following finger */
+        transform: translateX(-50%);
+        white-space: normal;
+        max-width: 90%;
+        text-align: center;
+      }
+    }
+
     /* "hover to explore" hint fades after first interaction */
     #hs-hint {
       position: absolute;
@@ -186,21 +227,62 @@
 
     /* Scene text */
     .scene-body { padding: 1.25rem 1.75rem 1.75rem; }
+
+    @media (max-width: 600px) {
+      .scene-body { padding: 0.75rem 1rem 1rem; }
+    }
+
     .scene-text { font-size: 19px; line-height: 1.65; color: var(--text); }
     .scene-text.dead { color: var(--danger); font-style: italic; }
     .scene-text.win  { color: var(--success); }
 
-    .restart-btn {
-      width: 100%; padding: 12px;
-      font-family: 'VT323', monospace; font-size: 20px; letter-spacing: 1px;
-      border: 0.5px solid var(--border); border-radius: var(--radius-md);
-      background: transparent; color: var(--text2);
-      cursor: pointer; transition: background 0.15s, color 0.15s;
+    @media (max-width: 600px) {
+      .scene-text { font-size: 16px; }
     }
-    .restart-btn:hover { background: var(--surface); color: var(--text); }
+
+    /* Bottom buttons row */
+    .btn-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      flex: 1;
+      padding: 12px;
+      font-family: 'VT323', monospace;
+      font-size: 20px;
+      letter-spacing: 1px;
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-md);
+      background: transparent;
+      color: var(--text2);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .nav-btn:hover { background: var(--surface); color: var(--text); }
+    .nav-btn:disabled { opacity: 0.35; cursor: default; }
+
+    /* Highlight the back button slightly differently */
+    .nav-btn.back-btn { color: var(--text3); }
+    .nav-btn.back-btn:not(:disabled):hover { color: var(--text); }
 
     .fade-in { animation: fi 0.3s ease; }
     @keyframes fi { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Touch ripple on hotspot (visual feedback) */
+    .hs-ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      transform: scale(0);
+      animation: ripple-anim 0.45s ease-out forwards;
+      pointer-events: none;
+      z-index: 6;
+    }
+    @keyframes ripple-anim {
+      to { transform: scale(3); opacity: 0; }
+    }
   </style>
 </head>
 <body>
@@ -235,7 +317,7 @@
         <div id="hs-tooltip"></div>
 
         <!-- Subtle hover hint -->
-        <div id="hs-hint">hover to explore</div>
+        <div id="hs-hint">tap to explore</div>
       </div>
 
       <div class="scene-body">
@@ -243,7 +325,10 @@
       </div>
     </div>
 
-    <button class="restart-btn" onclick="restart()">↺ START OVER</button>
+    <!-- Button row: back/restart on left, could add more later -->
+    <div class="btn-row">
+      <button class="nav-btn back-btn" id="back-btn" onclick="goBack()">← Go Back</button>
+    </div>
   </div>
 
   <!-- Tree data — regenerate maze.js from editor.html when you update maze.yaml -->
@@ -251,8 +336,40 @@
 
   <script>
     let current = tree;
+    let navHistory = []; // stack of {node, pathLabel} for back navigation
     let path    = [];
     let hinted  = false;
+
+    // ── Navigation ────────────────────────────────────────────────────────────
+
+    function navigateTo(hs) {
+      // Push current state onto history before moving
+      navHistory.push({ node: current, label: hs.label.length > 16 ? hs.label.slice(0, 14) + '…' : hs.label });
+      path.push(hs.label.length > 16 ? hs.label.slice(0, 14) + '…' : hs.label);
+      current = hs.next;
+      render();
+    }
+
+    function goBack() {
+      if (navHistory.length === 0) {
+        restart();
+        return;
+      }
+      const prev = navHistory.pop();
+      path.pop();
+      current = prev.node;
+      render();
+    }
+
+    function restart() {
+      current    = tree;
+      navHistory = [];
+      path       = [];
+      hinted     = false;
+      render();
+    }
+
+    // ── Render ────────────────────────────────────────────────────────────────
 
     function render() {
       // Fade animation
@@ -288,6 +405,18 @@
         st.textContent = current.text;
       }
 
+      // Back/Restart button label
+      const backBtn = document.getElementById('back-btn');
+      if (navHistory.length === 0) {
+        backBtn.textContent = '↺ Start Over';
+        backBtn.style.opacity = '0.4';
+        backBtn.style.cursor = 'default';
+      } else {
+        backBtn.textContent = '← Go Back';
+        backBtn.style.opacity = '1';
+        backBtn.style.cursor = 'pointer';
+      }
+
       // Hotspots
       buildHotspots();
 
@@ -298,6 +427,8 @@
         : '';
     }
 
+    // ── Hotspots ──────────────────────────────────────────────────────────────
+
     function buildHotspots() {
       const svg     = document.getElementById('hotspot-svg');
       const tooltip = document.getElementById('hs-tooltip');
@@ -306,6 +437,7 @@
       tooltip.style.display = 'none';
 
       const hotspots = (current.hotspots || []).filter(hs => hs.next);
+      const isMobile = window.matchMedia('(max-width: 600px)').matches;
 
       if (current.dead || current.win || hotspots.length === 0) {
         svg.style.pointerEvents = 'none';
@@ -337,6 +469,8 @@
         g.appendChild(rect);
         svg.appendChild(g);
 
+        // ── Mouse events (desktop) ────────────────────────────────────────────
+
         g.addEventListener('mouseenter', e => {
           rect.setAttribute('fill', 'rgba(255,255,255,0.09)');
           rect.setAttribute('stroke', 'rgba(255,255,255,0.52)');
@@ -357,12 +491,73 @@
 
         g.addEventListener('click', () => {
           tooltip.style.display = 'none';
-          path.push(hs.label.length > 16 ? hs.label.slice(0, 14) + '…' : hs.label);
-          current = hs.next;
-          render();
+          navigateTo(hs);
+        });
+
+        // ── Touch events (mobile) ─────────────────────────────────────────────
+        // touchstart: highlight + show label
+        // touchend:   navigate (user saw the label before lifting finger)
+
+        let touchActive = false;
+
+        g.addEventListener('touchstart', e => {
+          e.preventDefault(); // block the ghost click that fires 300ms later
+          touchActive = true;
+          hinted = true;
+          hint.style.opacity = '0';
+
+          rect.setAttribute('fill', 'rgba(255,255,255,0.14)');
+          rect.setAttribute('stroke', 'rgba(255,255,255,0.6)');
+
+          // Show tooltip pinned to top of image on mobile
+          const wrap = document.getElementById('scene-img-wrap');
+          tooltip.textContent   = hs.label;
+          tooltip.style.display = 'block';
+          tooltip.style.left    = '50%';
+          tooltip.style.top     = '14px';
+          // Override the desktop transform for mobile
+          tooltip.style.transform = 'translateX(-50%)';
+
+          // Ripple at touch point
+          const touch = e.touches[0];
+          spawnRipple(touch, wrap);
+        }, { passive: false });
+
+        g.addEventListener('touchmove', e => {
+          // If finger drifts off zone we cancel
+          const touch = e.touches[0];
+          const el = document.elementFromPoint(touch.clientX, touch.clientY);
+          if (!g.contains(el)) {
+            touchActive = false;
+            rect.setAttribute('fill', 'rgba(255,255,255,0)');
+            rect.setAttribute('stroke', 'rgba(255,255,255,0)');
+            tooltip.style.display = 'none';
+          }
+        }, { passive: true });
+
+        g.addEventListener('touchend', e => {
+          e.preventDefault();
+          rect.setAttribute('fill', 'rgba(255,255,255,0)');
+          rect.setAttribute('stroke', 'rgba(255,255,255,0)');
+          tooltip.style.display = 'none';
+          tooltip.style.transform = ''; // reset to CSS class value
+          if (touchActive) {
+            touchActive = false;
+            navigateTo(hs);
+          }
+        }, { passive: false });
+
+        g.addEventListener('touchcancel', () => {
+          touchActive = false;
+          rect.setAttribute('fill', 'rgba(255,255,255,0)');
+          rect.setAttribute('stroke', 'rgba(255,255,255,0)');
+          tooltip.style.display = 'none';
+          tooltip.style.transform = '';
         });
       });
     }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
 
     function moveTooltip(e) {
       const tooltip = document.getElementById('hs-tooltip');
@@ -374,14 +569,25 @@
       // Keep within horizontal bounds
       tooltip.style.left = Math.min(Math.max(x, 60), r.width - 60) + 'px';
       tooltip.style.top  = y + 'px';
+      tooltip.style.transform = 'translate(-50%, calc(-100% - 10px))';
     }
 
-    function restart() {
-      current = tree;
-      path    = [];
-      hinted  = false;
-      render();
+    // Small ripple visual for touch feedback
+    function spawnRipple(touch, container) {
+      const r   = container.getBoundingClientRect();
+      const x   = touch.clientX - r.left;
+      const y   = touch.clientY - r.top;
+      const dot = document.createElement('div');
+      dot.className = 'hs-ripple';
+      dot.style.width  = '40px';
+      dot.style.height = '40px';
+      dot.style.left   = (x - 20) + 'px';
+      dot.style.top    = (y - 20) + 'px';
+      container.appendChild(dot);
+      dot.addEventListener('animationend', () => dot.remove());
     }
+
+    // ── Init ──────────────────────────────────────────────────────────────────
 
     render();
   </script>
