@@ -246,7 +246,7 @@ wizardCloset.hotspots[0].next = wizardRoom;
 
 const doorwayToWizard = {
   text: 'oh a door',
-  img: 'IMG_0197.PNG', // TODO
+  img: 'media/IMG_0197.PNG', // TODO
   hotspots: [
     { label: 'Enter the wizard room', region: [30, 40, 40, 30], next: wizardRoom },
   ],
@@ -315,7 +315,7 @@ mouseParty.hotspots[0].next = illuminatedRoom;
 
 const torchScene3 = {
   text: 'oh, a door!',
-  img: 'IMG_0191.PNG',
+  img: 'media/IMG_0191.PNG',
   hotspots: [
     { label: 'I sure hope this leads to an illuminated room', region: [30, 40, 40, 30], next: illuminatedRoom },
   ],
@@ -323,7 +323,7 @@ const torchScene3 = {
 
 const torchScene2 = {
   text: 'this is a long tunnel',
-  img: 'IMG_0190.PNG',
+  img: 'media/IMG_0190.PNG',
   hotspots: [
     { label: 'keep walking ig', region: [30, 40, 40, 30], next: torchScene3 },
   ],
@@ -334,7 +334,7 @@ const torchScene2 = {
 
 const torchScene = {
   text: 'you got a torch',
-  img: 'IMG_0189.PNG',
+  img: 'media/IMG_0189.PNG',
   hotspots: [
     { label: 'fumble around', region: [30, 40, 40, 30], next: torchScene2 },
   ],
