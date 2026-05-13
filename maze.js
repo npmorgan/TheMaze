@@ -219,27 +219,21 @@ const wizardAppears = {
   ],
 };
 
-// K: read spell book (new intermediate scene from flowchart)
-const readSpellBook = {
-  text: 'Read spell book',
-  img: 'media/spell-book.jpg', // TODO
-  hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: wizardAppears },
-  ],
-};
 
 const wizardCloset = {
   text: 'no goblins in here',
   img: 'media/IMG_0199.PNG',
   hotspots: [
     { label: 'back to the wizard room', region: [30, 40, 40, 30], next: wizardRoom }
+  ],
+};
 
 // J: wizard room (n9 closet loop wired below)
 const wizardRoom = {
   text: 'whoa this room is kind of cool',
   img: 'media/IMG_0198.PNG',
   hotspots: [
-    { label: 'Read spell book',                 region: [20, 20, 40, 50], next: readSpellBook }, // K
+    { label: 'Research goblin catching spells', region: [20, 20, 40, 50], next: readSpellBook }, // K
     { label: 'wizard closet - no goblins here', region: [65, 20, 25, 60], next: wizardCloset },          // n9 ← wired below
   ],
 };
