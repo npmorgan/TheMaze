@@ -394,122 +394,128 @@
         : '';
     }
 
-    function buildHotspots() {
-      const svg     = document.getElementById('hotspot-svg');
-      const tooltip = document.getElementById('hs-tooltip');
-      const hint    = document.getElementById('hs-hint');
-      svg.innerHTML = '';
+function buildHotspots() {
+  const svg     = document.getElementById('hotspot-svg');
+  const tooltip = document.getElementById('hs-tooltip');
+  const hint    = document.getElementById('hs-hint');
+  svg.innerHTML = '';
+  tooltip.style.display = 'none';
+
+  const hotspots = (current.hotspots || []).filter(hs => hs.next);
+
+  if (current.dead || current.win || hotspots.length === 0) {
+    svg.style.pointerEvents = 'none';
+    hint.style.opacity = '0';
+    return;
+  }
+
+  svg.style.pointerEvents = 'all';
+  hint.style.opacity = hinted ? '0' : '1';
+
+  // Build rects — mouse events stay per-hotspot, touch is handled at SVG level
+  hotspots.forEach(hs => {
+    const [x, y, w, h] = hs.region;
+
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.style.cursor = 'pointer';
+
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', x);
+    rect.setAttribute('y', y);
+    rect.setAttribute('width', w);
+    rect.setAttribute('height', h);
+    rect.setAttribute('rx', '0.6');
+    rect.setAttribute('fill', 'rgba(255,255,255,0)');
+    rect.setAttribute('stroke', 'rgba(255,255,255,0)');
+    rect.setAttribute('stroke-width', '0.0');
+    rect.style.transition = 'fill 0.12s, stroke 0.12s';
+
+    g.appendChild(rect);
+    svg.appendChild(g);
+
+    g.addEventListener('mouseenter', e => {
+      hint.style.opacity = '0';
+      hinted = true;
+      tooltip.textContent   = hs.label;
+      tooltip.style.display = 'block';
+      moveTooltip(e);
+    });
+
+    g.addEventListener('mousemove', moveTooltip);
+
+    g.addEventListener('mouseleave', () => {
       tooltip.style.display = 'none';
+    });
 
-      const hotspots = (current.hotspots || []).filter(hs => hs.next);
-      const isMobile = window.matchMedia('(max-width: 600px)').matches;
+    g.addEventListener('click', () => {
+      tooltip.style.display = 'none';
+      navigateTo(hs);
+    });
+  });
 
-      if (current.dead || current.win || hotspots.length === 0) {
-        svg.style.pointerEvents = 'none';
-        hint.style.opacity = '0';
-        return;
+  // ── Touch: drag-to-explore, lift-to-activate ──────────────────────────────
+  // All touch events live on the SVG so the finger can roam freely across
+  // hotspot boundaries without triggering per-element enter/leave chaos.
+
+  let activeHotspot = null;
+
+  function hotspotAtTouch(touch) {
+    const wrap = document.getElementById('scene-img-wrap');
+    const r    = wrap.getBoundingClientRect();
+    // Map pixel position → SVG viewBox coords (0–100)
+    const sx = (touch.clientX - r.left)  / r.width  * 100;
+    const sy = (touch.clientY - r.top)   / r.height * 100;
+    return hotspots.find(hs => {
+      const [x, y, w, h] = hs.region;
+      return sx >= x && sx <= x + w && sy >= y && sy <= y + h;
+    }) ?? null;
+  }
+
+  svg.addEventListener('touchstart', e => {
+    e.preventDefault();          // block scroll + ghost click
+    hinted = true;
+    hint.style.opacity = '0';
+    activeHotspot = null;
+    tooltip.style.display = 'none';
+  }, { passive: false });
+
+  svg.addEventListener('touchmove', e => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const found = hotspotAtTouch(touch);
+
+    if (found !== activeHotspot) {
+      activeHotspot = found;
+      if (found) {
+        tooltip.textContent     = found.label;
+        tooltip.style.display   = 'block';
+        tooltip.style.left      = '50%';
+        tooltip.style.top       = '14px';
+        tooltip.style.transform = 'translateX(-50%)';
+        spawnRipple(touch, document.getElementById('scene-img-wrap'));
+      } else {
+        tooltip.style.display = 'none';
       }
-
-      svg.style.pointerEvents = 'all';
-      hint.style.opacity = hinted ? '0' : '1';
-
-      hotspots.forEach(hs => {
-        const [x, y, w, h] = hs.region;
-
-        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        g.style.cursor = 'pointer';
-
-        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        rect.setAttribute('x', x);
-        rect.setAttribute('y', y);
-        rect.setAttribute('width', w);
-        rect.setAttribute('height', h);
-        rect.setAttribute('rx', '0.6');
-        rect.setAttribute('fill', 'rgba(255,255,255,0)');
-        rect.setAttribute('stroke', 'rgba(255,255,255,0)');
-        rect.setAttribute('stroke-width', '0.0');
-        rect.style.transition = 'fill 0.12s, stroke 0.12s';
-
-        g.appendChild(rect);
-        svg.appendChild(g);
-
-        g.addEventListener('mouseenter', e => {
-          rect.setAttribute('fill', 'rgba(255,255,255,0.00)');
-          rect.setAttribute('stroke', 'rgba(255,255,255,0.0)');
-          hint.style.opacity = '0';
-          hinted = true;
-          tooltip.textContent   = hs.label;
-          tooltip.style.display = 'block';
-          moveTooltip(e);
-        });
-
-        g.addEventListener('mousemove', moveTooltip);
-
-        g.addEventListener('mouseleave', () => {
-          rect.setAttribute('fill', 'rgba(255,255,255,0)');
-          rect.setAttribute('stroke', 'rgba(255,255,255,0)');
-          tooltip.style.display = 'none';
-        });
-
-        g.addEventListener('click', () => {
-          tooltip.style.display = 'none';
-          navigateTo(hs);
-        });
-
-        let touchActive = false;
-
-        g.addEventListener('touchstart', e => {
-          e.preventDefault();
-          touchActive = true;
-          hinted = true;
-          hint.style.opacity = '0';
-
-          rect.setAttribute('fill', 'rgba(255,255,255,0.0)');
-          rect.setAttribute('stroke', 'rgba(255,255,255,0.0)');
-
-          const wrap = document.getElementById('scene-img-wrap');
-          tooltip.textContent   = hs.label;
-          tooltip.style.display = 'block';
-          tooltip.style.left    = '50%';
-          tooltip.style.top     = '14px';
-          tooltip.style.transform = 'translateX(-50%)';
-
-          const touch = e.touches[0];
-          spawnRipple(touch, wrap);
-        }, { passive: false });
-
-        g.addEventListener('touchmove', e => {
-          const touch = e.touches[0];
-          const el = document.elementFromPoint(touch.clientX, touch.clientY);
-          if (!g.contains(el)) {
-            touchActive = false;
-            rect.setAttribute('fill', 'rgba(255,255,255,0)');
-            rect.setAttribute('stroke', 'rgba(255,255,255,0)');
-            tooltip.style.display = 'none';
-          }
-        }, { passive: true });
-
-        g.addEventListener('touchend', e => {
-          e.preventDefault();
-          rect.setAttribute('fill', 'rgba(255,255,255,0)');
-          rect.setAttribute('stroke', 'rgba(255,255,255,0)');
-          tooltip.style.display = 'none';
-          tooltip.style.transform = '';
-          if (touchActive) {
-            touchActive = false;
-            navigateTo(hs);
-          }
-        }, { passive: false });
-
-        g.addEventListener('touchcancel', () => {
-          touchActive = false;
-          rect.setAttribute('fill', 'rgba(255,255,255,0)');
-          rect.setAttribute('stroke', 'rgba(255,255,255,0)');
-          tooltip.style.display = 'none';
-          tooltip.style.transform = '';
-        });
-      });
     }
+  }, { passive: false });
+
+  svg.addEventListener('touchend', e => {
+    e.preventDefault();
+    tooltip.style.display   = 'none';
+    tooltip.style.transform = '';
+    if (activeHotspot) {
+      const target  = activeHotspot;
+      activeHotspot = null;
+      navigateTo(target);
+    }
+  }, { passive: false });
+
+  svg.addEventListener('touchcancel', () => {
+    activeHotspot           = null;
+    tooltip.style.display   = 'none';
+    tooltip.style.transform = '';
+  });
+}
 
     function moveTooltip(e) {
       const tooltip = document.getElementById('hs-tooltip');
