@@ -131,7 +131,7 @@ const murderScene = {
   text: '',
   img: 'media/IMG_0219.PNG',
   hotspots: [
-    { label: 'get him!', region: [20, 40, 60, 30], next: murderscene2 },
+    { label: 'get him!', region: [20, 40, 60, 30], next: murderScene2 },
   ],
 };
 
