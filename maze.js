@@ -43,7 +43,7 @@ const eggOpening = {
   text: 'Congrats, your baby is awesome.',
   img: 'media/IMG_0232.PNG',
   hotspots: [
-    { label: 'Continue', region: [0, 0, 100, 100], next: theEnd },
+    { label: 'We Love You!!!!!!!', region: [0, 0, 100, 100], next: theEnd },
   ],
 };
 const genderFind8 = {
