@@ -419,7 +419,7 @@ const torchScene3 = {
   text: 'oh, a door!',
   img: 'media/IMG_0191.PNG',
   hotspots: [
-    { label: 'I sure hope this leads to an illuminated room', region: [80, 28, 12, 27], next: illuminatedRoom },
+    { label: 'I sure hope this\nleads to an illuminated room', region: [80, 28, 12, 27], next: illuminatedRoom },
   ],
 };
 
