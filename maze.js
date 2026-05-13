@@ -165,7 +165,7 @@ const blowDustScene = {
 // ── T: wizard wait → U ────────────────────────────────────────────────────────
 
 const wizardWait = {
-  text: "Wait! looks like there's some dust on that goblin snack bag.",
+  text: "Wait! Whats that?",
   img: 'media/IMG_0214_2.PNG',
   hotspots: [
     { label: 'blow away dust', region: [20, 30, 60, 40], next: blowDustScene },
