@@ -1,423 +1,47 @@
-// ══════════════════════════════════════════════════════════════════════════════
-// GAME TREE — rebuilt from flowchart
-//
-// Scenes are defined bottom-up (leaves first) so every `next` reference
-// already exists by the time it's used.
-//
-// Circular back-edges are wired AFTER construction (marked "← wired below").
-//
-// New scenes added by the flowchart that need artwork are marked: // TODO
-// ══════════════════════════════════════════════════════════════════════════════
-
-
-// ── Dead ends ─────────────────────────────────────────────────────────────────
-
-const dontChaseDead = {
-  text: "don't chase",
-  img: 'media/dont-chase.jpg',
-  dead: true,
-  deathText: "don't chase",
-};
-
-const ignoreDeadEnd = {
-  text: 'ignore - dead end',
-  img: 'media/dead-end.jpg',
-  dead: true,
-  deathText: 'ignore - dead end',
-};
-
-
-// ── n19: THE END ──────────────────────────────────────────────────────────────
-
-const theEnd = {
-  text: 'all the creatures hanging out together with your baby having a good time THE END',
-  img: 'media/the-end.jpg',
-  win: true,
-  winText: 'all the creatures hanging out together with your baby having a good time THE END',
-};
-
-
-// ── n18 → n19 ─────────────────────────────────────────────────────────────────
-
-const eggOpening = {
-  text: 'little animation of the egg opening to reveal the gender congrats, your baby is awesome',
-  img: 'media/egg.jpg',
-  hotspots: [
-    { label: 'Continue', region: [30, 70, 40, 20], next: theEnd },
-  ],
-};
-
-
-// ── n17 → n18 ─────────────────────────────────────────────────────────────────
-
-const genderPops = {
-  text: "baby gender pops out of goblin's back pocket, click on it",
-  img: 'media/strangle.jpg',
-  hotspots: [
-    {
-      label: "baby gender pops out of goblin's back pocket, click on it",
-      region: [40, 40, 20, 20],
-      next: eggOpening,
-    },
-  ],
-};
-
-
-// ── n16: wizard strangles → n17 ───────────────────────────────────────────────
-
-const wizardStrangles = {
-  text: "wizard strangles the goblin bart style\nhand over the baby gender cretin",
-  img: 'media/strangle.jpg',
-  hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: genderPops },
-  ],
-};
-
-
-// ── n15: no just strangle him bart style → n16 ────────────────────────────────
-
-const strangleChoice = {
-  text: 'no just strangle him bart style',
-  img: 'media/poison-snack.jpg',
-  hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: wizardStrangles },
-  ],
-};
-
-
-// ── V: oh shit should we murder this goblin → n15 ────────────────────────────
-
-const murderScene = {
-  text: 'oh shit, should we murder this goblin right now?',
-  img: 'media/poison-snack.jpg',
-  hotspots: [
-    { label: 'no just strangle him bart style', region: [20, 40, 60, 30], next: strangleChoice },
-  ],
-};
-
-
-// ── U: blow away dust → V ────────────────────────────────────────────────────
-
-const blowDustScene = {
-  text: 'blow away dust, reveal POISON goblin snack',
-  img: 'media/wizard-dust.jpg',
-  hotspots: [
-    { label: 'blow away dust, reveal POISON goblin snack', region: [20, 30, 60, 40], next: murderScene },
-  ],
-};
-
-
-// ── T: wizard wait → U ────────────────────────────────────────────────────────
-
-const wizardWait = {
-  text: "wizard\nWait! looks like there's some dust on that goblin snack bag.",
-  img: 'media/wizard-dust.jpg',
-  hotspots: [
-    { label: 'blow away dust, reveal POISON goblin snack', region: [20, 30, 60, 40], next: blowDustScene },
-  ],
-};
-
-
-// ── S: goblin speech → T ──────────────────────────────────────────────────────
-
-const goblinSpeech = {
-  text: "goblin inside cabinet\nLOL I'll never hand over the gender. that is, unless you have any goblin snacks?",
-  img: 'media/goblin-cabinet.jpg',
-  hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: wizardWait },
-  ],
-};
-
-
-// ── R: goblin inside cabinet → S ──────────────────────────────────────────────
-
-const goblinCabinet = {
-  text: 'goblin inside cabinet',
-  img: 'media/goblin-cabinet.jpg',
-  hotspots: [
-    {
-      label: "goblin inside cabinet\nLOL I'll never hand over the gender. that is, unless you have any goblin snacks?",
-      region: [10, 20, 80, 30],
-      next: goblinSpeech,
-    },
-  ],
-};
-
-
-// ── P: cats eating a big fish → kitchen (wired below) ────────────────────────
-
-const catsFish = {
-  text: 'cats eating a big fish',
-  img: 'media/cats-fish.jpg',
-  hotspots: [
-    { label: 'Back to kitchen', region: [30, 70, 40, 20], next: null }, // ← wired below
-  ],
-};
-
-
-// ── n14: kitchen ──────────────────────────────────────────────────────────────
-
-const kitchen = {
-  text: 'kitchen',
-  img: 'media/kitchen.jpg',
-  hotspots: [
-    { label: 'Look in fridge', region: [5, 20, 40, 60],  next: catsFish },      // O → P
-    { label: 'Open cabinet',   region: [55, 20, 35, 60], next: goblinCabinet }, // Q → R
-  ],
-};
-
-// Wire cats-fish back to kitchen (P → n14)
-catsFish.hotspots[0].next = kitchen;
-
-
-// ── N: jump down trap door → kitchen ──────────────────────────────────────────
-
-const trapDoor = {
-  text: 'jump down trap door',
-  img: 'media/trap-door.jpg',
-  hotspots: [
-    { label: 'Go to kitchen', region: [30, 40, 40, 30], next: kitchen },
-  ],
-};
-
-
-// ── Wizard room subtree (n10 → M → L → K → J) ────────────────────────────────
-
-// n10: wizard — what can I help you with?
-const wizardHelp = {
-  text: "wizard\ndon't worry about it. everybody makes mistakes. anyways what can I help you with?",
-  img: 'media/media/IMG_0204_1.PNG',
-  hotspots: [
-    {
-      label: "ignore the irony of asking this two headed nonbinary wizard for help finding your baby's gender?",
-      region: [10, 20, 80, 30],
-      next: trapDoor,      // n11 → N
-    },
-    {
-      label: 'ignore - dead end',
-      region: [10, 60, 80, 20],
-      next: ignoreDeadEnd, // n12
-    },
-  ],
-};
-
-// M: oh wow it's the two headed nonbinary wizard
-const famousWizard = {
-  text: "oh wow it's the two headed nonbinary wizard. they're famous in this part of town",
-  img: 'media/IMG_0201_2.PNG',
-  hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: wizardHelp },
-  ],
-};
-
-// L: wizard appears — Hey! don't touch my stuff
-const wizardAppears = {
-  text: "wizard appears\nHey! don't touch my stuff",
-  img: 'media/IMG_0201_1.PNG',
-  hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: famousWizard },
-  ],
-};
-
-// K: read spell book (new intermediate scene from flowchart)
-const readSpellBook = {
-  text: 'Read spell book',
-  img: 'media/spell-book.jpg', // TODO
-  hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: wizardAppears },
-  ],
-};
-
-// J: wizard room (n9 closet loop wired below)
-const wizardRoom = {
-  text: 'Wizard room',
-  img: 'media/IMG_0198.PNG',
-  hotspots: [
-    { label: 'Read spell book',                 region: [20, 20, 40, 50], next: readSpellBook }, // K
-    { label: 'wizard closet - no goblins here', region: [65, 20, 25, 60], next: null },          // n9 ← wired below
-  ],
-};
-
-// Wire wizard closet back to wizard room (n9 → J)
-wizardRoom.hotspots[1].next = wizardRoom;
-
-
-// ── n8: doorway → wizard room ─────────────────────────────────────────────────
-
-const doorwayToWizard = {
-  text: 'doorway',
-  img: 'media/doorway.jpg', // TODO
-  hotspots: [
-    { label: 'Enter the wizard room', region: [30, 40, 40, 30], next: wizardRoom },
-  ],
-};
-
-
-// ── n7: take goblin snack → n8 ───────────────────────────────────────────────
-
-const takeGoblinSnack = {
-  text: 'take goblin snack',
-  img: 'media/take-snack.jpg', // TODO
-  hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: doorwayToWizard },
-  ],
-};
-
-
-// ── n6: closeup on goblin snack → n7 ─────────────────────────────────────────
-
-const snackCloseup = {
-  text: 'closeup on goblin snack',
-  img: 'media/snack-closeup.jpg', // TODO
-  hotspots: [
-    { label: 'take goblin snack', region: [30, 30, 40, 40], next: takeGoblinSnack },
-  ],
-};
-
-
-// ── n2: creature holding goblin snack → n6 ───────────────────────────────────
-
-const creatureSnack = {
-  text: 'creature holding goblin snack',
-  img: 'media/creature-snack.jpg', // TODO
-  hotspots: [
-    { label: 'Look at snack', region: [30, 30, 40, 40], next: snackCloseup },
-  ],
-};
-
-
-// ── n1: doorway → n2 ─────────────────────────────────────────────────────────
-
-const doorwayToCreature = {
-  text: 'doorway',
-  img: 'media/doorway.jpg', // TODO
-  hotspots: [
-    { label: 'Enter', region: [30, 40, 40, 30], next: creatureSnack },
-  ],
-};
-
-
-// ── H: mouse party room → D (wired below) ────────────────────────────────────
-
-const mouseParty = {
-  text: 'Mouse party room',
-  img: 'media/mouse-party.jpg', // TODO
-  hotspots: [
-    { label: 'Leave', region: [30, 70, 40, 20], next: null }, // ← wired below
-  ],
-};
-
-
-// ── G: ladder → H ────────────────────────────────────────────────────────────
-
-const ladderScene = {
-  text: 'ladder',
-  img: 'media/ladder.jpg', // TODO
-  hotspots: [
-    { label: 'Climb ladder', region: [30, 40, 40, 30], next: mouseParty },
-  ],
-};
-
-
-// ── D: illuminated room ───────────────────────────────────────────────────────
-
-const illuminatedRoom = {
-  text: 'Illuminated room',
-  img: 'media/illuminated-room.jpg', // TODO
-  hotspots: [
-    { label: 'ladder',  region: [20, 30, 30, 40], next: ladderScene },        // G
-    { label: 'doorway', region: [60, 30, 30, 40], next: doorwayToCreature },  // n1
-  ],
-};
-
-// Wire mouse party room back to illuminated room (H → D)
-mouseParty.hotspots[0].next = illuminatedRoom;
-
-
-// ── n4: torch → D ────────────────────────────────────────────────────────────
-
-const torchScene = {
-  text: 'torch',
-  img: 'media/torch.jpg',
-  hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: illuminatedRoom },
-  ],
-};
-
-
-// ── n3: Dark Hall → n4 ───────────────────────────────────────────────────────
-
-const darkHall = {
-  text: 'Dark Hall',
-  img: 'media/dark-hall.jpg', // TODO
-  hotspots: [
-    { label: 'Continue', region: [30, 40, 40, 30], next: torchScene },
-  ],
-};
-
-
-// ── C: goblin runs ────────────────────────────────────────────────────────────
-
-const goblinRuns = {
-  text: 'goblin runs',
-  img: 'media/goblin-runs.jpg', // TODO
-  hotspots: [
-    { label: 'Chase into the Dark Hall', region: [5, 20, 40, 60],  next: darkHall },      // n3
-    { label: "don't chase",              region: [55, 20, 40, 60], next: dontChaseDead }, // n5
-  ],
-};
-
-
-// ── n22: Get it! → C ─────────────────────────────────────────────────────────
-
-const getItScene = {
-  text: 'Get it!',
-  img: 'media/get-it.jpg', // TODO
-  hotspots: [
-    { label: 'Chase the goblin', region: [30, 40, 40, 30], next: goblinRuns },
-  ],
-};
-
-
-// ── n21: What do they have? → n22 ────────────────────────────────────────────
-
-const whatDoTheyHave = {
-  text: 'What do they have?',
-  img: 'media/IMG_0186.PNG',
-  hotspots: [
-    { label: 'Get it!', region: [5, 20, 40, 60], next: getItScene },
-  ],
-};
-
-
-// ── n20: Who is that? → n21 ──────────────────────────────────────────────────
-
-const whoIsThat = {
-  text: 'Who is that?',
-  img: 'media/IMG_0185.PNG',
-  hotspots: [
-    { label: 'Continue', region: [30, 50, 40, 30], next: whatDoTheyHave },
-  ],
-};
-
-
-// ── B: investigate → n20 ─────────────────────────────────────────────────────
-
-const investigateScene = {
-  text: 'Who is that?',
-  img: 'media/IMG_0184.PNG',
-  hotspots: [
-    { label: 'Who is that?', region: [20, 30, 60, 25], next: whoIsThat },
-  ],
-};
-
-
-// ── A: Start / tree ───────────────────────────────────────────────────────────
+// AUTO-GENERATED by editor.html — do not edit by hand.
+// Edit maze.yaml instead, then re-export.
 
 const tree = {
-  text: 'Start: Cupcake',
-  img: 'media/IMG_0183.PNG',
+  text: "what a delicious looking cupcake. I wonder if the gender of your baby is inside?",
+  img: "media/IMG_0813.PNG",
   hotspots: [
-    { label: 'investigate', region: [30, 30, 40, 40], next: investigateScene },
+    {
+      label: "Investigate",
+      region: [23, 8, 50, 82],
+      next: {
+        text: "oh shit. there is a sneaky little goblin up in here!",
+        img: "media/IMG_0814.PNG",
+        hotspots: [
+          {
+            label: "continue",
+            region: [23, 8, 50, 82],
+            next: {
+              text: "what are they doing",
+              img: "media/IMG_0185.PNG",
+              hotspots: [
+                {
+                  label: "continue",
+                  region: [23, 8, 50, 82],
+                  next: {
+                    text: "is that...?",
+                    img: "media/IMG_0186.PNG",
+                    hotspots: [
+                      {
+                        label: "continue",
+                        region: [23, 8, 50, 82],
+                        next: {
+                          text: "dang that goblin just stole your babys gender are you gonna let them get away with that?",
+                          img: "media/IMG_0187.PNG",
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
   ],
 };
