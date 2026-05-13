@@ -400,7 +400,7 @@ const whatDoTheyHave = {
   text: 'What do they have there?',
   img: 'media/IMG_0186.PNG',
   hotspots: [
-    { label: 'Get it!', region: [5, 20, 40, 60], next: getItScene },
+    { label: 'Get it!', region: [21, 27, 9, 12], next: getItScene },
   ],
 };
 
