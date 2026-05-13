@@ -139,12 +139,16 @@
       width: 100%;
       position: relative;
       background: #1a1814;
+      -webkit-touch-callout: none;
+      user-select: none;
     }
 
     .scene-img-wrap img {
       width: 100%;
       height: auto;   /* natural aspect ratio, never clipped */
       display: block;
+      -webkit-touch-callout: none;
+      user-select: none;
     }
 
     .img-placeholder {
@@ -475,8 +479,18 @@ function buildHotspots() {
     e.preventDefault();          // block scroll + ghost click
     hinted = true;
     hint.style.opacity = '0';
-    activeHotspot = null;
+    const touch = e.touches[0];
+    activeHotspot = hotspotAtTouch(touch);
     tooltip.style.display = 'none';
+    if (activeHotspot) {
+      tooltip.textContent     = activeHotspot.label;
+      tooltip.style.display   = 'block';
+      tooltip.style.left      = '50%';
+      tooltip.style.top       = '14px';
+      tooltip.style.transform = 'translateX(-50%)';
+    } else {
+      tooltip.style.display = 'none';
+    }
   }, { passive: false });
 
   svg.addEventListener('touchmove', e => {
