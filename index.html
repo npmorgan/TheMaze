@@ -270,10 +270,10 @@
 </head>
 <body>
   <div class="maze-wrap">
-    <div class="maze-header">Gender Adventure!</div>
+    <div class="maze-header">Gender Adventure!!</div>
     <div class="maze-sub">Click on what you see.</div>
 
-    <div class="breadcrumb" id="breadcrumb"></div>
+<!--    <div class="breadcrumb" id="breadcrumb"></div> -->
 
     <div class="scene-box fade-in" id="scene-box">
       <span class="scene-depth" id="depth-label">DEPTH 0</span>
@@ -420,10 +420,10 @@
 
       buildHotspots();
 
-      const bc = document.getElementById('breadcrumb');
-      bc.innerHTML = path.length
-        ? path.map(p => `<span class="crumb">${p}</span>`).join('<span class="crumb-sep"> › </span>')
-        : '';
+    //  const bc = document.getElementById('breadcrumb');
+    //  bc.innerHTML = path.length
+    //    ? path.map(p => `<span class="crumb">${p}</span>`).join('<span class="crumb-sep"> › </span>')
+    //    : '';
     }
 
 function buildHotspots() {
