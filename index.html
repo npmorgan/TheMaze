@@ -317,6 +317,32 @@
     let path    = [];
     let hinted  = false;
 
+    function updateImageConstraint() {
+      const img  = document.getElementById('scene-img');
+      const wrap = document.getElementById('scene-img-wrap');
+      if (!img || img.style.display === 'none' || !img.naturalWidth) {
+        wrap.style.maxWidth = '';
+        wrap.style.marginLeft = '';
+        wrap.style.marginRight = '';
+        return;
+      }
+      const ratio    = img.naturalWidth / img.naturalHeight;
+      const maxImgH  = window.innerHeight - 380; // ~380px for header/text/buttons/padding
+      const maxImgW  = maxImgH * ratio;
+      const parentW  = wrap.parentElement?.clientWidth || window.innerWidth;
+      if (maxImgW > 0 && maxImgW < parentW) {
+        wrap.style.maxWidth    = maxImgW + 'px';
+        wrap.style.marginLeft  = 'auto';
+        wrap.style.marginRight = 'auto';
+      } else {
+        wrap.style.maxWidth    = '';
+        wrap.style.marginLeft  = '';
+        wrap.style.marginRight = '';
+      }
+    }
+    
+    window.addEventListener('resize', updateImageConstraint);
+
     function navigateTo(hs) {
       navHistory.push({ node: current, label: hs.label.length > 16 ? hs.label.slice(0, 14) + '…' : hs.label });
       path.push(hs.label.length > 16 ? hs.label.slice(0, 14) + '…' : hs.label);
@@ -354,12 +380,14 @@
       const img         = document.getElementById('scene-img');
       const placeholder = document.getElementById('scene-placeholder');
       if (current.img) {
+        img.onload = updateImageConstraint; 
         img.src            = current.img;
         img.style.display  = 'block';
         placeholder.style.display = 'none';
       } else {
         img.style.display  = 'none';
         placeholder.style.display = 'flex';
+        updateImageConstraint();
       }
 
       const st = document.getElementById('scene-text');
@@ -549,7 +577,7 @@ function buildHotspots() {
       container.appendChild(dot);
       dot.addEventListener('animationend', () => dot.remove());
     }
-
+    updateImageConstraint();
     render();
   </script>
 </body>
